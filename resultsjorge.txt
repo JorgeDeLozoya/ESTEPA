@@ -1,0 +1,30 @@
+Ninguno
+-------
+cmax(pF)  Media:  595.581  Stddev:  3.04278  Mediana:  595.119  Puntos:  104/104
+cmin(pF)  Media:  131.128  Stddev:  7.05004  Mediana:  132.021  Puntos:  104/104
+dox(A)  Media:  556.847  Stddev:  2.84345  Mediana:  557.264  Puntos:  104/104
+Na(cm-3)  Media:  2.32204e+15  Stddev:  2.15223e+14  Mediana:  2.34883e+15  Puntos:  104/104
+Vfb(V)  Media:  -0.925594  Stddev:  0.0312561  Mediana:  -0.933542  Puntos:  104/104
+Nss(cm-2)  Media:  1.96518e+10  Stddev:  1.03731e+10  Mediana:  2.24652e+10  Puntos:  104/104
+Rs(ohms)  Media:  122.969  Stddev:  77.2445  Mediana:  114.545  Puntos:  104/104
+
+F-SPREAD
+--------
+cmax(pF)  Media:  595.581  Stddev:  3.04278  Mediana:  595.119  Puntos:  104/104
+cmin(pF)  Media:  131.906  Stddev:  1.62119  Mediana:  132.031  Puntos:  101/104
+dox(A)  Media:  556.847  Stddev:  2.84345  Mediana:  557.264  Puntos:  104/104
+Na(cm-3)  Media:  2.34641e+15  Stddev:  7.99551e+13  Mediana:  2.35156e+15  Puntos:  101/104
+Vfb(V)  Media:  -0.933504  Stddev:  0.00615205  Mediana:  -0.934546  Puntos:  87/104
+Nss(cm-2)  Media:  2.26674e+10  Stddev:  2.09734e+09  Mediana:  2.29334e+10  Puntos:  84/104
+Rs(ohms)  Media:  114.425  Stddev:  2.44666  Mediana:  114.076  Puntos:  93/104
+
+
+K-SIGMAS
+--------
+cmax(pF)  Media:  595.581  Stddev:  3.04278  Mediana:  595.119  Puntos:  104/104
+cmin(pF)  Media:  131.906  Stddev:  1.62119  Mediana:  132.031  Puntos:  101/104
+dox(A)  Media:  556.847  Stddev:  2.84345  Mediana:  557.264  Puntos:  104/104
+Na(cm-3)  Media:  2.34136e+15  Stddev:  8.70068e+13  Mediana:  2.3489e+15  Puntos:  103/104
+Vfb(V)  Media:  -0.932879  Stddev:  0.0069343  Mediana:  -0.934319  Puntos:  90/104
+Nss(cm-2)  Media:  2.07011e+10  Stddev:  4.92407e+09  Mediana:  2.25529e+10  Puntos:  102/104
+Rs(ohms)  Media:  114.917  Stddev:  3.08408  Mediana:  114.306  Puntos:  99/104

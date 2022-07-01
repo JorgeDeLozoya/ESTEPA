@@ -1,0 +1,49 @@
+<BEG GLOBAL>
+	Process[s]	test
+	Lot[s]	
+	Wafer[s]	
+	Mask[s]	
+	Operator[s]	default
+	Date[s]	12/05/2022
+	Time[s]	09:31:05
+<END GLOBAL>
+<BEG> WAFER ()
+	<BEG> DIE (0 0)
+		<BEG> MODULE (0.0 0.0)
+			<BEG> MODTEST (CV_test)
+				<BEG PARMS>
+					CMAX	4.20056e-10
+					CMIN	2.10057e-10
+				<END PARMS>
+				<BEG DATA>
+V(V)	C(F)
+					0	2.10057e-10
+					1	2.1524e-10
+					2	3.1085e-10
+					3	3.6045e-10
+					4	4e-10
+					5	4.2056e-10
+				<END DATA>
+				<END> MODTEST (CV_test)
+			<END> MODULE (0.0 0.0)
+		<END> DIE (0 0)
+	<BEG> DIE (-3 0)
+		<BEG> MODULE (0.0 0.0)
+			<BEG> MODTEST (CV_test)
+				<BEG PARMS>
+					CMAX	4.20056e-10
+					CMIN	2.10057e-10
+				<END PARMS>
+				<BEG DATA>
+V(V)	C(F)
+					0	2.10057e-10
+					1	2.1524e-10
+					2	3.1085e-10
+					3	3.6045e-10
+					4	4e-10
+					5	4.2056e-10
+				<END DATA>
+				<END> MODTEST (CV_test)
+			<END> MODULE (0.0 0.0)
+		<END> DIE (-3 0)
+	<END> WAFER ()

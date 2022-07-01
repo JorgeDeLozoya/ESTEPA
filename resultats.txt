@@ -1,0 +1,11 @@
+
+Resultats
+file_dat.print_info()<modules.result_file.ResultFile object at 0x000001BC079E0490>
+Resultats
+print(file_dat.get_params())<modules.result_file.ResultFile object at 0x000001E001820490>
+Resultats
+print(file_dat.get_params())<modules.result_file.ResultFile object at 0x0000023B414F0490>
+Resultats
+<modules.result_file.ResultFile object at 0x000002BF55790490>
+Resultats
+

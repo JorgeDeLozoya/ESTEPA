@@ -1,0 +1,6 @@
+{
+	"method" : "none", 
+	"lna" : false,
+	"limmin" : 0,
+	"limmax" : 1000
+}
