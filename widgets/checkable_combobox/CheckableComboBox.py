@@ -16,32 +16,46 @@ class CheckableComboBox(QComboBox):
         self.model().dataChanged.connect(self.updateLineEditField)
 
         self.lineEdit().setText('')
-
+###
 
     def eventFilter(self, widget, event):
-        if widget == self.lineEdit():
-            if event.type() == QEvent.MouseButtonRelease:
-                if self.closeOnLineEditClick:
-                    self.hidePopup()
-                else:
-                    self.showPopup()
-                return True
+            if widget == self.lineEdit():
+                if event.type() == QEvent.MouseButtonRelease:
+                    if self.closeOnLineEditClick:
+                        self.hidePopup()
+                    else:
+                        self.showPopup()
+                    return True
 
-            return super().eventFilter(widget, event)
+                return super().eventFilter(widget, event)
 
-        if widget == self.view().viewport():
-            if event.type() == QEvent.MouseButtonRelease:
-                indx = self.view().indexAt(event.pos())
-                item = self.model().item(indx.row())
+            if widget == self.view().viewport():
+                if event.type() == QEvent.MouseButtonRelease:
+                    indx = self.view().indexAt(event.pos())
+                    item = self.model().item(indx.row())
+                    if item.text()=="All parameters":
+                        estado = Qt.Checked
+                        for i in range (self.model().rowCount()):
+                            item_check = self.model().item(i)
+                            if item_check.text()!="All parameters":
+                                if item_check.checkState() == Qt.Checked:
+                                    estado = Qt.Unchecked
+                        for i in range (self.model().rowCount()):
+                            item_check = self.model().item(i)
+                            if item_check.text()!="All parameters":
+                                item_check.setCheckState(estado)
 
-                if item.checkState() == Qt.Checked:
-                    item.setCheckState(Qt.Unchecked)
-                else:
-                    item.setCheckState(Qt.Checked)
-                return True
-            return super().eventFilter(widget, event)            
 
-    
+                    else:
+                        if item.checkState() == Qt.Checked:
+                            item.setCheckState(Qt.Unchecked)
+                        else:
+                            item.setCheckState(Qt.Checked)
+                    return True
+                return super().eventFilter(widget, event)   
+
+ ####  
+  
     def hidePopup(self):
         super().hidePopup()
         self.startTimer(100)

@@ -1295,7 +1295,7 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_11">
                 <item>
-                 <widget class="QLabel" name="Outliner_2">
+                 <widget class="QLabel" name="Outliner">
                   <property name="maximumSize">
                    <size>
                     <width>400</width>
@@ -1336,7 +1336,7 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="Font_2">
+                 <widget class="QLabel" name="Font">
                   <property name="maximumSize">
                    <size>
                     <width>400</width>
@@ -1372,7 +1372,7 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="Performance_2">
+                 <widget class="QLabel" name="Performance">
                   <property name="maximumSize">
                    <size>
                     <width>400</width>
@@ -1408,7 +1408,7 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="Wafer_2">
+                 <widget class="QLabel" name="Wafer">
                   <property name="maximumSize">
                    <size>
                     <width>400</width>
@@ -1469,7 +1469,7 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QCheckBox" name="checkBox_2">
+                 <widget class="QCheckBox" name="checkBox">
                   <property name="text">
                    <string>Non-automatic limits</string>
                   </property>
@@ -2608,7 +2608,7 @@ background-repeat: no-repeat;</string>
                                 <item row="0" column="0">
                                  <widget class="QPushButton" name="btnAnalyzeFiles">
                                   <property name="enabled">
-                                   <bool>false</bool>
+                                   <bool>true</bool>
                                   </property>
                                   <property name="minimumSize">
                                    <size>
@@ -2635,21 +2635,7 @@ background-repeat: no-repeat;</string>
                                    <cursorShape>PointingHandCursor</cursorShape>
                                   </property>
                                   <property name="styleSheet">
-                                   <string notr="true">QPushButton::btnAnalyzeFiles {
-	width:			150px;
-	height:		30px;
-}
-
-QPushButton::btnAnalyzeFiles:Yes {
-	background-color: 	rgb(52, 59, 72);
-}
-
-QPushButton::btnAnalyzeFiles:No {
-	background-color: rgb(33, 37, 43);
-
-}
-
-
+                                   <string notr="true">background-color: rgb(52, 59, 72);
 
 </string>
                                   </property>
@@ -2689,19 +2675,7 @@ QPushButton::btnAnalyzeFiles:No {
                                    <cursorShape>PointingHandCursor</cursorShape>
                                   </property>
                                   <property name="styleSheet">
-                                   <string notr="true">QPushButton::Correlation {
-	width:			150px;
-	height:		30px;
-}
-
-QPushButton::Correlation:Yes {
-	background-color: 	rgb(52, 59, 72);
-}
-
-QPushButton::Correlation:No {
-	background-color: rgb(33, 37, 43);
-
-}
+                                   <string notr="true">background-color: rgb(52, 59, 72);
 
 </string>
                                   </property>
@@ -2732,7 +2706,7 @@ QPushButton::Correlation:No {
                                  <enum>QLayout::SetDefaultConstraint</enum>
                                 </property>
                                 <item row="5" column="0">
-                                 <widget class="QComboBox" name="cmbWafers_3">
+                                 <widget class="QComboBox" name="cmbWafers">
                                   <property name="minimumSize">
                                    <size>
                                     <width>160</width>
@@ -3163,7 +3137,7 @@ QPushButton::Correlation:No {
                             </widget>
                            </item>
                            <item>
-                            <widget class="QPlainTextEdit" name="txtLoadedValues_6">
+                            <widget class="QPlainTextEdit" name="txtLoadedValues">
                              <property name="minimumSize">
                               <size>
                                <width>150</width>
@@ -3231,7 +3205,7 @@ QPushButton::Correlation:No {
                             </widget>
                            </item>
                            <item>
-                            <widget class="QPlainTextEdit" name="txtParametersResult_3">
+                            <widget class="QPlainTextEdit" name="txtParametersResult">
                              <property name="minimumSize">
                               <size>
                                <width>0</width>
@@ -3258,6 +3232,20 @@ Stdev
 Points
 
 </string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QPushButton" name="CleanResultsButton">
+                             <property name="styleSheet">
+                              <string notr="true">background-color: rgb(52, 59, 72);</string>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset>
+                               <normaloff>images/icons/icon_close.png</normaloff>images/icons/icon_close.png</iconset>
                              </property>
                             </widget>
                            </item>

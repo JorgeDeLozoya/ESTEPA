@@ -98,7 +98,7 @@ class MainWindow(QMainWindow):
         widgets.btnLoadFiles.clicked.connect(self.buttonClick)                           #Carregar les dades
         widgets.btnAnalyzeFiles.clicked.connect(self.buttonClick)                             #Botó analitzar
         #widgets.VisualizeGraphsButton.clicked.connect(self.buttonClick)                    #Resultats grafiques
-        #widgets.CleanResultsButton.clicked.connect(self.buttonClick)                        #Netejar els resultats
+        widgets.CleanResultsButton.clicked.connect(self.buttonClick)                        #Netejar els resultats
 
         #PAGE ESTEPA
         widgets.optLoadFiles.clicked.connect(self.viewOptionsEstepa)
@@ -200,10 +200,11 @@ class MainWindow(QMainWindow):
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         # # NETEJAR ELS RESULTATS
-        # if btnName == "CleanResultsButton":
-        #     self.DisplayText.clear()
+        if btnName == "CleanResultsButton":                                   ##5/7            
+            def delete(self):                                                           #COMPLETAR                                           
+                self.txtParametersResult.clear()
 
-        # BOTÓ PER CARREGAR LES DADES .DAT I .PPG
+        # BOTÓ PER CARREGAR LES DADES .DAT I .PPG           
         #if btnName == "LoadFilesButton":
             #DirectoryDat = 
             #DirectoryPpg = 
@@ -269,8 +270,7 @@ class MainWindow(QMainWindow):
         "limmax" : 1000
      }
 
-
-
+    #BOTÓN PARA ANALIZAR
     def analyzeFiles(self):
         paramFiles = widgets.cmbParametersFile.currentText()
         paramFilesList = paramFiles.split(', ')
@@ -316,6 +316,8 @@ class MainWindow(QMainWindow):
                 print(result_file.error_message)            #Tornar un missatge d'error si no detecta parametres
 
 
+
+
     #BOTÓ PER .PPG 
     def open_file_ppg(self):
         print("Open File")
@@ -333,15 +335,6 @@ class MainWindow(QMainWindow):
                 if radio_button.isChecked():
                     self.label.setText("You have selected : " + radio_button.text())
 
-
-
-    #BOTÓN PARA ANALIZAR
-
-            #if btnName == "btnAnalyzeFiles":
-            #    print("Save BTN clicked!")
-
-            # PRINT BTN NAME
-            # print(f'Button "{btnName}" pressed!')
 
 
     # RESIZE EVENTS
@@ -363,9 +356,9 @@ class MainWindow(QMainWindow):
         #    print('Mouse click: RIGHT CLICK')
 
     #NUMBER VARIABLES
-    def NumberVariables (self):
-        ParamList = ["cmax(pF)","cmin(pF)","dox(A)","Na(cm-3)","Vfb(V)","Nss(cm-2)","Rs(ohms)"]    
-        number_of_params = len(ParamList)
+    # def NumberVariables (self):
+    #     ParamList = ["cmax(pF)","cmin(pF)","dox(A)","Na(cm-3)","Vfb(V)","Nss(cm-2)","Rs(ohms)"]    
+    #     number_of_params = len(ParamList)
              
         # if number_of_params == '1':                                                                               ####EDITAR
         #     btnAnalyzeFiles = True
@@ -412,25 +405,26 @@ class MainWindow(QMainWindow):
         number_of_params = len(ParamList)                                                                                              #####EDITAR
 
         if number_of_params == 1:
-            print("You can analyze!")
+            print("You can analyze!")   
+
+            if ParamList == ["cmax(pF)"]:
+                widgets.txtLoadedValues.setText("cmax(pF)")
+            if ParamList == ["cmin(pF)"]:
+                widgets.txtLoadedValues.setText("cmin(pF)")
+            if ParamList == ["dox(A)"]:
+                widgets.txtLoadedValues.setText("dox(A)")
+            if ParamList == ["Na(cm-3)"]:
+                widgets.txtLoadedValues.setText("Na(cm-3)")
+            if ParamList == ["Vfb(V)"]:
+                widgets.txtLoadedValues.setText("Vfb(V)")
+            if ParamList == ["Nss(cm-2)"]:
+                widgets.txtLoadedValues.setText("Nss(cm-2)")
+            if ParamList == ["Rs(ohms)"]:
+                widgets.txtLoadedValues.setText("Rs(ohms)")
 
         if number_of_params != 1:
-            print("You can't analyze, select one variable!")
+            print("You can't analyze, select one variable!")    #Missatge si no s'agafa cap variable 
 
-
-
-    # def print_outlinerbox(self):
-    #     outliner_text = widgets.OutlinerBox.currentText()
-    #     if outliner_text=="None":
-    #         widgets.Outliner.setText("Outliner Removal Method: ")
-    #     else:
-    #         widgets.Outliner.setText("Outliner Removal Method: " + widgets.OutlinerBox.currentText())
-
-
-
-
-
-    
 
 
 

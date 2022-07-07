@@ -834,12 +834,12 @@ class Ui_MainWindow(object):
         self.extraTopMenu.setFrameShadow(QFrame.Raised)
         self.verticalLayout_11 = QVBoxLayout(self.extraTopMenu)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.Outliner_2 = QLabel(self.extraTopMenu)
-        self.Outliner_2.setObjectName(u"Outliner_2")
-        self.Outliner_2.setMaximumSize(QSize(400, 16777215))
-        self.Outliner_2.setStyleSheet(u"")
+        self.Outliner = QLabel(self.extraTopMenu)
+        self.Outliner.setObjectName(u"Outliner")
+        self.Outliner.setMaximumSize(QSize(400, 16777215))
+        self.Outliner.setStyleSheet(u"")
 
-        self.verticalLayout_11.addWidget(self.Outliner_2)
+        self.verticalLayout_11.addWidget(self.Outliner)
 
         self.OutlinerBox = QComboBox(self.extraTopMenu)
         self.OutlinerBox.addItem("")
@@ -851,12 +851,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_11.addWidget(self.OutlinerBox)
 
-        self.Font_2 = QLabel(self.extraTopMenu)
-        self.Font_2.setObjectName(u"Font_2")
-        self.Font_2.setMaximumSize(QSize(400, 16777215))
-        self.Font_2.setStyleSheet(u"")
+        self.Font = QLabel(self.extraTopMenu)
+        self.Font.setObjectName(u"Font")
+        self.Font.setMaximumSize(QSize(400, 16777215))
+        self.Font.setStyleSheet(u"")
 
-        self.verticalLayout_11.addWidget(self.Font_2)
+        self.verticalLayout_11.addWidget(self.Font)
 
         self.FontBox = QComboBox(self.extraTopMenu)
         self.FontBox.addItem("")
@@ -867,12 +867,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_11.addWidget(self.FontBox)
 
-        self.Performance_2 = QLabel(self.extraTopMenu)
-        self.Performance_2.setObjectName(u"Performance_2")
-        self.Performance_2.setMaximumSize(QSize(400, 16777215))
-        self.Performance_2.setStyleSheet(u"")
+        self.Performance = QLabel(self.extraTopMenu)
+        self.Performance.setObjectName(u"Performance")
+        self.Performance.setMaximumSize(QSize(400, 16777215))
+        self.Performance.setStyleSheet(u"")
 
-        self.verticalLayout_11.addWidget(self.Performance_2)
+        self.verticalLayout_11.addWidget(self.Performance)
 
         self.PerformanceBox = QComboBox(self.extraTopMenu)
         self.PerformanceBox.addItem("")
@@ -883,12 +883,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_11.addWidget(self.PerformanceBox)
 
-        self.Wafer_2 = QLabel(self.extraTopMenu)
-        self.Wafer_2.setObjectName(u"Wafer_2")
-        self.Wafer_2.setMaximumSize(QSize(400, 16777215))
-        self.Wafer_2.setStyleSheet(u"")
+        self.Wafer = QLabel(self.extraTopMenu)
+        self.Wafer.setObjectName(u"Wafer")
+        self.Wafer.setMaximumSize(QSize(400, 16777215))
+        self.Wafer.setStyleSheet(u"")
 
-        self.verticalLayout_11.addWidget(self.Wafer_2)
+        self.verticalLayout_11.addWidget(self.Wafer)
 
         self.WaferBox = QComboBox(self.extraTopMenu)
         self.WaferBox.addItem("")
@@ -913,10 +913,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_11.addWidget(self.NumbersBox)
 
-        self.checkBox_2 = QCheckBox(self.extraTopMenu)
-        self.checkBox_2.setObjectName(u"checkBox_2")
+        self.checkBox = QCheckBox(self.extraTopMenu)
+        self.checkBox.setObjectName(u"checkBox")
 
-        self.verticalLayout_11.addWidget(self.checkBox_2)
+        self.verticalLayout_11.addWidget(self.checkBox)
 
         self.btn_share = QPushButton(self.extraTopMenu)
         self.btn_share.setObjectName(u"btn_share")
@@ -1363,26 +1363,12 @@ class Ui_MainWindow(object):
         self.gridLayout_26.setContentsMargins(0, 0, 0, 0)
         self.btnAnalyzeFiles = QPushButton(self.gridLayoutWidget_11)
         self.btnAnalyzeFiles.setObjectName(u"btnAnalyzeFiles")
-        self.btnAnalyzeFiles.setEnabled(False)
+        self.btnAnalyzeFiles.setEnabled(True)
         self.btnAnalyzeFiles.setMinimumSize(QSize(150, 30))
         self.btnAnalyzeFiles.setMaximumSize(QSize(150, 16777215))
         self.btnAnalyzeFiles.setFont(font)
         self.btnAnalyzeFiles.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btnAnalyzeFiles.setStyleSheet(u"QPushButton::btnAnalyzeFiles {\n"
-"	width:			150px;\n"
-"	height:		30px;\n"
-"}\n"
-"\n"
-"QPushButton::btnAnalyzeFiles:Yes {\n"
-"	background-color: 	rgb(52, 59, 72);\n"
-"}\n"
-"\n"
-"QPushButton::btnAnalyzeFiles:No {\n"
-"	background-color: rgb(33, 37, 43);\n"
-"\n"
-"}\n"
-"\n"
-"\n"
+        self.btnAnalyzeFiles.setStyleSheet(u"background-color: rgb(52, 59, 72);\n"
 "\n"
 "")
         self.btnAnalyzeFiles.setIcon(icon5)
@@ -1395,19 +1381,7 @@ class Ui_MainWindow(object):
         self.btnCorrelationFiles.setMaximumSize(QSize(150, 16777215))
         self.btnCorrelationFiles.setFont(font)
         self.btnCorrelationFiles.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btnCorrelationFiles.setStyleSheet(u"QPushButton::Correlation {\n"
-"	width:			150px;\n"
-"	height:		30px;\n"
-"}\n"
-"\n"
-"QPushButton::Correlation:Yes {\n"
-"	background-color: 	rgb(52, 59, 72);\n"
-"}\n"
-"\n"
-"QPushButton::Correlation:No {\n"
-"	background-color: rgb(33, 37, 43);\n"
-"\n"
-"}\n"
+        self.btnCorrelationFiles.setStyleSheet(u"background-color: rgb(52, 59, 72);\n"
 "\n"
 "")
         self.btnCorrelationFiles.setIcon(icon5)
@@ -1424,19 +1398,19 @@ class Ui_MainWindow(object):
         self.gridLayout_27.setObjectName(u"gridLayout_27")
         self.gridLayout_27.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.gridLayout_27.setContentsMargins(0, 0, 0, 0)
-        self.cmbWafers_3 = QComboBox(self.gridLayoutWidget_12)
-        self.cmbWafers_3.addItem("")
-        self.cmbWafers_3.setObjectName(u"cmbWafers_3")
-        self.cmbWafers_3.setMinimumSize(QSize(160, 30))
-        self.cmbWafers_3.setMaximumSize(QSize(16777215, 30))
-        self.cmbWafers_3.setFont(font)
-        self.cmbWafers_3.setAutoFillBackground(False)
-        self.cmbWafers_3.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-        self.cmbWafers_3.setEditable(True)
-        self.cmbWafers_3.setIconSize(QSize(16, 16))
-        self.cmbWafers_3.setFrame(True)
+        self.cmbWafers = QComboBox(self.gridLayoutWidget_12)
+        self.cmbWafers.addItem("")
+        self.cmbWafers.setObjectName(u"cmbWafers")
+        self.cmbWafers.setMinimumSize(QSize(160, 30))
+        self.cmbWafers.setMaximumSize(QSize(16777215, 30))
+        self.cmbWafers.setFont(font)
+        self.cmbWafers.setAutoFillBackground(False)
+        self.cmbWafers.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.cmbWafers.setEditable(True)
+        self.cmbWafers.setIconSize(QSize(16, 16))
+        self.cmbWafers.setFrame(True)
 
-        self.gridLayout_27.addWidget(self.cmbWafers_3, 5, 0, 1, 1)
+        self.gridLayout_27.addWidget(self.cmbWafers, 5, 0, 1, 1)
 
         self.labelVersion_37 = QLabel(self.gridLayoutWidget_12)
         self.labelVersion_37.setObjectName(u"labelVersion_37")
@@ -1564,13 +1538,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_40.addWidget(self.labelVersion_41)
 
-        self.txtLoadedValues_6 = QPlainTextEdit(self.analyze)
-        self.txtLoadedValues_6.setObjectName(u"txtLoadedValues_6")
-        self.txtLoadedValues_6.setMinimumSize(QSize(150, 350))
-        self.txtLoadedValues_6.setMaximumSize(QSize(250, 350))
-        self.txtLoadedValues_6.setStyleSheet(u"border: 1px solid #FAFAFA;")
+        self.txtLoadedValues = QPlainTextEdit(self.analyze)
+        self.txtLoadedValues.setObjectName(u"txtLoadedValues")
+        self.txtLoadedValues.setMinimumSize(QSize(150, 350))
+        self.txtLoadedValues.setMaximumSize(QSize(250, 350))
+        self.txtLoadedValues.setStyleSheet(u"border: 1px solid #FAFAFA;")
 
-        self.verticalLayout_40.addWidget(self.txtLoadedValues_6)
+        self.verticalLayout_40.addWidget(self.txtLoadedValues)
 
 
         self.horizontalLayout_21.addLayout(self.verticalLayout_40)
@@ -1590,13 +1564,22 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_41.addWidget(self.labelVersion_42)
 
-        self.txtParametersResult_3 = QPlainTextEdit(self.analyze)
-        self.txtParametersResult_3.setObjectName(u"txtParametersResult_3")
-        self.txtParametersResult_3.setMinimumSize(QSize(0, 350))
-        self.txtParametersResult_3.setMaximumSize(QSize(16777215, 350))
-        self.txtParametersResult_3.setStyleSheet(u"border: 1px solid #FAFAFA;")
+        self.txtParametersResult = QPlainTextEdit(self.analyze)
+        self.txtParametersResult.setObjectName(u"txtParametersResult")
+        self.txtParametersResult.setMinimumSize(QSize(0, 350))
+        self.txtParametersResult.setMaximumSize(QSize(16777215, 350))
+        self.txtParametersResult.setStyleSheet(u"border: 1px solid #FAFAFA;")
 
-        self.verticalLayout_41.addWidget(self.txtParametersResult_3)
+        self.verticalLayout_41.addWidget(self.txtParametersResult)
+
+        self.CleanResultsButton = QPushButton(self.analyze)
+        self.CleanResultsButton.setObjectName(u"CleanResultsButton")
+        self.CleanResultsButton.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        icon7 = QIcon()
+        icon7.addFile(u"images/icons/icon_close.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.CleanResultsButton.setIcon(icon7)
+
+        self.verticalLayout_41.addWidget(self.CleanResultsButton)
 
 
         self.horizontalLayout_21.addLayout(self.verticalLayout_41)
@@ -1840,26 +1823,26 @@ class Ui_MainWindow(object):
         self.extraCloseColumnBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Close left box", None))
 #endif // QT_CONFIG(tooltip)
         self.extraCloseColumnBtn.setText("")
-        self.Outliner_2.setText(QCoreApplication.translate("MainWindow", u"Outliner Removal Method:", None))
+        self.Outliner.setText(QCoreApplication.translate("MainWindow", u"Outliner Removal Method:", None))
         self.OutlinerBox.setItemText(0, QCoreApplication.translate("MainWindow", u"None", None))
         self.OutlinerBox.setItemText(1, QCoreApplication.translate("MainWindow", u"F-spread", None))
         self.OutlinerBox.setItemText(2, QCoreApplication.translate("MainWindow", u"K-sigmas", None))
 
-        self.Font_2.setText(QCoreApplication.translate("MainWindow", u"Font Size:", None))
+        self.Font.setText(QCoreApplication.translate("MainWindow", u"Font Size:", None))
         self.FontBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Small", None))
         self.FontBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Big", None))
 
-        self.Performance_2.setText(QCoreApplication.translate("MainWindow", u"Performance Presentation:", None))
+        self.Performance.setText(QCoreApplication.translate("MainWindow", u"Performance Presentation:", None))
         self.PerformanceBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Number of Points", None))
         self.PerformanceBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Percentage", None))
 
-        self.Wafer_2.setText(QCoreApplication.translate("MainWindow", u"Wafer Representation:", None))
+        self.Wafer.setText(QCoreApplication.translate("MainWindow", u"Wafer Representation:", None))
         self.WaferBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Colors", None))
         self.WaferBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Gravity centers", None))
         self.WaferBox.setItemText(2, QCoreApplication.translate("MainWindow", u"Letters", None))
 
         self.HistogramTextLabel.setText(QCoreApplication.translate("MainWindow", u"Histogram chunks", None))
-        self.checkBox_2.setText(QCoreApplication.translate("MainWindow", u"Non-automatic limits", None))
+        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"Non-automatic limits", None))
         self.btn_share.setText(QCoreApplication.translate("MainWindow", u"Share", None))
         self.btn_adjustments.setText(QCoreApplication.translate("MainWindow", u"Configuration", None))
         self.DirectoryButton.setText(QCoreApplication.translate("MainWindow", u"Directory", None))
@@ -1910,9 +1893,9 @@ class Ui_MainWindow(object):
         self.labelVersion_36.setText(QCoreApplication.translate("MainWindow", u"Select parameters", None))
         self.btnAnalyzeFiles.setText(QCoreApplication.translate("MainWindow", u"Analyze", None))
         self.btnCorrelationFiles.setText(QCoreApplication.translate("MainWindow", u"Correlation", None))
-        self.cmbWafers_3.setItemText(0, QCoreApplication.translate("MainWindow", u"Select instrument", None))
+        self.cmbWafers.setItemText(0, QCoreApplication.translate("MainWindow", u"Select instrument", None))
 
-        self.cmbWafers_3.setCurrentText(QCoreApplication.translate("MainWindow", u"Select instrument", None))
+        self.cmbWafers.setCurrentText(QCoreApplication.translate("MainWindow", u"Select instrument", None))
         self.labelVersion_37.setText(QCoreApplication.translate("MainWindow", u"Select technology", None))
         self.btnCorrelationBBDD.setText(QCoreApplication.translate("MainWindow", u"Correlation", None))
         self.cmbTechnology.setItemText(0, QCoreApplication.translate("MainWindow", u"Select instrument", None))
@@ -1930,21 +1913,22 @@ class Ui_MainWindow(object):
         self.cmbParametersBBDD.setCurrentText(QCoreApplication.translate("MainWindow", u"Select instrument", None))
         self.labelVersion_41.setText(QCoreApplication.translate("MainWindow", u"Data Values", None))
 #if QT_CONFIG(tooltip)
-        self.txtLoadedValues_6.setToolTip(QCoreApplication.translate("MainWindow", u"Data values", None))
+        self.txtLoadedValues.setToolTip(QCoreApplication.translate("MainWindow", u"Data values", None))
 #endif // QT_CONFIG(tooltip)
-        self.txtLoadedValues_6.setPlainText(QCoreApplication.translate("MainWindow", u"0 0 325.00E-12\n"
+        self.txtLoadedValues.setPlainText(QCoreApplication.translate("MainWindow", u"0 0 325.00E-12\n"
 "0 -1 320.45E-12", None))
         self.labelVersion_42.setText(QCoreApplication.translate("MainWindow", u"Parameters result", None))
 #if QT_CONFIG(tooltip)
-        self.txtParametersResult_3.setToolTip(QCoreApplication.translate("MainWindow", u"Results parameters", None))
+        self.txtParametersResult.setToolTip(QCoreApplication.translate("MainWindow", u"Results parameters", None))
 #endif // QT_CONFIG(tooltip)
-        self.txtParametersResult_3.setPlainText(QCoreApplication.translate("MainWindow", u"cmax(pF)\n"
+        self.txtParametersResult.setPlainText(QCoreApplication.translate("MainWindow", u"cmax(pF)\n"
 "Mean\n"
 "Median \n"
 "Stdev\n"
 "Points\n"
 "\n"
 "", None))
+        self.CleanResultsButton.setText("")
         self.labelVersion_43.setText(QCoreApplication.translate("MainWindow", u"Histogram", None))
 #if QT_CONFIG(tooltip)
         self.txtLoadedValues_7.setToolTip(QCoreApplication.translate("MainWindow", u"Histogram", None))
