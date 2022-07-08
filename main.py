@@ -41,6 +41,8 @@ os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 # ///////////////////////////////////////////////////////////////
 widgets = None
 
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
@@ -95,16 +97,16 @@ class MainWindow(QMainWindow):
         widgets.optLoadBBDD.clicked.connect(self.buttonClick)
         widgets.optLoadFiles.clicked.connect(self.buttonClick)
         #widgets.OutlinerBox.currentIndexChanged.connect(self.print_outlinerbox)
-        widgets.btnLoadFiles.clicked.connect(self.buttonClick)                           #Carregar les dades
-        widgets.btnAnalyzeFiles.clicked.connect(self.buttonClick)                             #Botó analitzar
+        widgets.btnLoadFiles.clicked.connect(self.buttonClick)                              #Carregar les dades
+        #widgets.btnAnalyzeFiles.clicked.connect(self.buttonClick)                             #Botó analitzar
         #widgets.VisualizeGraphsButton.clicked.connect(self.buttonClick)                    #Resultats grafiques
-        widgets.CleanResultsButton.clicked.connect(self.buttonClick)                        #Netejar els resultats
-
+        #widgets.CleanResultsButton.clicked.connect(self.buttonClick)                        #Netejar els resultats
+        #widgets.CleanResultsButton.clicked.connect(self.clean_results)
         #PAGE ESTEPA
         widgets.optLoadFiles.clicked.connect(self.viewOptionsEstepa)
         widgets.optLoadBBDD.clicked.connect(self.viewOptionsEstepa)
         widgets.cmbParametersFile.addItems(["cmax(pF)","cmin(pF)","dox(A)","Na(cm-3)","Vfb(V)","Nss(cm-2)","Rs(ohms)"])
-        widgets.btnAnalyzeFiles.clicked.connect(self.analyzeFiles)
+        #widgets.btnAnalyzeFiles.clicked.connect(self.analyzeFiles)
 
         # cmbVariables = VariablesComboBox()     
         # cmbVariables.setObjectName(u"cmbVariables")
@@ -200,9 +202,9 @@ class MainWindow(QMainWindow):
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         # # NETEJAR ELS RESULTATS
-        if btnName == "CleanResultsButton":                                   ##5/7            
-            def delete(self):                                                           #COMPLETAR                                           
-                self.txtParametersResult.clear()
+        #if btnName == "CleanResultsButton":                                   ##5/7            
+           # def clean_results(self):                                                           #COMPLETAR                                           
+              #  self.txtParametersResult.setText("")
 
         # BOTÓ PER CARREGAR LES DADES .DAT I .PPG           
         #if btnName == "LoadFilesButton":
@@ -263,12 +265,7 @@ class MainWindow(QMainWindow):
                         print(" - Points:  \t" + str(sEstepa2.points_end) + "/" + str(sEstepa2.points_ini))
                         print("")
 
-    config_estepa_file = {
-        "method" : "k-sigma",
-        "lna" : False,
-        "limmin" : 600,
-        "limmax" : 1000
-     }
+
 
     #BOTÓN PARA ANALIZAR
     def analyzeFiles(self):
@@ -282,9 +279,7 @@ class MainWindow(QMainWindow):
                 paramFilesList == [widgets.cmbParametersFile.itemText(i) for i in range.widgets.cmbParametersFile.count()]                  ##revisar
             measurements = self.estepa.get_medidas(wafer, paramFilesList)
 
-            for parameter in paramFilesList:
-                estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.cofig_estepa_file))
-                widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\nª+estadistica.print_sta")
+
 
     #ORIGEN DE LES DADES
     def viewOptionsEstepa(self):                                                                                                
@@ -355,22 +350,6 @@ class MainWindow(QMainWindow):
         #if event.buttons() == Qt.RightButton:
         #    print('Mouse click: RIGHT CLICK')
 
-    #NUMBER VARIABLES
-    # def NumberVariables (self):
-    #     ParamList = ["cmax(pF)","cmin(pF)","dox(A)","Na(cm-3)","Vfb(V)","Nss(cm-2)","Rs(ohms)"]    
-    #     number_of_params = len(ParamList)
-             
-        # if number_of_params == '1':                                                                               ####EDITAR
-        #     btnAnalyzeFiles = True
-        #     btnCorrelationFiles = False
-        # if number_of_params == '2':
-        #     btnCorrelationFiles = True
-        #     btnAnalyzeFiles = False
-        # else:
-        #     btnCorrelationFiles = False
-        #     btnAnalyzeFiles = False
-
-
   
     def directory(self):
         btn = self.sender()                 #obte info del botó al fer click
@@ -400,31 +379,40 @@ class MainWindow(QMainWindow):
     # def print_results(self):
     #     print("Results")
 
-    def print_analyze(self):      
-        ParamList = ["cmax(pF)","cmin(pF)","dox(A)","Na(cm-3)","Vfb(V)","Nss(cm-2)","Rs(ohms)"]    
-        number_of_params = len(ParamList)                                                                                              #####EDITAR
+    def print_analyze(self):  
+        config_estepa_file = {
+            "method" : "k-sigma",
+            "lna" : False,
+            "limmin" : 600,
+            "limmax" : 1000
+            }
+        parameters_file = widgets.cmbParametersFile.currentText()   #Captura el text dins dels parametres
+        parameters_file_list = parameters_file.split(", ")  #per separar els parametres    
+        number_of_params = len(parameters_file_list)    #per saber el nombre de parametres que hi han   
+                                                                                           #####EDITAR
 
-        if number_of_params == 1:
-            print("You can analyze!")   
+        print(str(parameters_file))
+           
 
-            if ParamList == ["cmax(pF)"]:
-                widgets.txtLoadedValues.setText("cmax(pF)")
-            if ParamList == ["cmin(pF)"]:
-                widgets.txtLoadedValues.setText("cmin(pF)")
-            if ParamList == ["dox(A)"]:
-                widgets.txtLoadedValues.setText("dox(A)")
-            if ParamList == ["Na(cm-3)"]:
-                widgets.txtLoadedValues.setText("Na(cm-3)")
-            if ParamList == ["Vfb(V)"]:
-                widgets.txtLoadedValues.setText("Vfb(V)")
-            if ParamList == ["Nss(cm-2)"]:
-                widgets.txtLoadedValues.setText("Nss(cm-2)")
-            if ParamList == ["Rs(ohms)"]:
-                widgets.txtLoadedValues.setText("Rs(ohms)")
-
-        if number_of_params != 1:
+        if parameters_file == "":
             print("You can't analyze, select one variable!")    #Missatge si no s'agafa cap variable 
 
+        else:
+            FileName = widgets.txtDataFile.text() 
+            result_file = ResultFile(FileName)
+            measurements = result_file.get_params(parameters_file_list)
+
+            for parameter in parameters_file_list:
+                estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (config_estepa_file))
+                widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
+
+            if number_of_params == 1:
+                data_values = result_file.get_values(parameters_file)
+                widgets.txtLoadedValues.setPlainText("")
+                for chip in data_values:
+                    widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+str(chip)+" "+str(data_values[chip]))        #Introduim el chip i el valor de la mesuara
+                
+            
 
 
 

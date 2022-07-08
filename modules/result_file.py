@@ -265,8 +265,27 @@ class ResultFile():
 						list_return.append(self.params[die][module][name_param])
 		return list_return
 	
-	
-	
+	def get_params(self, name_params):
+		get_params = dict()			#diccionari per posar cada parametre a mesurar
+		for die in self.dies:
+			for module in self.modules:
+				for param in self.params_list:
+					if param in name_params:
+						medida = self.params[die][module][param]		#per capturar el valor de la variable	
+						if not param in get_params:
+							get_params[param] = dict()					#generem l'estructura del parametre
+							get_params[param]["medida"] = list()
+						get_params[param]["medida"].append(medida)		
+		return get_params							#retorna tots els parametres amb el seu valor de mesura
 
-
-
+	def get_values(self, name_param):
+		get_values = dict()			#diccionari per recollir el valor
+		for die in self.dies:
+			for module in self.modules:
+				for param in self.params_list:
+					if param == name_param:
+						medida = self.params[die][module][param]		#per capturar el valor de la variable	
+						if not die in get_values:
+							get_values[die] = dict()					
+							get_values[die] = medida	
+		return get_values							#retorna tots els parametres amb el seu valor de mesura
