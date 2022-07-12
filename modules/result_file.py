@@ -36,10 +36,10 @@ class ResultFile():
 		if os.path.exists(path_to_file):
 			self.lines = []
 			with open(path_to_file) as file_in:
-				for line in file_in:
-					if line!="":
-						self.lines.append(line.replace("\n",""))
-				self.number_lines = len(self.lines)
+			    for line in file_in:
+			    	if line!="":
+			        	self.lines.append(line.replace("\n",""))
+			    self.number_lines = len(self.lines)
 			if self.number_lines==0:
 				#retval = messageBox(self,"Error loading file","File: " + path_to_file + " is empty!","error")	
 				self.error_message = "File: " + path_to_file + " is empty!"
@@ -265,27 +265,35 @@ class ResultFile():
 						list_return.append(self.params[die][module][name_param])
 		return list_return
 	
+	
+	
 	def get_params(self, name_params):
-		get_params = dict()			#diccionari per posar cada parametre a mesurar
+		# get param + medida for get the statistics to print in QPlainText
+		get_params = dict()			
 		for die in self.dies:
 			for module in self.modules:
 				for param in self.params_list:
 					if param in name_params:
-						medida = self.params[die][module][param]		#per capturar el valor de la variable	
+						medida = self.params[die][module][param]		# get medida value	
 						if not param in get_params:
-							get_params[param] = dict()					#generem l'estructura del parametre
+							get_params[param] = dict()					# create dict to store medida value
 							get_params[param]["medida"] = list()
-						get_params[param]["medida"].append(medida)		
-		return get_params							#retorna tots els parametres amb el seu valor de mesura
+						get_params[param]["medida"].append(medida)		# append value medida to list
 
-	def get_values(self, name_param):
-		get_values = dict()			#diccionari per recollir el valor
+		return get_params							
+
+	def get_data_values(self, name_param):
+		# get data values chip + medida for printing in QPlainText
+		get_values = dict()			
 		for die in self.dies:
 			for module in self.modules:
 				for param in self.params_list:
 					if param == name_param:
-						medida = self.params[die][module][param]		#per capturar el valor de la variable	
+						medida = self.params[die][module][param]		# get medida value		
 						if not die in get_values:
 							get_values[die] = dict()					
 							get_values[die] = medida	
-		return get_values							#retorna tots els parametres amb el seu valor de mesura
+
+		return get_values							
+
+

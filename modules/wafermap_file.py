@@ -1,6 +1,9 @@
-# Class to get Wafermap (could be from .py format or .ppg format)
+# ----------------------------------------------
+# CLASS WafermapFile to read a wafermap file (could be from old format (ppg) or new format(.py)
+# ----------------------------------------------
 import os
 import datetime
+import numpy as np
 
 from PySide6.QtCore import *
 from PySide6.QtGui import *
@@ -10,117 +13,368 @@ from PySide6.QtCore import Qt
 #from modules.functions import *
 
 class WafermapFile():
-	def __init__(self, path_to_file,mode_type=".py"):
+	def __init__(self, path_to_file):
 		self.error = False
 		self.error_message = ""
 		self.path_to_file = path_to_file
 		self.filename = os.path.basename(self.path_to_file)
-		self.mode_type = mode_type
+		self.mode_types = ["py","ppg"]
+		self.mode_type = self.filename.split(".")[-1] 
+		# wafer size mm & thickness
+		self.wafer_size_inch = 0
+		self.wafer_size_mm = 0
+		self.thickness = 0
 
+		self.number_lines = 0
+		self.wafer_parameters = {} # init dict wafer parameters
+		# init initial movement (for ppg files) for get the origin chip
+		self.movement_x = 0
+		self.movement_y = 0
+		# get movement in ppg file to adjust wafer_positions
+		self.wafer_movements = dict()
 		if os.path.exists(path_to_file):
-			self.lines = []
+			# read lines first
+			self.lines = list()
+			self.wafer_parameters["wafer_positions"] = list() # init list wafer_positions
+			self.wafer_parameters["wafer_modules"] = list() # init list wafer_modules
 			with open(path_to_file) as file_in:
+				origin_found = False
+				num_movement = 0
+				blank_lines = 0
 				for line in file_in:
+					line = line.strip()
 					if line!="":
 						self.lines.append(line.replace("\n",""))
+						# case ppg: get positions & origin_chip
+						if "lappend positions" in line:
+							# append positions
+							line = line.replace("lappend positions ","")
+							line = line.replace('" "',',')
+							line = line.replace('"','')
+							line_array = line.split(",")
+							for lines in line_array:
+								self.wafer_parameters["wafer_positions"].append(lines)
+						
+						if "set numchips" in line:
+							self.wafer_parameters["nchips"] = line.replace("set numchips ","")
+
+						if "set nummodulos" in line:
+							self.wafer_parameters["nmodules"] = line.replace("set nummodulos ","")
+
+						if "switch $current_pos" in line:
+							num_movement = len(self.lines) + blank_lines # get the line number for get the movement
+
+						if len(self.lines)>num_movement and num_movement>0 :
+							if not "wafer_parameters" in line and ' {' in line and not "ESPERA" in line:
+								# is ppg then get movements
+								movement_string = line.replace(" {","")
+								movements_list = movement_string.split(" - ")
+
+								for movement in movements_list:
+									self.wafer_movements[movement] = {}
+									self.wafer_movements[movement]["x"] = 0
+									self.wafer_movements[movement]["y"] = 0
+									
+
+						if "prober pimove" in line:
+							move_x, move_y = line.replace("prober pimove ","").split(" ")
+							if "0" in self.wafer_movements and not origin_found:
+								origin_found = True
+							
+								# get the first movement (origin)
+								self.movement_x, self.movement_y = move_x, move_y
+								self.wafer_movements["0"]["x"] = self.movement_x
+								self.wafer_movements["0"]["y"] = self.movement_y
+
+							for movement in self.wafer_movements:
+								if movement!=0 and int(self.wafer_movements[movement]["x"])==0 and int(self.wafer_movements[movement]["y"])==0:
+									self.wafer_movements[movement]["x"],self.wafer_movements[movement]["y"] = move_x, move_y
+
+					else:
+						blank_lines +=1
+
+
+							
 				self.number_lines = len(self.lines)
+
+			# first check py & ppg file before execute
 			if self.number_lines==0:
-				#retval = messageBox(self,"Error loading file","File: " + path_to_file + " is empty!","error")	
 				self.error_message = "File: " + path_to_file + " is empty!"
 				self.error = True
 			else:
 				check_file = self.check_file()
 				if not check_file[0]:
-					#retval = messageBox(self,"Error checking file",check_file[1],"error")
 					self.error = True
 					self.error_message = check_file[1]
-				# get params & data info
-				if not self.get_variables():
+
+			if self.mode_type =="py" and self.filename.split("_")[-1]=="wafermap.py":
+				# execute py file
+				with open(self.path_to_file,"r") as rnf:
+					try:
+					    exec(rnf.read())
+					    self.wafer_parameters = wafer_parameters
+					    self.wafer_size_inch = float(self.wafer_parameters["wafer_size"])
+					    self.set_wafer_size()
+					    if not "xmax" in self.wafer_parameters or not "ymax" in self.wafer_parameters:
+					    	# get xmax & ymax from wafer_positions
+					    	self.wafer_parameters["xmax"], self.wafer_parameters["ymax"] = self.get_xmax_ymax()
+
+					except:
+						self.error = True
+						self.error_message = "Problem executing file: Problem exists while exec file's content: " + path_to_file
+
+			elif self.mode_type=="ppg":
+				
+				# check modules number
+				if int(self.wafer_parameters["nmodules"]) != len(self.wafer_parameters["wafer_modules"]):
 					self.error = True
-					self.error_message = "Problem getting wafermap!"
+					self.error_message = "Problem with modules number: Different number detected in ppg file!"
+				
+
+
+			else:
+				self.error = True
+				self.error_message = "File mode type not found!"
+
+			
+					
 		else:
 			#retval = messageBox(self,"Error loading file","File: " + path_to_file + " doesn't exists!","error")
 			self.error_message = "File: " + path_to_file + " doesn't exists!"
 			self.error = True
 
-	#def print_info(self):
+	def set_wafer_size(self):
+		if int(self.wafer_size_inch)==1:
+		    self.wafer_size_mm = 25
+		    self.thickness = 1
+		if int(self.wafer_size_inch)==2:
+		    self.wafer_size_mm = 51
+		    self.thickness = 275
+		if int(self.wafer_size_inch)==3:
+		    self.wafer_size_mm = 76
+		    self.thickness = 375
+		if int(self.wafer_size_inch)==4:
+		    self.wafer_size_mm = 100
+		    self.thickness = 525
+		if int(self.wafer_size_inch)==5: # 4.9 inch
+		    self.wafer_size_mm = 125
+		    self.thickness = 625
+		if int(self.wafer_size_inch)==6: # 5.9 inch
+		    self.wafer_size_mm = 150
+		    self.thickness = 675
+		if int(self.wafer_size_inch)==8: # 7.9 inch
+		    self.wafer_size_mm = 200
+		    self.thickness = 725
+		if int(self.wafer_size_inch)==12: # 11.8 inch
+		    self.wafer_size_mm = 300 
+		    self.thickness = 775
 
+
+	def get_xmax_ymax(self):
+		xmax_detected = 0
+		ymax_detected = 0
+		elementos_x_detected = []
+		elementos_y_detected = []
+		for elemento in self.wafer_parameters["wafer_positions"]:
+			
+			elemento_array = elemento.split()
+			if len(elemento_array)!=2:
+			    check_wafer_parameters = False
+			    break
+			# init variables
+			elemento_x = elemento_array[0]
+			elemento_y = elemento_array[1]
+			buscar_x = False
+			buscar_y = False
+			num_elemento_x = 0
+			num_elemento_y = 0
+			if elemento_x not in elementos_x_detected:
+			    elementos_x_detected = np.append(elementos_x_detected, elemento_x)
+			    buscar_x = True
+			if elemento_y not in elementos_y_detected:
+			    elementos_y_detected = np.append(elementos_y_detected, elemento_y)
+			    buscar_y = True
+			if buscar_x and buscar_y:
+			    for elemento_buscar in self.wafer_parameters["wafer_positions"]:
+			        elemento_buscar_array = elemento_buscar.split()
+			        if elemento_buscar_array[0] == elemento_x:
+			            num_elemento_y += 1 # cambiamos el eje porque buscamos sumatorio en vertical
+			        if elemento_buscar_array[1] == elemento_y:
+			            num_elemento_x += 1 # cambiamos el eje porque buscamos sumatorio en horizontal
+
+			    if num_elemento_x>xmax_detected:
+			        xmax_detected = num_elemento_x
+			    if num_elemento_y>ymax_detected:
+			        ymax_detected = num_elemento_y
+		
+
+		return [xmax_detected,ymax_detected]
+
+	def info(self):
+		
+		return "------------------------------------------\n" \
+		"  INFO FILE:      " + "\t" + self.filename + "\n" \
+		"------------------------------------------\n" \
+		"  - Name:         " + "\t" + str(self.wafer_parameters["wafer_name"]) + "\n" \
+		"  - Size:         " + "\t" + str(self.wafer_parameters["wafer_size"]) + "\n" \
+		"  - Size (mm):    " + "\t" + str(self.wafer_size_mm) + "\n" \
+		"  - Thickness:    " + "\t" + str(self.thickness) + "\n" \
+		"  - Xsize:        " + "\t" + str(self.wafer_parameters["xsize"]) + "\n" \
+		"  - Ysize:        " + "\t" + str(self.wafer_parameters["ysize"]) + "\n" \
+		"  - Nchips:       " + "\t" + str(self.wafer_parameters["nchips"]) + "\n" \
+		"  - Nmodules:     " + "\t" + str(self.wafer_parameters["nmodules"]) + "\n" \
+		"  - Xmax:         " + "\t" + str(self.wafer_parameters["xmax"]) + "\n" \
+		"  - Ymax:         " + "\t" + str(self.wafer_parameters["ymax"]) + "\n" \
+		"  - Origin:       " + "\t" + str(self.wafer_parameters["origin_chip"]) + "\n" \
+		"  - Home:         " + "\t" + str(self.wafer_parameters["home_chip"]) + "\n" \
+		"  - Real origin:  " + "\t" + str(self.wafer_parameters["real_origin_chip"]) + "\n" \
+		"  - Orientation:  " + "\t" + str(self.wafer_parameters["flat_orientation"]) + "\n" \
+		"  - Positions:    " + "\t" + str(self.wafer_parameters["wafer_positions"]) + "\n" \
+		"  - Modules:      " + "\t" + str(self.wafer_parameters["wafer_modules"]) + "\n" \
+		"  - Nav options:  " + "\t" + str(self.wafer_parameters["navigation_options"]) + "\n" \
+		"------------------------------------------\n" 
 
 	def check_file(self):
-	# set xmax & ymax
-		if check_wafer_parameters:
-			xmax_detected = 0
-			ymax_detected = 0
-			elementos_x_detected = []
-			elementos_y_detected = []
-			for elemento in self.wafer_positions:
-				elemento_array = elemento.split()
-				if len(elemento_array)!=2:
-					check_wafer_parameters = False
-					break
-                # init variables
-				elemento_x = elemento_array[0]
-				elemento_y = elemento_array[1]
-				buscar_x = False
-				buscar_y = False
-				num_elemento_x = 0
-				num_elemento_y = 0
-				if elemento_x not in elementos_x_detected:
-#					elementos_x_detected = np.append(elementos_x_detected, elemento_x)
-					buscar_x = True
-				if elemento_y not in elementos_y_detected:
-#					elementos_y_detected = np.append(elementos_y_detected, elemento_y)
-					buscar_y = True
-				if buscar_x and buscar_y:
-					for elemento_buscar in self.wafer_positions:
-						elemento_buscar_array = elemento_buscar.split()
-						if elemento_buscar_array[0] == elemento_x:
-							num_elemento_y += 1 # cambiamos el eje porque buscamos sumatorio en vertical
-						if elemento_buscar_array[1] == elemento_y:
-							num_elemento_x += 1 # cambiamos el eje porque buscamos sumatorio en horizontal
+		# Verifications for wafermap file
+		if self.mode_type in self.mode_types:
+			if self.mode_type=="ppg":
+				try:
+					# 1) check first line
+					# 4.000000 2790.000000 1950.000000 11 12 104.000000
+					# wafer_size xsize ysize xmax ymax nchips
+					first_line_information = self.lines[0].replace("# ","").split(" ")
+					if len(first_line_information)==6:
+						self.wafer_parameters["wafer_name"] = self.filename.replace(".ppg","")
+						self.wafer_parameters["wafer_size"] = first_line_information[0]
+						self.wafer_parameters["xsize"] = first_line_information[1]
+						self.wafer_parameters["ysize"] = first_line_information[2]
+						self.wafer_parameters["xmax"] = first_line_information[3]
+						self.wafer_parameters["ymax"] = first_line_information[4]
+						
+						self.wafer_size_inch = float(self.wafer_parameters["wafer_size"])
+						self.set_wafer_size()
+						
+						if float(self.wafer_parameters["nchips"]) != float(first_line_information[5]):
+							return [False, "Different information getted for nchips!"]
+						if float(self.wafer_parameters["nchips"]) != float(len(self.wafer_parameters["wafer_positions"])):
+							return [False, "Different information getted for number of chips & positions!"]
 
-					if num_elemento_x>xmax_detected:
-						xmax_detected = num_elemento_x
-					if num_elemento_y>ymax_detected:
-						ymax_detected = num_elemento_y
+						self.wafer_parameters["origin_chip"] = "0 0" # always 0 0 ?
+						# get origin chip
+						chips_x = float(self.movement_x)/float(self.wafer_parameters["xsize"])
+						chips_y = float(self.movement_y)/float(self.wafer_parameters["ysize"])
+						self.wafer_parameters["home_chip"] = str(chips_x*-1) + " " + str(chips_y) # x axis negative on right side
+						# real origin chip in this case (ppg) center on wafer (wafer_size => get mm, check xmax & ymax)
+						self.wafer_parameters["real_origin_chip"] = self.get_real_origin_chip()
+						self.wafer_parameters["flat_orientation"] = "0" # always 0 ?
+						if int(self.wafer_parameters["nmodules"])==1:
+							self.wafer_parameters["wafer_modules"].append("0.000000 0.000000") # only one module
+						else:
+							# get nmodules & wafer_modules			
+							nmodules_num = 1002
+							wafer_modules = list()
+							wafer_modules.append("0.000000 0.000000")
+							while True:
+								if str(nmodules_num) in self.wafer_movements:
+									wafer_modules.append(self.wafer_movements[str(nmodules_num)]["x"] + " " + self.wafer_movements[str(nmodules_num)]["y"])
+									nmodules_num += 1
+								else:
+									nmodules_num = nmodules_num - 1002
+									break
+							self.wafer_parameters["wafer_modules"] = wafer_modules
 
-            # if xmax or ymax not initialized then equal to detected
-			if self.xmax==0:
-				self.xmax = xmax_detected
-			if self.ymax==0:
-				self.ymax = ymax_detected
-
-			if xmax_detected!=self.xmax and ymax_detected!=self.ymax:
-				check_wafer_parameters = False
-				print("Error checking xmax (" + str(xmax_detected) + ") & ymax (" + str(ymax_detected) + ")...")
 
 
-	def check_header_file(self):
-		# Check header file metrics (wafer_name, wafer_size, xsize, ysize, nchips, nmodules)
-		line_number = 0
-		header_variables = ["wafer_name","wafer_size","xsize","ysize","nchips","nmodules"] 
+						# setting navigations option (always the same in ppg? check navigations options in wafer_positions)
+						self.wafer_parameters["navigation_options"] = ["UPPER-LEFT","BI-DIRECTIONAL","ROW"]
 
-		line = self.lines[line_number].strip("\t")
-		if not "global wafer_parameters" in line:
-			return [False, "Not global wafer_parameters tag founded!"]
-		for header_var in header_variables:
-			line_number += 1
-			line = self.lines[line_number].strip("\t")
-			if not header_var in line:
-				return [False, "Not " + header_var + " info founded!"]
-			else:
-				line_split = line.split("\t")
-				if (len(line_split)==2):
-					cmd = "self." + header_var.lower() + "='" + line_split[1] + "'"
-					exec(cmd)
-		
-		line_number += 1
-		line = self.lines[line_number].strip("\t")
-		if not ": navigation_options}" in line:
-			return [False, "Not navigation_options tag founded!"]
+						if float(self.wafer_parameters["nchips"]) != len(self.wafer_parameters["wafer_positions"]):
+							return [False, "Chips number (" + str(self.wafer_parameters["nchips"])+ ") not equal to number of wafer positions (" + int(self.wafer_parameters["wafer_positions"]) +")!"]	
+						if int(self.wafer_parameters["nmodules"]) != len(self.wafer_parameters["wafer_modules"]):
+							return [False, "Modules number (" + str(self.wafer_parameters["nmodules"])+ ") not equal to number of wafer modules (" + int(self.wafer_parameters["wafer_modules"]) +")!"]	
+						
+					else:
+						return [False, "Bad information in first line of ppg file!"]
+				except:
+					return [False, "Problem parsing ppg file!"]
+
+			if self.mode_type=="py":
+				verify_parameters = ["global wafer_parameters","wafer_name =","wafer_size =","xsize =","ysize =","nchips =","real_origin_chip =","origin_chip =","home_chip =","flat_orientation =","navigation_options =","wafer_positions =","wafer_modules ="] 
+				founded = 0
+				for line in self.lines:
+					for param in verify_parameters:
+						if param in line:
+							founded += 1
+				
+				if founded < len(verify_parameters):
+					return [False, "Not present at least one param definition for wafer_parameters! "]
+
+				
+			
+		else:
+			return [False, "Mode type '" + str(self.mode_type) + "' not available!"]
 
 		return [True,""]
 
+	# get real origin chip (ppg files) from origin chip, home chip, wafer_size, xsize, ysize, xmax, ymax
+	def get_real_origin_chip(self):
+		# change wafer_positions definition in base to movements
+		# get central chip
+		x_max = 0
+		x_min = 0
+		y_max = 0
+		y_min = 0
+		for position in self.wafer_parameters["wafer_positions"]:
+			x_pos, y_pos = map(int,position.split())
+			if x_pos>x_max:
+				x_max = x_pos
+			if x_pos<x_min:
+				x_min = x_pos
+			if y_pos>y_max:
+				y_max = y_pos
+			if y_pos<y_min:
+				y_min = y_pos
+
+		dif_x = abs(x_max - x_min)
+		dif_y = abs(y_max - y_min)
+
+
+		chip_central_x = x_max - dif_x/2
+		chip_central_y = y_max - dif_y/2
+
+		# assign real chip central in wafer_positions (first position)
+		chip_central_positions_x, chip_central_positions_y = map(int,self.wafer_parameters["wafer_positions"][0].split())
+
+		# first search X near to central chip x
+		for position in self.wafer_parameters["wafer_positions"]:
+			x_pos, y_pos = map(int,position.split())
+			if abs(x_pos-int(chip_central_x))<abs(chip_central_positions_x-int(chip_central_x)):
+				chip_central_positions_x = x_pos
+		
+		# the search Y with fixes X
+		for position in self.wafer_parameters["wafer_positions"]:
+			x_pos, y_pos = map(int,position.split())
+			if x_pos == chip_central_positions_x:
+				if abs(y_pos-int(chip_central_y))<abs(chip_central_positions_y-int(chip_central_y)):
+					chip_central_positions_y = y_pos
+
+		# now we know the offset
+		# get the middle position for all wafer
+		wafer_size_um = self.wafer_size_mm * 1000
+		num_chips_center_x = -1*round(float(wafer_size_um)/(2*float(self.wafer_parameters["xsize"])))
+		num_chips_center_y = -1*round(float(wafer_size_um)/(2*float(self.wafer_parameters["ysize"])))
+
+
+		real_origin_chip_x = num_chips_center_x - chip_central_positions_x
+		real_origin_chip_y = num_chips_center_y - chip_central_positions_y
+
+		return str(real_origin_chip_x) + " " + str(real_origin_chip_y)
+
+		
+		
+
+
+		
 	
 	
 	

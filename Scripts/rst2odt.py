@@ -1,4 +1,4 @@
-#!D:\Escritorio\v7.4 (En proves)\Scripts\python.exe
+#!D:\Escritorio\ESTEPAv.7.5.2\Scripts\python.exe
 
 # $Id: rst2odt.py 5839 2009-01-07 19:09:28Z dkuhlman $
 # Author: Dave Kuhlman <dkuhlman@rexx.com>

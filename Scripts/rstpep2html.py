@@ -1,4 +1,4 @@
-#!D:\Escritorio\v7.4 (En proves)\Scripts\python.exe
+#!D:\Escritorio\ESTEPAv.7.5.2\Scripts\python.exe
 
 # $Id: rstpep2html.py 4564 2006-05-21 20:44:42Z wiemann $
 # Author: David Goodger <goodger@python.org>

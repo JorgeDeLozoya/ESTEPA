@@ -29,11 +29,11 @@ from . ui_functions import *
 
 # APP FUNCTIONS
 from . app_functions import *
-
 from . result_file import *
 
-
+# IMPORT ESTEPA functions
 from . statistics_estepa import *
+from . estepa import *
 
 # MATPLOTLIB WIDGET
 #from . mplwidget import *

@@ -1,4 +1,4 @@
-#!D:\Escritorio\v7.4 (En proves)\Scripts\python.exe
+#!D:\Escritorio\ESTEPAv.7.5.2\Scripts\python.exe
 
 # Author:
 # Contact: grubert@users.sf.net

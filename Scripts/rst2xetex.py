@@ -1,4 +1,4 @@
-#!D:\Escritorio\v7.4 (En proves)\Scripts\python.exe
+#!D:\Escritorio\ESTEPAv.7.5.2\Scripts\python.exe
 
 # $Id: rst2xetex.py 7847 2015-03-17 17:30:47Z milde $
 # Author: Guenter Milde
