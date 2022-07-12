@@ -29,6 +29,10 @@
 import sys
 import time
 
+from PySide6.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
+
 import numpy as np
 from scipy.stats import norm
 

@@ -82,11 +82,11 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
 
         #PRINT CONSOLA
-        # widgets.HomeWindow.clicked.connect(self.print_home)
-        # widgets.AnalyzeWindow.clicked.connect(self.print_analysis)
-        # widgets.ConsultWindow.clicked.connect(self.print_consult)
-        # widgets.btn_exit.clicked.connect(self.print_about)
-        # widgets.VisualizeGraphsButton.clicked.connect(self.print_results)
+        # widgets.CleanResultsButton.clicked.connect(self.clean_results)
+        # widgets.CleanValuesButton.clicked.connect(self.clean_values)
+        widgets.CopyResultsButton.clicked.connect(self.copy_results)
+        widgets.CopyValuesButton.clicked.connect(self.copy_values)
+
         widgets.btnAnalyzeFiles.clicked.connect(self.print_analyze)
         # widgets.btnCorrelationFiles.clicked.connect(self.print_results)
 
@@ -96,36 +96,25 @@ class MainWindow(QMainWindow):
 
         widgets.optLoadBBDD.clicked.connect(self.buttonClick)
         widgets.optLoadFiles.clicked.connect(self.buttonClick)
-        #widgets.OutlinerBox.currentIndexChanged.connect(self.print_outlinerbox)
         widgets.btnLoadFiles.clicked.connect(self.buttonClick)                              #Carregar les dades
-        #widgets.btnAnalyzeFiles.clicked.connect(self.buttonClick)                             #Botó analitzar
-        #widgets.VisualizeGraphsButton.clicked.connect(self.buttonClick)                    #Resultats grafiques
-        #widgets.CleanResultsButton.clicked.connect(self.buttonClick)                        #Netejar els resultats
-        #widgets.CleanResultsButton.clicked.connect(self.clean_results)
+        
+        widgets.CopyValuesButton.clicked.connect(self.buttonClick)                                                          #11/7
+        widgets.CleanResultsButton.clicked.connect(self.buttonClick)
+        
+
         #PAGE ESTEPA
         widgets.optLoadFiles.clicked.connect(self.viewOptionsEstepa)
         widgets.optLoadBBDD.clicked.connect(self.viewOptionsEstepa)
         widgets.cmbParametersFile.addItems(["cmax(pF)","cmin(pF)","dox(A)","Na(cm-3)","Vfb(V)","Nss(cm-2)","Rs(ohms)"])
-        #widgets.btnAnalyzeFiles.clicked.connect(self.analyzeFiles)
-
-        # cmbVariables = VariablesComboBox()     
-        # cmbVariables.setObjectName(u"cmbVariables")
-        # cmbVariables.setGeometry(QRect(0, 200, 191, 22))
-
-        # txtOutlinerMethod = QLabel("Outliner Removal Method")
-        # DisplayText = QLabel("")
-
-        #widgets.horizontalLayoutVariables.addWidget(cmbVariables)
-        #widgets.horizontalLayoutVariables.addWidget(txtOutlinerMethod)
+  
 
         #LEFT MENUS
         widgets.HomeWindow.clicked.connect(self.buttonClick)
-        #widgets.btn_widgets.clicked.connect(self.buttonClick)
         widgets.AnalyzeButton.clicked.connect(self.buttonClick)
         widgets.ConsultWindow.clicked.connect(self.buttonClick)
 
-        
-        
+        #TOOGLE OPTIONS
+        widgets.OutlierBox.addItems(["None","F-Spread","K-Sigmas"])       
 
         # EXTRA LEFT BOX
         def openCloseLeftBox():
@@ -161,8 +150,6 @@ class MainWindow(QMainWindow):
         widgets.HomeWindow.setStyleSheet(UIFunctions.selectMenu(widgets.HomeWindow.styleSheet()))
         
 
-
-
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
     # ///////////////////////////////////////////////////////////////
@@ -170,6 +157,8 @@ class MainWindow(QMainWindow):
         # GET BUTTON CLICKED
         btn = self.sender()     #obte info del botó al fer click
         btnName = btn.objectName()  #obté el nom de la var
+    
+
 
         # PAGINA PRINCIPAL
         if btnName == "HomeWindow":
@@ -201,71 +190,23 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName) 
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
-        # # NETEJAR ELS RESULTATS
-        #if btnName == "CleanResultsButton":                                   ##5/7            
-           # def clean_results(self):                                                           #COMPLETAR                                           
-              #  self.txtParametersResult.setText("")
+        # CLEAN VALUES
+        if btnName == "CleanValuesButton":                                                          #Només em funciona una opció, els dos alhora no
+            widgets.txtLoadedValues.setPlainText("")
 
-        # BOTÓ PER CARREGAR LES DADES .DAT I .PPG           
-        #if btnName == "LoadFilesButton":
-            #DirectoryDat = 
-            #DirectoryPpg = 
-            #label.setText("Directory '% s' created" % DirectoryDat)
-            #label.setText("Directory '% s' created" % DirectoryPpg)
+        #CLEAN RESULTS
+        if btnName == "CleanResultsButton":
+            widgets.txtParametersResult.setPlainText("")
 
-       
+    # COPIAR ELS VALORS
+    def copy_values(self):
+        widgets.txtLoadedValues.selectAll()
+        widgets.txtLoadedValues.copy()
 
-
-        #BOTÓ CORRELATION
-        if btnName == "btnCorrelationFiles":
-            #self.btnAnalyzeFiles.connect(self.getItems)
-            #if per comprovar que s'han agafat dos opcions
-            #if si no s'han agafat dos variables
-            #else si no s'ha agat cap variable
-
-        # BOTÓ ANALITZAR
-            if btnName == "btnAnalyzeFiles":
-                
-                file_dat = ResultFile("test.dat", "metrics")
-                if file_dat.error:
-                    print("Error in file: " + file_dat.error_message)
-                else:
-                    print(file_dat.print_info())
-                    print("Configuration: " + str(config_estepa_file))
-                    for param in file_dat.params_list:
-                        sEstepa = StatisticsEstepa(param, file_dat.param_to_list(param), config_estepa_file)
-                        print(param + " : " + str(sEstepa.data_list))
-                        print(" - Mean:   \t" + str(sEstepa.mean))
-                        print(" - Median: \t" + str(sEstepa.median))
-                        print(" - Stdev:  \t" + str(sEstepa.stdev))
-                        print("")
-                    
-                file_dat2 = ResultFile("12914-1CV100KHz.dat", "old")
-
-                if file_dat2.error:
-                    print("Error in file 2: " + file_dat2.error_message)
-                else:
-                    print(file_dat2.print_info())
-                    for param in file_dat2.params_list:
-                        if param == "cmax(pF)":
-                            config_estepa_file2 = {
-                                "method": "k-sigma",  # none, f-spread or k-sigma
-                                "lna": False,
-                                "limmin": 580.0,
-                                "limmax": 600.0
-                            }
-                            sEstepa2 = StatisticsEstepa(param, file_dat2.param_to_list(param), config_estepa_file2)
-                        else:
-                            sEstepa2 = StatisticsEstepa(param, file_dat2.param_to_list(param), config_estepa_file)
-                        # print(param + " : " + str(sEstepa2.data_list))
-                        print(param)
-                        print(" - Mean:   \t" + str(sEstepa2.mean))
-                        print(" - Median: \t" + str(sEstepa2.median))
-                        print(" - Stdev:  \t" + str(sEstepa2.stdev))
-                        print(" - Points:  \t" + str(sEstepa2.points_end) + "/" + str(sEstepa2.points_ini))
-                        print("")
-
-
+    # COPIAR ELS RESULTATS
+    def copy_results(self):
+        widgets.txtParametersResult.selectAll()
+        widgets.txtParametersResult.copy()
 
     #BOTÓN PARA ANALIZAR
     def analyzeFiles(self):
@@ -278,8 +219,6 @@ class MainWindow(QMainWindow):
             if paramFiles == "All parameters":
                 paramFilesList == [widgets.cmbParametersFile.itemText(i) for i in range.widgets.cmbParametersFile.count()]                  ##revisar
             measurements = self.estepa.get_medidas(wafer, paramFilesList)
-
-
 
     #ORIGEN DE LES DADES
     def viewOptionsEstepa(self):                                                                                                
@@ -310,9 +249,6 @@ class MainWindow(QMainWindow):
             else:
                 print(result_file.error_message)            #Tornar un missatge d'error si no detecta parametres
 
-
-
-
     #BOTÓ PER .PPG 
     def open_file_ppg(self):
         print("Open File")
@@ -330,7 +266,13 @@ class MainWindow(QMainWindow):
                 if radio_button.isChecked():
                     self.label.setText("You have selected : " + radio_button.text())
 
-
+    # DIRECTORY
+    def directory(self):
+        response = QFileDialog.getExistingDirectory(self, caption = 'Select a folder')                        #10/7
+        print(response)     #print del actual directory
+        return response
+        # current_working_directory = os.getcwd()
+        # print(current_working_directory)    
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -343,13 +285,6 @@ class MainWindow(QMainWindow):
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
         self.dragPos = event.globalPos()
-
-        # PRINT MOUSE EVENTS
-        #if event.buttons() == Qt.LeftButton:
-        #    print('Mouse click: LEFT CLICK')
-        #if event.buttons() == Qt.RightButton:
-        #    print('Mouse click: RIGHT CLICK')
-
   
     def directory(self):
         btn = self.sender()                 #obte info del botó al fer click
@@ -357,27 +292,8 @@ class MainWindow(QMainWindow):
         if btnName == "DirectoryButton":
             dialog = QFileDialog()
             folder_path = dialog.getExistingDirectory(None, "Select Folder")
+            print(folder_path)
             return folder_path
-
-
-    #PRINT BUTTONS
-
-    # def print_home(self):
-    #     print("Home")
-
-    # def print_analysis(self):
-    #     print("Analyze")
-
-
-    # def print_consult(self):
-    #     print("Consult")
-
-
-    # def print_about(self):
-    #     print("About")
-
-    # def print_results(self):
-    #     print("Results")
 
     def print_analyze(self):  
         config_estepa_file = {
@@ -412,16 +328,6 @@ class MainWindow(QMainWindow):
                 for chip in data_values:
                     widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+str(chip)+" "+str(data_values[chip]))        #Introduim el chip i el valor de la mesuara
                 
-            
-
-
-
-
-#     #Correlació (2 var.)
-#     #//////////////////////////////////////////////////////////////////  
-#         #correlation()   
-
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon("icon.ico"))

@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1389</width>
-    <height>891</height>
+    <height>1005</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1295,7 +1295,7 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_11">
                 <item>
-                 <widget class="QLabel" name="Outliner">
+                 <widget class="QLabel" name="Outlier">
                   <property name="maximumSize">
                    <size>
                     <width>400</width>
@@ -1311,7 +1311,7 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="OutlinerBox">
+                 <widget class="QComboBox" name="OutlierBox">
                   <property name="editable">
                    <bool>false</bool>
                   </property>
@@ -2033,6 +2033,26 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                         </rect>
                        </property>
                        <layout class="QGridLayout" name="gridLayout_5">
+                        <item row="4" column="0">
+                         <widget class="QPushButton" name="btn_ppg_5">
+                          <property name="minimumSize">
+                           <size>
+                            <width>150</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background-color: rgb(52, 59, 72);</string>
+                          </property>
+                          <property name="text">
+                           <string>Open Directory</string>
+                          </property>
+                          <property name="icon">
+                           <iconset>
+                            <normaloff>../../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>../../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
+                          </property>
+                         </widget>
+                        </item>
                         <item row="0" column="0">
                          <widget class="QGraphicsView" name="graphicsView">
                           <property name="sizeIncrement">
@@ -2051,7 +2071,7 @@ background-repeat: no-repeat;</string>
                           </property>
                          </widget>
                         </item>
-                        <item row="3" column="0">
+                        <item row="5" column="0">
                          <widget class="QPushButton" name="btn_ppg_3">
                           <property name="minimumSize">
                            <size>
@@ -2078,28 +2098,14 @@ background-repeat: no-repeat;</string>
                           </property>
                          </widget>
                         </item>
-                        <item row="5" column="0">
-                         <widget class="QPushButton" name="btn_ppg_4">
-                          <property name="minimumSize">
-                           <size>
-                            <width>150</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">background-color: rgb(52, 59, 72);</string>
-                          </property>
-                          <property name="text">
-                           <string>Tutorials</string>
-                          </property>
-                          <property name="icon">
-                           <iconset>
-                            <normaloff>../../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>../../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
-                          </property>
-                         </widget>
-                        </item>
                         <item row="1" column="0" colspan="2">
                          <widget class="QLineEdit" name="lineEdit">
+                          <property name="enabled">
+                           <bool>false</bool>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background-color: rgb(33, 37, 43);</string>
+                          </property>
                           <property name="text">
                            <string>Search recent files...</string>
                           </property>
@@ -2125,8 +2131,8 @@ background-repeat: no-repeat;</string>
                           </property>
                          </widget>
                         </item>
-                        <item row="4" column="0">
-                         <widget class="QPushButton" name="btn_ppg_5">
+                        <item row="3" column="0">
+                         <widget class="QPushButton" name="btn_ppg_4">
                           <property name="minimumSize">
                            <size>
                             <width>150</width>
@@ -2137,7 +2143,7 @@ background-repeat: no-repeat;</string>
                            <string notr="true">background-color: rgb(52, 59, 72);</string>
                           </property>
                           <property name="text">
-                           <string>Files</string>
+                           <string>BBDD</string>
                           </property>
                           <property name="icon">
                            <iconset>
@@ -3094,6 +3100,22 @@ background-repeat: no-repeat;</string>
                              </widget>
                             </widget>
                            </item>
+                           <item>
+                            <spacer name="verticalSpacer_2">
+                             <property name="orientation">
+                              <enum>Qt::Vertical</enum>
+                             </property>
+                             <property name="sizeType">
+                              <enum>QSizePolicy::Fixed</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>20</width>
+                               <height>4</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
                           </layout>
                          </item>
                          <item>
@@ -3113,28 +3135,140 @@ background-repeat: no-repeat;</string>
                           </spacer>
                          </item>
                          <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_40">
+                          <spacer name="verticalSpacer_5">
+                           <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                           </property>
+                           <property name="sizeType">
+                            <enum>QSizePolicy::Expanding</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>20</width>
+                             <height>380</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item>
+                          <layout class="QVBoxLayout" name="DATAVALUES">
                            <item>
-                            <widget class="QLabel" name="labelVersion_41">
-                             <property name="maximumSize">
-                              <size>
-                               <width>200</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">color: rgb(113, 126, 149);</string>
-                             </property>
-                             <property name="lineWidth">
-                              <number>1</number>
-                             </property>
-                             <property name="text">
-                              <string>Data Values</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                             </property>
-                            </widget>
+                            <layout class="QHBoxLayout" name="horizontalLayout_6">
+                             <item>
+                              <widget class="QPushButton" name="NextParameter">
+                               <property name="maximumSize">
+                                <size>
+                                 <width>20</width>
+                                 <height>40</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">border-color: rgb(40, 44, 52);</string>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="icon">
+                                <iconset>
+                                 <normalon>:/icons/images/icons/cil-chevron-right.png</normalon>
+                                </iconset>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLabel" name="labelVersion_41">
+                               <property name="maximumSize">
+                                <size>
+                                 <width>200</width>
+                                 <height>20</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">color: rgb(113, 126, 149);</string>
+                               </property>
+                               <property name="lineWidth">
+                                <number>1</number>
+                               </property>
+                               <property name="text">
+                                <string>Data Values</string>
+                               </property>
+                               <property name="alignment">
+                                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <spacer name="horizontalSpacer_4">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>40</width>
+                                 <height>20</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                             <item>
+                              <widget class="QPushButton" name="CopyValuesButton">
+                               <property name="maximumSize">
+                                <size>
+                                 <width>40</width>
+                                 <height>40</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: rgb(52, 59, 72);</string>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="icon">
+                                <iconset>
+                                 <normalon>:/icons/images/icons/cil-clone.png</normalon>
+                                </iconset>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <spacer name="horizontalSpacer_2">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeType">
+                                <enum>QSizePolicy::Fixed</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>2</width>
+                                 <height>5</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                             <item>
+                              <widget class="QPushButton" name="CleanValuesButton">
+                               <property name="maximumSize">
+                                <size>
+                                 <width>40</width>
+                                 <height>40</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: rgb(52, 59, 72);</string>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="icon">
+                                <iconset>
+                                 <normalon>:/icons/images/icons/icon_close.png</normalon>
+                                </iconset>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
                            </item>
                            <item>
                             <widget class="QPlainTextEdit" name="txtLoadedValues">
@@ -3162,6 +3296,22 @@ background-repeat: no-repeat;</string>
                              </property>
                             </widget>
                            </item>
+                           <item>
+                            <spacer name="verticalSpacer_3">
+                             <property name="orientation">
+                              <enum>Qt::Vertical</enum>
+                             </property>
+                             <property name="sizeType">
+                              <enum>QSizePolicy::Expanding</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>20</width>
+                               <height>2</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
                           </layout>
                          </item>
                          <item>
@@ -3181,28 +3331,118 @@ background-repeat: no-repeat;</string>
                           </spacer>
                          </item>
                          <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_41">
+                          <spacer name="verticalSpacer_7">
+                           <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>20</width>
+                             <height>40</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item>
+                          <layout class="QVBoxLayout" name="PARAMETERRESULT">
                            <item>
-                            <widget class="QLabel" name="labelVersion_42">
-                             <property name="maximumSize">
-                              <size>
-                               <width>200</width>
-                               <height>20</height>
-                              </size>
+                            <layout class="QHBoxLayout" name="horizontalLayout_11">
+                             <property name="topMargin">
+                              <number>0</number>
                              </property>
-                             <property name="styleSheet">
-                              <string notr="true">color: rgb(113, 126, 149);</string>
-                             </property>
-                             <property name="lineWidth">
-                              <number>1</number>
-                             </property>
-                             <property name="text">
-                              <string>Parameters result</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                             </property>
-                            </widget>
+                             <item>
+                              <widget class="QLabel" name="labelVersion_42">
+                               <property name="maximumSize">
+                                <size>
+                                 <width>200</width>
+                                 <height>20</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">color: rgb(113, 126, 149);</string>
+                               </property>
+                               <property name="lineWidth">
+                                <number>1</number>
+                               </property>
+                               <property name="text">
+                                <string>Parameters result</string>
+                               </property>
+                               <property name="alignment">
+                                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <spacer name="horizontalSpacer_3">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>40</width>
+                                 <height>20</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                             <item>
+                              <widget class="QPushButton" name="CopyResultsButton">
+                               <property name="maximumSize">
+                                <size>
+                                 <width>40</width>
+                                 <height>40</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: rgb(52, 59, 72);</string>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="icon">
+                                <iconset>
+                                 <normalon>:/icons/images/icons/cil-clone.png</normalon>
+                                </iconset>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <spacer name="horizontalSpacer">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeType">
+                                <enum>QSizePolicy::Fixed</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>2</width>
+                                 <height>20</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                             <item>
+                              <widget class="QPushButton" name="CleanResultsButton">
+                               <property name="maximumSize">
+                                <size>
+                                 <width>40</width>
+                                 <height>40</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: rgb(52, 59, 72);</string>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="icon">
+                                <iconset>
+                                 <normaloff>images/icons/icon_close.png</normaloff>images/icons/icon_close.png</iconset>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
                            </item>
                            <item>
                             <widget class="QPlainTextEdit" name="txtParametersResult">
@@ -3236,27 +3476,42 @@ Points
                             </widget>
                            </item>
                            <item>
-                            <widget class="QPushButton" name="CleanResultsButton">
-                             <property name="styleSheet">
-                              <string notr="true">background-color: rgb(52, 59, 72);</string>
+                            <spacer name="verticalSpacer_4">
+                             <property name="orientation">
+                              <enum>Qt::Vertical</enum>
                              </property>
-                             <property name="text">
-                              <string/>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>20</width>
+                               <height>2</height>
+                              </size>
                              </property>
-                             <property name="icon">
-                              <iconset>
-                               <normaloff>images/icons/icon_close.png</normaloff>images/icons/icon_close.png</iconset>
-                             </property>
-                            </widget>
+                            </spacer>
                            </item>
                           </layout>
                          </item>
                         </layout>
                        </item>
                        <item>
+                        <spacer name="verticalSpacer">
+                         <property name="orientation">
+                          <enum>Qt::Vertical</enum>
+                         </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Preferred</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>10</width>
+                           <height>2</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item>
                         <layout class="QHBoxLayout" name="horizontalLayout_10">
                          <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_42">
+                          <layout class="QVBoxLayout" name="HISTOGRAM">
                            <item>
                             <widget class="QLabel" name="labelVersion_43">
                              <property name="maximumSize">
@@ -3280,11 +3535,17 @@ Points
                             </widget>
                            </item>
                            <item>
-                            <widget class="QPlainTextEdit" name="txtLoadedValues_7">
+                            <widget class="MplWidget" name="histogram" native="true">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
                              <property name="minimumSize">
                               <size>
                                <width>520</width>
-                               <height>0</height>
+                               <height>300</height>
                               </size>
                              </property>
                              <property name="maximumSize">
@@ -3293,18 +3554,34 @@ Points
                                <height>16777215</height>
                               </size>
                              </property>
+                             <property name="focusPolicy">
+                              <enum>Qt::StrongFocus</enum>
+                             </property>
+                             <property name="acceptDrops">
+                              <bool>true</bool>
+                             </property>
                              <property name="toolTip">
                               <string>Histogram</string>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">border: 1px solid #FAFAFA;</string>
-                             </property>
-                             <property name="plainText">
-                              <string/>
                              </property>
                             </widget>
                            </item>
                           </layout>
+                         </item>
+                         <item>
+                          <spacer name="verticalSpacer_6">
+                           <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                           </property>
+                           <property name="sizeType">
+                            <enum>QSizePolicy::Fixed</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>20</width>
+                             <height>380</height>
+                            </size>
+                           </property>
+                          </spacer>
                          </item>
                          <item>
                           <spacer name="horizontalSpacer_22">
@@ -3323,7 +3600,7 @@ Points
                           </spacer>
                          </item>
                          <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_43">
+                          <layout class="QVBoxLayout" name="WAFERMAP">
                            <item>
                             <widget class="QLabel" name="labelVersion_44">
                              <property name="maximumSize">
@@ -3347,11 +3624,11 @@ Points
                             </widget>
                            </item>
                            <item>
-                            <widget class="QPlainTextEdit" name="txtLoadedValues_8">
+                            <widget class="QPlainTextEdit" name="wafermap">
                              <property name="minimumSize">
                               <size>
                                <width>0</width>
-                               <height>0</height>
+                               <height>300</height>
                               </size>
                              </property>
                              <property name="maximumSize">
@@ -3417,16 +3694,6 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                          </layout>
                         </item>
                        </layout>
-                      </widget>
-                      <widget class="MplWidget" name="histogram" native="true">
-                       <property name="geometry">
-                        <rect>
-                         <x>1170</x>
-                         <y>30</y>
-                         <width>151</width>
-                         <height>91</height>
-                        </rect>
-                       </property>
                       </widget>
                      </widget>
                     </widget>
@@ -3750,7 +4017,7 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
   <customwidget>
    <class>MplWidget</class>
    <extends>QWidget</extends>
-   <header>mplwidget</header>
+   <header location="global">mplwidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>

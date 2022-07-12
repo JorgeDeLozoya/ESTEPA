@@ -31,7 +31,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1389, 891)
+        MainWindow.resize(1389, 1005)
         MainWindow.setMinimumSize(QSize(940, 560))
         self.styleSheet = QWidget(MainWindow)
         self.styleSheet.setObjectName(u"styleSheet")
@@ -834,22 +834,22 @@ class Ui_MainWindow(object):
         self.extraTopMenu.setFrameShadow(QFrame.Raised)
         self.verticalLayout_11 = QVBoxLayout(self.extraTopMenu)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.Outliner = QLabel(self.extraTopMenu)
-        self.Outliner.setObjectName(u"Outliner")
-        self.Outliner.setMaximumSize(QSize(400, 16777215))
-        self.Outliner.setStyleSheet(u"")
+        self.Outlier = QLabel(self.extraTopMenu)
+        self.Outlier.setObjectName(u"Outlier")
+        self.Outlier.setMaximumSize(QSize(400, 16777215))
+        self.Outlier.setStyleSheet(u"")
 
-        self.verticalLayout_11.addWidget(self.Outliner)
+        self.verticalLayout_11.addWidget(self.Outlier)
 
-        self.OutlinerBox = QComboBox(self.extraTopMenu)
-        self.OutlinerBox.addItem("")
-        self.OutlinerBox.addItem("")
-        self.OutlinerBox.addItem("")
-        self.OutlinerBox.setObjectName(u"OutlinerBox")
-        self.OutlinerBox.setEditable(False)
-        self.OutlinerBox.setMinimumContentsLength(0)
+        self.OutlierBox = QComboBox(self.extraTopMenu)
+        self.OutlierBox.addItem("")
+        self.OutlierBox.addItem("")
+        self.OutlierBox.addItem("")
+        self.OutlierBox.setObjectName(u"OutlierBox")
+        self.OutlierBox.setEditable(False)
+        self.OutlierBox.setMinimumContentsLength(0)
 
-        self.verticalLayout_11.addWidget(self.OutlinerBox)
+        self.verticalLayout_11.addWidget(self.OutlierBox)
 
         self.Font = QLabel(self.extraTopMenu)
         self.Font.setObjectName(u"Font")
@@ -1135,6 +1135,16 @@ class Ui_MainWindow(object):
         self.gridLayout_5 = QGridLayout(self.gridLayoutWidget)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
         self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.btn_ppg_5 = QPushButton(self.gridLayoutWidget)
+        self.btn_ppg_5.setObjectName(u"btn_ppg_5")
+        self.btn_ppg_5.setMinimumSize(QSize(150, 30))
+        self.btn_ppg_5.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        icon4 = QIcon()
+        icon4.addFile(u"../../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_ppg_5.setIcon(icon4)
+
+        self.gridLayout_5.addWidget(self.btn_ppg_5, 4, 0, 1, 1)
+
         self.graphicsView = QGraphicsView(self.gridLayoutWidget)
         self.graphicsView.setObjectName(u"graphicsView")
         self.graphicsView.setSizeIncrement(QSize(0, 0))
@@ -1149,27 +1159,19 @@ class Ui_MainWindow(object):
         self.btn_ppg_3.setObjectName(u"btn_ppg_3")
         self.btn_ppg_3.setMinimumSize(QSize(150, 30))
         self.btn_ppg_3.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-        icon4 = QIcon()
-        icon4.addFile(u"../../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_ppg_3.setIcon(icon4)
 
-        self.gridLayout_5.addWidget(self.btn_ppg_3, 3, 0, 1, 1)
+        self.gridLayout_5.addWidget(self.btn_ppg_3, 5, 0, 1, 1)
 
         self.label = QLabel(self.gridLayoutWidget)
         self.label.setObjectName(u"label")
 
         self.gridLayout_5.addWidget(self.label, 0, 1, 1, 1)
 
-        self.btn_ppg_4 = QPushButton(self.gridLayoutWidget)
-        self.btn_ppg_4.setObjectName(u"btn_ppg_4")
-        self.btn_ppg_4.setMinimumSize(QSize(150, 30))
-        self.btn_ppg_4.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-        self.btn_ppg_4.setIcon(icon4)
-
-        self.gridLayout_5.addWidget(self.btn_ppg_4, 5, 0, 1, 1)
-
         self.lineEdit = QLineEdit(self.gridLayoutWidget)
         self.lineEdit.setObjectName(u"lineEdit")
+        self.lineEdit.setEnabled(False)
+        self.lineEdit.setStyleSheet(u"background-color: rgb(33, 37, 43);")
 
         self.gridLayout_5.addWidget(self.lineEdit, 1, 0, 1, 2)
 
@@ -1181,13 +1183,13 @@ class Ui_MainWindow(object):
 
         self.gridLayout_5.addWidget(self.btn_ppg_2, 2, 0, 1, 1)
 
-        self.btn_ppg_5 = QPushButton(self.gridLayoutWidget)
-        self.btn_ppg_5.setObjectName(u"btn_ppg_5")
-        self.btn_ppg_5.setMinimumSize(QSize(150, 30))
-        self.btn_ppg_5.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-        self.btn_ppg_5.setIcon(icon4)
+        self.btn_ppg_4 = QPushButton(self.gridLayoutWidget)
+        self.btn_ppg_4.setObjectName(u"btn_ppg_4")
+        self.btn_ppg_4.setMinimumSize(QSize(150, 30))
+        self.btn_ppg_4.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        self.btn_ppg_4.setIcon(icon4)
 
-        self.gridLayout_5.addWidget(self.btn_ppg_5, 4, 0, 1, 1)
+        self.gridLayout_5.addWidget(self.btn_ppg_4, 3, 0, 1, 1)
 
         self.stackedWidget.addWidget(self.home)
         self.widgets = QWidget()
@@ -1520,6 +1522,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_39.addWidget(self.optionsESTEPA)
 
+        self.verticalSpacer_2 = QSpacerItem(20, 4, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_39.addItem(self.verticalSpacer_2)
+
 
         self.horizontalLayout_21.addLayout(self.verticalLayout_39)
 
@@ -1527,8 +1533,24 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_21.addItem(self.horizontalSpacer_20)
 
-        self.verticalLayout_40 = QVBoxLayout()
-        self.verticalLayout_40.setObjectName(u"verticalLayout_40")
+        self.verticalSpacer_5 = QSpacerItem(20, 380, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.horizontalLayout_21.addItem(self.verticalSpacer_5)
+
+        self.DATAVALUES = QVBoxLayout()
+        self.DATAVALUES.setObjectName(u"DATAVALUES")
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.NextParameter = QPushButton(self.analyze)
+        self.NextParameter.setObjectName(u"NextParameter")
+        self.NextParameter.setMaximumSize(QSize(20, 40))
+        self.NextParameter.setStyleSheet(u"border-color: rgb(40, 44, 52);")
+        icon7 = QIcon()
+        icon7.addFile(u":/icons/images/icons/cil-chevron-right.png", QSize(), QIcon.Normal, QIcon.On)
+        self.NextParameter.setIcon(icon7)
+
+        self.horizontalLayout_6.addWidget(self.NextParameter)
+
         self.labelVersion_41 = QLabel(self.analyze)
         self.labelVersion_41.setObjectName(u"labelVersion_41")
         self.labelVersion_41.setMaximumSize(QSize(200, 20))
@@ -1536,7 +1558,38 @@ class Ui_MainWindow(object):
         self.labelVersion_41.setLineWidth(1)
         self.labelVersion_41.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_40.addWidget(self.labelVersion_41)
+        self.horizontalLayout_6.addWidget(self.labelVersion_41)
+
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_6.addItem(self.horizontalSpacer_4)
+
+        self.CopyValuesButton = QPushButton(self.analyze)
+        self.CopyValuesButton.setObjectName(u"CopyValuesButton")
+        self.CopyValuesButton.setMaximumSize(QSize(40, 40))
+        self.CopyValuesButton.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        icon8 = QIcon()
+        icon8.addFile(u":/icons/images/icons/cil-clone.png", QSize(), QIcon.Normal, QIcon.On)
+        self.CopyValuesButton.setIcon(icon8)
+
+        self.horizontalLayout_6.addWidget(self.CopyValuesButton)
+
+        self.horizontalSpacer_2 = QSpacerItem(2, 5, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_6.addItem(self.horizontalSpacer_2)
+
+        self.CleanValuesButton = QPushButton(self.analyze)
+        self.CleanValuesButton.setObjectName(u"CleanValuesButton")
+        self.CleanValuesButton.setMaximumSize(QSize(40, 40))
+        self.CleanValuesButton.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        icon9 = QIcon()
+        icon9.addFile(u":/icons/images/icons/icon_close.png", QSize(), QIcon.Normal, QIcon.On)
+        self.CleanValuesButton.setIcon(icon9)
+
+        self.horizontalLayout_6.addWidget(self.CleanValuesButton)
+
+
+        self.DATAVALUES.addLayout(self.horizontalLayout_6)
 
         self.txtLoadedValues = QPlainTextEdit(self.analyze)
         self.txtLoadedValues.setObjectName(u"txtLoadedValues")
@@ -1544,17 +1597,28 @@ class Ui_MainWindow(object):
         self.txtLoadedValues.setMaximumSize(QSize(250, 350))
         self.txtLoadedValues.setStyleSheet(u"border: 1px solid #FAFAFA;")
 
-        self.verticalLayout_40.addWidget(self.txtLoadedValues)
+        self.DATAVALUES.addWidget(self.txtLoadedValues)
+
+        self.verticalSpacer_3 = QSpacerItem(20, 2, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.DATAVALUES.addItem(self.verticalSpacer_3)
 
 
-        self.horizontalLayout_21.addLayout(self.verticalLayout_40)
+        self.horizontalLayout_21.addLayout(self.DATAVALUES)
 
         self.horizontalSpacer_21 = QSpacerItem(5, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
         self.horizontalLayout_21.addItem(self.horizontalSpacer_21)
 
-        self.verticalLayout_41 = QVBoxLayout()
-        self.verticalLayout_41.setObjectName(u"verticalLayout_41")
+        self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.horizontalLayout_21.addItem(self.verticalSpacer_7)
+
+        self.PARAMETERRESULT = QVBoxLayout()
+        self.PARAMETERRESULT.setObjectName(u"PARAMETERRESULT")
+        self.horizontalLayout_11 = QHBoxLayout()
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.horizontalLayout_11.setContentsMargins(-1, 0, -1, -1)
         self.labelVersion_42 = QLabel(self.analyze)
         self.labelVersion_42.setObjectName(u"labelVersion_42")
         self.labelVersion_42.setMaximumSize(QSize(200, 20))
@@ -1562,7 +1626,36 @@ class Ui_MainWindow(object):
         self.labelVersion_42.setLineWidth(1)
         self.labelVersion_42.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_41.addWidget(self.labelVersion_42)
+        self.horizontalLayout_11.addWidget(self.labelVersion_42)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_11.addItem(self.horizontalSpacer_3)
+
+        self.CopyResultsButton = QPushButton(self.analyze)
+        self.CopyResultsButton.setObjectName(u"CopyResultsButton")
+        self.CopyResultsButton.setMaximumSize(QSize(40, 40))
+        self.CopyResultsButton.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        self.CopyResultsButton.setIcon(icon8)
+
+        self.horizontalLayout_11.addWidget(self.CopyResultsButton)
+
+        self.horizontalSpacer = QSpacerItem(2, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_11.addItem(self.horizontalSpacer)
+
+        self.CleanResultsButton = QPushButton(self.analyze)
+        self.CleanResultsButton.setObjectName(u"CleanResultsButton")
+        self.CleanResultsButton.setMaximumSize(QSize(40, 40))
+        self.CleanResultsButton.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        icon10 = QIcon()
+        icon10.addFile(u"images/icons/icon_close.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.CleanResultsButton.setIcon(icon10)
+
+        self.horizontalLayout_11.addWidget(self.CleanResultsButton)
+
+
+        self.PARAMETERRESULT.addLayout(self.horizontalLayout_11)
 
         self.txtParametersResult = QPlainTextEdit(self.analyze)
         self.txtParametersResult.setObjectName(u"txtParametersResult")
@@ -1570,27 +1663,26 @@ class Ui_MainWindow(object):
         self.txtParametersResult.setMaximumSize(QSize(16777215, 350))
         self.txtParametersResult.setStyleSheet(u"border: 1px solid #FAFAFA;")
 
-        self.verticalLayout_41.addWidget(self.txtParametersResult)
+        self.PARAMETERRESULT.addWidget(self.txtParametersResult)
 
-        self.CleanResultsButton = QPushButton(self.analyze)
-        self.CleanResultsButton.setObjectName(u"CleanResultsButton")
-        self.CleanResultsButton.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-        icon7 = QIcon()
-        icon7.addFile(u"images/icons/icon_close.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.CleanResultsButton.setIcon(icon7)
+        self.verticalSpacer_4 = QSpacerItem(20, 2, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout_41.addWidget(self.CleanResultsButton)
+        self.PARAMETERRESULT.addItem(self.verticalSpacer_4)
 
 
-        self.horizontalLayout_21.addLayout(self.verticalLayout_41)
+        self.horizontalLayout_21.addLayout(self.PARAMETERRESULT)
 
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_21)
 
+        self.verticalSpacer = QSpacerItem(10, 2, QSizePolicy.Minimum, QSizePolicy.Preferred)
+
+        self.verticalLayout_22.addItem(self.verticalSpacer)
+
         self.horizontalLayout_10 = QHBoxLayout()
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.verticalLayout_42 = QVBoxLayout()
-        self.verticalLayout_42.setObjectName(u"verticalLayout_42")
+        self.HISTOGRAM = QVBoxLayout()
+        self.HISTOGRAM.setObjectName(u"HISTOGRAM")
         self.labelVersion_43 = QLabel(self.analyze)
         self.labelVersion_43.setObjectName(u"labelVersion_43")
         self.labelVersion_43.setMaximumSize(QSize(200, 20))
@@ -1598,25 +1690,35 @@ class Ui_MainWindow(object):
         self.labelVersion_43.setLineWidth(1)
         self.labelVersion_43.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_42.addWidget(self.labelVersion_43)
+        self.HISTOGRAM.addWidget(self.labelVersion_43)
 
-        self.txtLoadedValues_7 = QPlainTextEdit(self.analyze)
-        self.txtLoadedValues_7.setObjectName(u"txtLoadedValues_7")
-        self.txtLoadedValues_7.setMinimumSize(QSize(520, 0))
-        self.txtLoadedValues_7.setMaximumSize(QSize(520, 16777215))
-        self.txtLoadedValues_7.setStyleSheet(u"border: 1px solid #FAFAFA;")
+        self.histogram = MplWidget(self.analyze)
+        self.histogram.setObjectName(u"histogram")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.histogram.sizePolicy().hasHeightForWidth())
+        self.histogram.setSizePolicy(sizePolicy4)
+        self.histogram.setMinimumSize(QSize(520, 300))
+        self.histogram.setMaximumSize(QSize(520, 16777215))
+        self.histogram.setFocusPolicy(Qt.StrongFocus)
+        self.histogram.setAcceptDrops(True)
 
-        self.verticalLayout_42.addWidget(self.txtLoadedValues_7)
+        self.HISTOGRAM.addWidget(self.histogram)
 
 
-        self.horizontalLayout_10.addLayout(self.verticalLayout_42)
+        self.horizontalLayout_10.addLayout(self.HISTOGRAM)
+
+        self.verticalSpacer_6 = QSpacerItem(20, 380, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.horizontalLayout_10.addItem(self.verticalSpacer_6)
 
         self.horizontalSpacer_22 = QSpacerItem(20, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
         self.horizontalLayout_10.addItem(self.horizontalSpacer_22)
 
-        self.verticalLayout_43 = QVBoxLayout()
-        self.verticalLayout_43.setObjectName(u"verticalLayout_43")
+        self.WAFERMAP = QVBoxLayout()
+        self.WAFERMAP.setObjectName(u"WAFERMAP")
         self.labelVersion_44 = QLabel(self.analyze)
         self.labelVersion_44.setObjectName(u"labelVersion_44")
         self.labelVersion_44.setMaximumSize(QSize(200, 20))
@@ -1624,18 +1726,18 @@ class Ui_MainWindow(object):
         self.labelVersion_44.setLineWidth(1)
         self.labelVersion_44.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_43.addWidget(self.labelVersion_44)
+        self.WAFERMAP.addWidget(self.labelVersion_44)
 
-        self.txtLoadedValues_8 = QPlainTextEdit(self.analyze)
-        self.txtLoadedValues_8.setObjectName(u"txtLoadedValues_8")
-        self.txtLoadedValues_8.setMinimumSize(QSize(0, 0))
-        self.txtLoadedValues_8.setMaximumSize(QSize(16777215, 16777215))
-        self.txtLoadedValues_8.setStyleSheet(u"border: 1px solid #FAFAFA;")
+        self.wafermap = QPlainTextEdit(self.analyze)
+        self.wafermap.setObjectName(u"wafermap")
+        self.wafermap.setMinimumSize(QSize(0, 300))
+        self.wafermap.setMaximumSize(QSize(16777215, 16777215))
+        self.wafermap.setStyleSheet(u"border: 1px solid #FAFAFA;")
 
-        self.verticalLayout_43.addWidget(self.txtLoadedValues_8)
+        self.WAFERMAP.addWidget(self.wafermap)
 
 
-        self.horizontalLayout_10.addLayout(self.verticalLayout_43)
+        self.horizontalLayout_10.addLayout(self.WAFERMAP)
 
 
         self.verticalLayout_22.addLayout(self.horizontalLayout_10)
@@ -1667,9 +1769,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4.addLayout(self.gridLayout_3, 1, 1, 1, 1)
 
-        self.histogram = MplWidget(self.page_results)
-        self.histogram.setObjectName(u"histogram")
-        self.histogram.setGeometry(QRect(1170, 30, 151, 91))
         self.stackedWidget.addWidget(self.page_results)
 
         self.verticalLayout_15.addWidget(self.stackedWidget)
@@ -1823,10 +1922,10 @@ class Ui_MainWindow(object):
         self.extraCloseColumnBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Close left box", None))
 #endif // QT_CONFIG(tooltip)
         self.extraCloseColumnBtn.setText("")
-        self.Outliner.setText(QCoreApplication.translate("MainWindow", u"Outliner Removal Method:", None))
-        self.OutlinerBox.setItemText(0, QCoreApplication.translate("MainWindow", u"None", None))
-        self.OutlinerBox.setItemText(1, QCoreApplication.translate("MainWindow", u"F-spread", None))
-        self.OutlinerBox.setItemText(2, QCoreApplication.translate("MainWindow", u"K-sigmas", None))
+        self.Outlier.setText(QCoreApplication.translate("MainWindow", u"Outliner Removal Method:", None))
+        self.OutlierBox.setItemText(0, QCoreApplication.translate("MainWindow", u"None", None))
+        self.OutlierBox.setItemText(1, QCoreApplication.translate("MainWindow", u"F-spread", None))
+        self.OutlierBox.setItemText(2, QCoreApplication.translate("MainWindow", u"K-sigmas", None))
 
         self.Font.setText(QCoreApplication.translate("MainWindow", u"Font Size:", None))
         self.FontBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Small", None))
@@ -1863,12 +1962,12 @@ class Ui_MainWindow(object):
         self.closeAppBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Close", None))
 #endif // QT_CONFIG(tooltip)
         self.closeAppBtn.setText("")
+        self.btn_ppg_5.setText(QCoreApplication.translate("MainWindow", u"Open Directory", None))
         self.btn_ppg_3.setText(QCoreApplication.translate("MainWindow", u"Examples", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-size:48pt; font-weight:700;\">WELCOME TO ESTEPA</span></p></body></html>", None))
-        self.btn_ppg_4.setText(QCoreApplication.translate("MainWindow", u"Tutorials", None))
         self.lineEdit.setText(QCoreApplication.translate("MainWindow", u"Search recent files...", None))
         self.btn_ppg_2.setText(QCoreApplication.translate("MainWindow", u"Start Analysis", None))
-        self.btn_ppg_5.setText(QCoreApplication.translate("MainWindow", u"Files", None))
+        self.btn_ppg_4.setText(QCoreApplication.translate("MainWindow", u"BBDD", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"STATISTICS for the PARAMETRIC TEST", None))
         self.optLoadFiles.setText(QCoreApplication.translate("MainWindow", u"Load from files", None))
         self.optLoadBBDD.setText(QCoreApplication.translate("MainWindow", u"Load from BBDD", None))
@@ -1911,13 +2010,18 @@ class Ui_MainWindow(object):
         self.cmbParametersBBDD.setItemText(0, QCoreApplication.translate("MainWindow", u"Select instrument", None))
 
         self.cmbParametersBBDD.setCurrentText(QCoreApplication.translate("MainWindow", u"Select instrument", None))
+        self.NextParameter.setText("")
         self.labelVersion_41.setText(QCoreApplication.translate("MainWindow", u"Data Values", None))
+        self.CopyValuesButton.setText("")
+        self.CleanValuesButton.setText("")
 #if QT_CONFIG(tooltip)
         self.txtLoadedValues.setToolTip(QCoreApplication.translate("MainWindow", u"Data values", None))
 #endif // QT_CONFIG(tooltip)
         self.txtLoadedValues.setPlainText(QCoreApplication.translate("MainWindow", u"0 0 325.00E-12\n"
 "0 -1 320.45E-12", None))
         self.labelVersion_42.setText(QCoreApplication.translate("MainWindow", u"Parameters result", None))
+        self.CopyResultsButton.setText("")
+        self.CleanResultsButton.setText("")
 #if QT_CONFIG(tooltip)
         self.txtParametersResult.setToolTip(QCoreApplication.translate("MainWindow", u"Results parameters", None))
 #endif // QT_CONFIG(tooltip)
@@ -1928,17 +2032,15 @@ class Ui_MainWindow(object):
 "Points\n"
 "\n"
 "", None))
-        self.CleanResultsButton.setText("")
         self.labelVersion_43.setText(QCoreApplication.translate("MainWindow", u"Histogram", None))
 #if QT_CONFIG(tooltip)
-        self.txtLoadedValues_7.setToolTip(QCoreApplication.translate("MainWindow", u"Histogram", None))
+        self.histogram.setToolTip(QCoreApplication.translate("MainWindow", u"Histogram", None))
 #endif // QT_CONFIG(tooltip)
-        self.txtLoadedValues_7.setPlainText("")
         self.labelVersion_44.setText(QCoreApplication.translate("MainWindow", u"Wafermap", None))
 #if QT_CONFIG(tooltip)
-        self.txtLoadedValues_8.setToolTip(QCoreApplication.translate("MainWindow", u"Wafermap", None))
+        self.wafermap.setToolTip(QCoreApplication.translate("MainWindow", u"Wafermap", None))
 #endif // QT_CONFIG(tooltip)
-        self.txtLoadedValues_8.setPlainText("")
+        self.wafermap.setPlainText("")
         self.WaveformLabel.setText(QCoreApplication.translate("MainWindow", u"Waveform", None))
         self.btn_message.setText(QCoreApplication.translate("MainWindow", u"Message", None))
         self.btn_print.setText(QCoreApplication.translate("MainWindow", u"Print", None))
