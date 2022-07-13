@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1389</width>
+    <width>1455</width>
     <height>1006</height>
    </rect>
   </property>
@@ -939,20 +939,8 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                     <height>45</height>
                    </size>
                   </property>
-                  <property name="font">
-                   <font>
-                    <family>Segoe UI</family>
-                    <pointsize>10</pointsize>
-                    <weight>50</weight>
-                    <italic>false</italic>
-                    <bold>false</bold>
-                   </font>
-                  </property>
                   <property name="cursor">
                    <cursorShape>PointingHandCursor</cursorShape>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::LeftToRight</enum>
                   </property>
                   <property name="styleSheet">
                    <string notr="true">background-image: url(:/icons/images/icons/cil-magnifying-glass.png)</string>
@@ -1312,7 +1300,7 @@ background: transparent;
                  <enum>QFrame::NoFrame</enum>
                 </property>
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>1</number>
                 </property>
                 <widget class="QWidget" name="configuration_measurements">
                  <layout class="QVBoxLayout" name="verticalLayout_config_meas"/>
@@ -2118,7 +2106,7 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>4</number>
+                      <number>2</number>
                      </property>
                      <widget class="QWidget" name="home">
                       <property name="styleSheet">
@@ -3813,19 +3801,50 @@ background-repeat: no-repeat;</string>
                             <layout class="QHBoxLayout" name="horizontalLayout_histogram"/>
                            </item>
                            <item>
-                            <spacer name="verticalSpacer_18">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
+                            <widget class="MplWidget" name="histogram" native="true">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
                              </property>
-                             <property name="sizeHint" stdset="0">
+                             <property name="minimumSize">
                               <size>
-                               <width>20</width>
-                               <height>40</height>
+                               <width>520</width>
+                               <height>300</height>
                               </size>
                              </property>
-                            </spacer>
+                             <property name="maximumSize">
+                              <size>
+                               <width>520</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="focusPolicy">
+                              <enum>Qt::StrongFocus</enum>
+                             </property>
+                             <property name="acceptDrops">
+                              <bool>true</bool>
+                             </property>
+                             <property name="toolTip">
+                              <string>Histogram</string>
+                             </property>
+                            </widget>
                            </item>
                           </layout>
+                         </item>
+                         <item>
+                          <spacer name="verticalSpacer_18">
+                           <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>20</width>
+                             <height>40</height>
+                            </size>
+                           </property>
+                          </spacer>
                          </item>
                          <item>
                           <spacer name="horizontalSpacer_16">
@@ -5365,6 +5384,12 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
    <class>PlotWidget</class>
    <extends>QWidget</extends>
    <header>pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MplWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">mplwidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

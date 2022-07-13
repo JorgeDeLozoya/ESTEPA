@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
     QPushButton, QRadioButton, QScrollBar, QSizePolicy,
     QSpacerItem, QStackedWidget, QVBoxLayout, QWidget)
 
+from mplwidget import MplWidget
 from pyqtgraph import PlotWidget
 from widgets import CheckableComboBox
 import resources_rc
@@ -31,7 +32,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1389, 1005)
+        MainWindow.resize(1455, 1006)
         MainWindow.setMinimumSize(QSize(940, 560))
         self.styleSheet = QWidget(MainWindow)
         self.styleSheet.setObjectName(u"styleSheet")
@@ -700,9 +701,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.btn_page_consult.sizePolicy().hasHeightForWidth())
         self.btn_page_consult.setSizePolicy(sizePolicy1)
         self.btn_page_consult.setMinimumSize(QSize(0, 45))
-        self.btn_page_consult.setFont(font)
         self.btn_page_consult.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_page_consult.setLayoutDirection(Qt.LeftToRight)
         self.btn_page_consult.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-magnifying-glass.png)")
 
         self.verticalLayout_8.addWidget(self.btn_page_consult)
@@ -1881,12 +1880,26 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_32.addLayout(self.horizontalLayout_histogram)
 
-        self.verticalSpacer_18 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.histogram = MplWidget(self.estepa)
+        self.histogram.setObjectName(u"histogram")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.histogram.sizePolicy().hasHeightForWidth())
+        self.histogram.setSizePolicy(sizePolicy4)
+        self.histogram.setMinimumSize(QSize(520, 300))
+        self.histogram.setMaximumSize(QSize(520, 16777215))
+        self.histogram.setFocusPolicy(Qt.StrongFocus)
+        self.histogram.setAcceptDrops(True)
 
-        self.verticalLayout_32.addItem(self.verticalSpacer_18)
+        self.verticalLayout_32.addWidget(self.histogram)
 
 
         self.horizontalLayout_8.addLayout(self.verticalLayout_32)
+
+        self.verticalSpacer_18 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.horizontalLayout_8.addItem(self.verticalSpacer_18)
 
         self.horizontalSpacer_16 = QSpacerItem(20, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
@@ -2519,9 +2532,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget_configuration.setCurrentIndex(0)
+        self.stackedWidget_configuration.setCurrentIndex(1)
         self.optionsNonAutomatic.setCurrentIndex(1)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
         self.optionsESTEPA.setCurrentIndex(0)
 
 
@@ -2666,6 +2679,9 @@ class Ui_MainWindow(object):
         self.btnClearDescription_4.setToolTip(QCoreApplication.translate("MainWindow", u"Clear", None))
 #endif // QT_CONFIG(tooltip)
         self.btnClearDescription_4.setText("")
+#if QT_CONFIG(tooltip)
+        self.histogram.setToolTip(QCoreApplication.translate("MainWindow", u"Histogram", None))
+#endif // QT_CONFIG(tooltip)
         self.labelVersion_23.setText(QCoreApplication.translate("MainWindow", u"WAFERMAP", None))
 #if QT_CONFIG(tooltip)
         self.btnSaveDescription_5.setToolTip(QCoreApplication.translate("MainWindow", u"Save", None))
