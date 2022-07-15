@@ -33,18 +33,18 @@ class Estepa():
 				
 
 				# set autocommit
-				if "autocommit" in config_estepa:
+				if "autocommit" in config_estepa:		#per aplicar totes les sentencies automaticament ###
 					self.conn.autocommit = config_estepa["autocommit"]
 				else:
-					self.conn.autocommit = False
+					self.conn.autocommit = False		#no interesa que es vagi executant una darrere l'altre
 				
 				# create a cursor
-				self.cur = self.conn.cursor()
+				self.cur = self.conn.cursor()	#per fer les consultes
 				# execute a statement
-				self.cur.execute('SELECT version()')
+				self.cur.execute('SELECT version()')	#comprovar que funciona
 
 				# display the PostgreSQL database server version
-				self.db_version = self.cur.fetchone()
+				self.db_version = self.cur.fetchone()		#s'assigna a la db version
 				
 
 			else:
@@ -71,11 +71,11 @@ class Estepa():
 
 
 	def get_connect_string(self):
-		return "host=" + self.host + " dbname=" + str(self.database) + " port=" + str(self.port) + " user=" + str(self.user) + " connect_timeout = " + str(self.timeout)
+		return "host=" + self.host + " dbname=" + str(self.database) + " port=" + str(self.port) + " user=" + str(self.user) + " connect_timeout = " + str(self.timeout)		#afegir passsword
 
 	def get_technologies(self,run=""):
-		get_technologies = list()
-		sql = "select distinct tecnologia from runs"
+		get_technologies = list()		#per obtenir totes les tecnologies dels runs
+		sql = "select distinct tecnologia from runs"		#distinct per no repetir les tecnologies
 		if run!="":
 			sql += " WHERE run='" + run + "'"
 		self.cur.execute(sql)
@@ -85,9 +85,9 @@ class Estepa():
 				get_technologies.append(row[0])
 				row = self.cur.fetchone()
 
-		return get_technologies
+		return get_technologies		#obtenir un array de les tech. que tenim
 
-	def create_technology(self,run,fecha,tecnologia):
+	def create_technology(self,run,fecha,tecnologia):		#si no està la tecn. a la bbdd que volem, el ususari escriu la que utilitza
 		create_technology = True
 		try:
 			sql = "INSERT INTO runs (run,fecha,tecnologia) VALUES (%s,%s,%s)"
@@ -230,6 +230,8 @@ class Estepa():
 				sql_insert = "INSERT INTO geometrias (geometria,wafer_size,xsize,ysize,xmaxim,ymaxim,nchips) VALUES	(%s, %s, %s, %s, %s, %s, %s)"
 				self.cur.execute(sql_insert, (geometria, wafer_size, xsize, ysize,xmaxim,ymaxim,nchips))
 				# self.conn.commit()
+			else:
+				sql_upadte = "UPDATE geometrias "
 		except:
 			create_geometrias = False
 
@@ -442,7 +444,7 @@ class Estepa():
 					# create object wafermap file
 					wafermap_file = WafermapFile(inbase_parameters["wafermapFile"])
 
-					geometria = wafermap_file.wafer_parameters["wafer_name"]
+					geometria = wafermap_file.wafer_parameters["wafer_name"]	#captura de parametres per crear la nova geometria
 					wafer_size = wafermap_file.wafer_parameters["wafer_size"]
 					xsize = wafermap_file.wafer_parameters["xsize"]
 					ysize = wafermap_file.wafer_parameters["ysize"]
@@ -464,7 +466,7 @@ class Estepa():
 										if self.create_medidas(mainWindow, inbase_parameters):
 											if not self.conn.autocommit:
 												mainWindow.updateTextImportReport("COMMIT process...")
-												self.conn.commit()
+												self.conn.commit()	#commit per generar si no hi han erradas
 										else:
 											error = True
 											error_message = "Error uploading medidas information!"
@@ -489,7 +491,7 @@ class Estepa():
 
 			if error and not self.conn.autocommit:
 				mainWindow.updateTextImportReport("ROLLBACK process...")
-				self.conn.rollback()
+				self.conn.rollback()			#per recuperar la base de dades en l'estat anterior
 				error_message = "Error in transaction Reverting all other operations of a transaction: " + error_message
 
 			return [error, error_message]
@@ -498,7 +500,7 @@ class Estepa():
 			mainWindow.updateTextImportReport("Error in transaction: " + errorDatabase)
 			if not self.conn.autocommit:
 				mainWindow.updateTextImportReport("ROLLBACK process...")
-				self.conn.rollback()
+				self.conn.rollback()										#per recuperar la base de dades en l'estat anterior
 				return [False, "Error in transaction Reverting all other operations of a transaction: " + errorDatabase]
 			return [False, "Error in transaction: " + errorDatabase]
 

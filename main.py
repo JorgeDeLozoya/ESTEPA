@@ -14,7 +14,7 @@
 #
 # ///////////////////////////////////////////////////////////////
 
-from distutils.log import error
+#from distutils.log import error
 import sys
 import os
 import platform
@@ -28,14 +28,20 @@ from functions import *
 # datetime
 from datetime import datetime
 
+from scipy.stats import norm
+from matplotlib.backends.qt_compat import QtWidgets
+from matplotlib.backends.backend_qtagg import (               
+    FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
+from matplotlib.figure import Figure
 
 from scipy.stats import norm
 from io import open             #mòdul per obrir fitxers externs      
 
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import pyqtgraph as pg                           
 import statistics               #Biblioteca que inclou les funcions estadistiques
-import matplotlib
+#import matplotlib
+import scipy
 import numpy as np                     
 import json                     #Opció 2
 
@@ -51,7 +57,7 @@ import_report_file = "report_import.txt"
 class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
-
+        
         # SET AS GLOBAL WIDGETS
         # ///////////////////////////////////////////////////////////////
         self.ui = Ui_MainWindow()
@@ -67,6 +73,11 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         title = "ESTEPA"
         description = "ESTEPA"
+        # ///////////////////////////////////////////////////////////////
+        # SET MINIMUN WINDOW SIZE
+
+        self.setMinimumSize(1360, 1000)
+
         # APPLY TEXTS
         self.setWindowTitle(title)
         widgets.titleRightInfo.setText(description)
@@ -79,11 +90,6 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         UIFunctions.uiDefinitions(self)
 
-
-        # BUTTONS CLICK
-        # ///////////////////////////////////////////////////////////////
-
-        
         # -----------
         # PAGE ESTEPA
         # -----------
@@ -153,7 +159,10 @@ class MainWindow(QMainWindow):
         # configuration pages
         widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_measurements)
         
-  
+        widgets.btnClearDescription_2.clicked.connect(self.buttonClick)
+        widgets.btnClearDescription_3.clicked.connect(self.buttonClick)
+        widgets.btnCopyDescription_2.clicked.connect(self.copy_values)
+        widgets.btnCopyDescription_3.clicked.connect(self.copy_results)
 
         #LEFT MENUS
         widgets.btn_page_home.clicked.connect(self.buttonClick)
@@ -192,7 +201,7 @@ class MainWindow(QMainWindow):
 
         # SET HOME PAGE AND SELECT MENU
         # ///////////////////////////////////////////////////////////////
-        widgets.stackedWidget.setCurrentWidget(widgets.home)
+        widgets.stackedWidget.setCurrentWidget(widgets.Home_Window)
         widgets.btn_page_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_page_home.styleSheet()))
         
 
@@ -221,6 +230,8 @@ class MainWindow(QMainWindow):
     # ----------------
     # ESTEPA FUNCTIONS
     # ----------------
+
+    #LOAD FROM FILES
     def load_from_files(self):
         file_dat = widgets.txtDataFile.text()
         file_ppg = widgets.txtWafermapFile.text()
@@ -230,8 +241,9 @@ class MainWindow(QMainWindow):
         parameters_list.insert(0,"All parameters")
         widgets.cmbParametersFile.addItems(parameters_list)
 
-
+    #ANALYZE
     def analyze_files(self):
+        
         parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
         parameters_file_list = parameters_file.split(", ")          # split to create list
         FileName = widgets.txtDataFile.text() 
@@ -252,21 +264,19 @@ class MainWindow(QMainWindow):
                     for chip in data_values:
                         widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+str(chip)+" "+str(data_values[chip]))
                     # Get histogram
-                    
-
+                    self.generate_histogram(measurements[parameter]["medida"])
                     # Get wafermap
-
-
-
             else:
                 retval = messageBox(self,"Error getting parameters list","Please, select at least one parameter!","warning")
 
         else:
             retval = messageBox(self,"Error getting Result File",self.result_file.error_message,"warning")
 
+    #CORRELATION
     def correlation_files(self):
         pass
 
+    #DATA FILE
     def open_file_dat(self):
         # GET BUTTON CLICKED
         btn = self.sender()
@@ -293,9 +303,7 @@ class MainWindow(QMainWindow):
                 if btnName == "btnOpenDataFile":
                     widgets.txtDataFile.setText("")
                 
-
-
-
+    #WAFERMAP FILE    
     def open_file_ppg(self):
         # GET BUTTON CLICKED
         btn = self.sender()
@@ -320,6 +328,39 @@ class MainWindow(QMainWindow):
                 if btnName == "btnOpenDataFile":
                     widgets.txtDataFile.setText("")
 
+    def generate_histogram(self,data):
+        # get data
+        mu, std = norm.fit(data)
+        # Delete all widgets in layout
+        layout = widgets.verticalLayout_histogram
+        for i in reversed(range(widgets.verticalLayout_histogram.count())):
+            widgets.verticalLayout_histogram.itemAt(i).widget().deleteLater()
+        # create a FigureCanvas & add to layout
+        static_canvas = FigureCanvas(Figure())
+        layout.addWidget(NavigationToolbar(static_canvas, self))
+        layout.addWidget(static_canvas)
+        _static_ax = static_canvas.figure.subplots()
+        
+        # Plot the histogram.
+        num_chunks = int(widgets.txtHistogramChunks.text())
+        _static_ax.hist(data, bins=num_chunks, density=True, alpha=0.6, color='b')
+        # Plot the PDF.
+        xmin, xmax = min(data),max(data)
+        x = np.linspace(xmin, xmax, 100)
+        p = norm.pdf(x, mu, std)
+          
+        _static_ax.plot(x, p, 'k', linewidth=2)
+        # Put title in histogram
+        title = widgets.cmbParametersFile.currentText()
+        _static_ax.set_title(title)
+
+
+    # ----------------
+    # BBDD FUNCTIONS
+    # ----------------
+
+    #SAVE IMPORT REPORT
+    #
     def save_import_report(self):
         global widgets
         texto = widgets.txtImportReport.toPlainText()
@@ -327,6 +368,8 @@ class MainWindow(QMainWindow):
         with open(destFile, 'w') as f:
             f.write(texto)
 
+    #UPDATE IMPORT REPORT
+    #
     def updateTextImportReport(self,texto,color="NORMAL"):
         global widgets
         date_today = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
@@ -337,14 +380,15 @@ class MainWindow(QMainWindow):
 
         widgets.txtImportReport.appendHtml(texto_final)
         QApplication.processEvents()
-
+    
+    #UPDATE IMPORT REPORT
     def UploadFiles(self):
         try:
             CheckParameteres = True
-            txtDataFileInbase = widgets.txtDataFileInbase.text()
+            txtDataFileInbase = widgets.txtDataFileInbase.text()        #captura de fitxers
             txtWafermapFileInbase = widgets.txtWafermapFileInbase.text()
             # first check all parameters
-            if txtDataFileInbase=="" or not os.path.exists(txtDataFileInbase):
+            if txtDataFileInbase=="" or not os.path.exists(txtDataFileInbase):  #check si els fitxers estan buits i si existeixen
                 CheckParameteres = False
                 self.updateTextImportReport("- File DATA doesn't selected or path not exists!", "WARNING")
 
@@ -357,9 +401,9 @@ class MainWindow(QMainWindow):
                 # first load files (data file & wafermap)
                 
 
-                while True:
+                while True: 
                     # check other parameters
-                    txtRunUpload = widgets.txtRunUpload.text().strip()
+                    txtRunUpload = widgets.txtRunUpload.text().strip()      #captura dels valors al formulari
                     txtWaferUpload = widgets.txtWaferUpload.text().strip()
                     txtDateUpload = widgets.txtDateUpload.text().strip()
                     txtTechnologyUpload = widgets.txtTechnologyUpload.text().strip()
@@ -400,7 +444,7 @@ class MainWindow(QMainWindow):
 
             if CheckParameteres:
                 # import data
-                dataFile = ResultFile(txtDataFileInbase)
+                dataFile = ResultFile(txtDataFileInbase)        #crea dos objectes data i wafer
                 wafermapFile = WafermapFile(txtWafermapFileInbase)
                 if len(dataFile.dies) == int(wafermapFile.wafer_parameters["nchips"]):
                     if dataFile.error:
@@ -411,11 +455,11 @@ class MainWindow(QMainWindow):
                         
                         self.updateTextImportReport("START import process")
                         # get parameters
-                        inbase_parameters = {
+                        inbase_parameters = {               #diccionari amb totes les dades
                             "dataFile" : txtDataFileInbase,
                             "wafermapFile" : txtWafermapFileInbase,
                             "run" : txtRunUpload,
-                            "wafer" : txtRunUpload + "-" + txtWaferUpload,
+                            "wafer" : txtRunUpload + "-" + txtWaferUpload,  #run i num. d'oblea
                             "date" : txtDateUpload,
                             "technology" : txtTechnologyUpload,
                             "mask" : txtMaskUpload,
@@ -424,7 +468,7 @@ class MainWindow(QMainWindow):
                         }
                         # put all info in estepa database
                         putAllInfo = False
-                        virtual_wafer = inbase_parameters["wafer"]
+                        virtual_wafer = inbase_parameters["wafer"]      #oblea diferent a la normal
                         # first search for measurement of this wafer in database
                         if self.estepa.exists_measurements(inbase_parameters["wafer"]):
                             retval = messageBox(self,"Measurements for this wafer exists","Do you want to CREATE new virtual wafer for run " + txtRunUpload + " and wafer " + txtWaferUpload + " ?","question")
@@ -447,7 +491,7 @@ class MainWindow(QMainWindow):
                             retVal = self.estepa.inbase(self,inbase_parameters)
                             self.updateTextImportReport("FINISH import process")
                             if retVal[0]:
-                                retval = messageBox(self,"Error uploading info to database",retVal[1],"error")
+                                retval = messageBox(self,"Error uploading info to database",retVal[1],"error")  #retorna l'error que és
                             else:
                                 retval = messageBox(self,"Success upload","Uploaded all information to database successfully!","info")
                                 
@@ -466,14 +510,30 @@ class MainWindow(QMainWindow):
             print(error)
             self.updateTextImportReport("Some error occurs!", "ERROR")
 
+    # COPIAR ELS VALORS
+    def copy_values(self):
+        widgets.txtLoadedValues.selectAll()
+        widgets.txtLoadedValues.copy()
+
+    # COPIAR ELS RESULTATS
+    def copy_results(self):
+        widgets.txtParametersResult.selectAll()
+        widgets.txtParametersResult.copy()
+
+    #UPDATE TEXT TECHNOLOGY UPLOAD
+    #Change text by selecting technology from combobox
     def updateTextTechnologyUpload(self):
         if widgets.cmbTechnologyUpload.currentIndex()>0:
             widgets.txtTechnologyUpload.setText(str(widgets.cmbTechnologyUpload.currentText()))
 
+    #UPDATE TEXT MASK UPLOAD
+    #Change text by selecting mask from combobox
     def updateTextMaskUpload(self):
         if widgets.cmbMaskUpload.currentIndex()>0:
             widgets.txtMaskUpload.setText(str(widgets.cmbMaskUpload.currentText()))
 
+    #GET RANGOS
+    #Change text by selecting mask from combobox
     def get_rangos(self):
         parametersBBDD_list = widgets.cmbParametersBBDD.currentText().split(",")
         if len(parametersBBDD_list)==1:
@@ -539,6 +599,8 @@ class MainWindow(QMainWindow):
         widgets.cmbParametersBBDD.clear()
         widgets.txtTechnologyUpload.setText("")
 
+    #LOAD COMBOS
+
     def load_cmbRuns(self):
         widgets.cmbRuns.clear()
         widgets.cmbRuns.addItem("Select run")
@@ -564,6 +626,7 @@ class MainWindow(QMainWindow):
         else:
             widgets.cmbParametersBBDD.clear()
 
+    #UPDATE PARAMETERS IN BBDD
     def update_cmbParametersBBDD(self):
         cmbParametersBBDD = widgets.cmbParametersBBDD.currentText()
         cmbParametersBBDD_list = cmbParametersBBDD.split(",")
@@ -616,7 +679,7 @@ class MainWindow(QMainWindow):
 
         # PAGINA PRINCIPAL
         if btnName == "btn_page_home":
-            widgets.stackedWidget.setCurrentWidget(widgets.home)
+            widgets.stackedWidget.setCurrentWidget(widgets.Home_Window)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
@@ -645,7 +708,12 @@ class MainWindow(QMainWindow):
             widgets.stackedWidget.setCurrentWidget(widgets.inbase)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
+        
+        if btnName == "btnClearDescription_2":
+            widgets.txtLoadedValues.setPlainText("")
 
+        if btnName == "btnClearDescription_3":
+            widgets.txtParametersResult.setPlainText("")
 
     # COPIAR ELS VALORS
     def copy_values(self):
@@ -656,11 +724,6 @@ class MainWindow(QMainWindow):
     def copy_results(self):
         widgets.txtParametersResult.selectAll()
         widgets.txtParametersResult.copy()
-
-     
-
- 
-
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -678,10 +741,10 @@ class MainWindow(QMainWindow):
         self.dragPos = globalPos
 
         # PRINT MOUSE EVENTS
-        if event.buttons() == Qt.LeftButton:
-            print('Mouse click: LEFT CLICK')
-        if event.buttons() == Qt.RightButton:
-            print('Mouse click: RIGHT CLICK')
+        # if event.buttons() == Qt.LeftButton:
+        #     print('Mouse click: LEFT CLICK')
+        # if event.buttons() == Qt.RightButton:
+        #     print('Mouse click: RIGHT CLICK')
 
 def messageBox(self,title,message,type):
 	if type=="information" or type=="info":

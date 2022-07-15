@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="estepa">
+    <file>Estepa.png</file>
+  </qresource>
+</RCC>
