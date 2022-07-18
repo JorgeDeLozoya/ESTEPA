@@ -1,6 +1,5 @@
 ESTEPA
 
--Programar histograma
 
 -Entendre la part de base de dades
 
@@ -19,3 +18,5 @@ Opc.
 -Afegir un stackedwidget per la part de parametres
 
 -Programar pestanyes
+
+- Donar-li us a les fletxes del histograma per canviar entre valors
