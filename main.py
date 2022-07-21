@@ -30,20 +30,23 @@ from datetime import datetime
 
 from scipy.stats import norm
 from matplotlib.backends.qt_compat import QtWidgets
-from matplotlib.backends.backend_qtagg import (               
-    FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
+from matplotlib.backends.backend_qtagg import (FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.figure import Figure
+from qbstyles import mpl_style
 
 from scipy.stats import norm
 from io import open             #mòdul per obrir fitxers externs      
 
 #import matplotlib.pyplot as plt
-import pyqtgraph as pg                           
+import pyqtgraph as pg     
+import seaborn as sb                      
 import statistics               #Biblioteca que inclou les funcions estadistiques
 #import matplotlib
 import scipy
 import numpy as np                     
 import json                     #Opció 2
+import random           #temporal
+
 
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 #app = QtWidget.QApplication(sys.argv) Per solucionar el error de QApplication
@@ -164,6 +167,13 @@ class MainWindow(QMainWindow):
         widgets.btnCopyDescription_2.clicked.connect(self.copy_values)
         widgets.btnCopyDescription_3.clicked.connect(self.copy_results)
 
+        # HOME MENUS
+        widgets.home_analysis.clicked.connect(self.buttonClick)
+        widgets.home_consult.clicked.connect(self.buttonClick)
+        widgets.home_upload.clicked.connect(self.buttonClick)
+
+
+
         #LEFT MENUS
         widgets.btn_page_home.clicked.connect(self.buttonClick)
         widgets.btn_page_estepa.clicked.connect(self.buttonClick)
@@ -248,10 +258,14 @@ class MainWindow(QMainWindow):
         parameters_file_list = parameters_file.split(", ")          # split to create list
         FileName = widgets.txtDataFile.text() 
         result_file = ResultFile(FileName)
+        # wafermap_file = WafermapFile(FileName)
         if not result_file.error:
             if parameters_file!="":
                 # GET parameters result
                 measurements = result_file.get_params(parameters_file_list)
+                # wafer = wafermap_file.get_xmax_ymax()
+
+                widgets.txtParametersResult.setPlainText("")
                 for parameter in parameters_file_list:
                     estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.config_estepa_file))
                     widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
@@ -266,6 +280,7 @@ class MainWindow(QMainWindow):
                     # Get histogram
                     self.generate_histogram(measurements[parameter]["medida"])
                     # Get wafermap
+                    self.generate_wafermap()
             else:
                 retval = messageBox(self,"Error getting parameters list","Please, select at least one parameter!","warning")
 
@@ -274,7 +289,37 @@ class MainWindow(QMainWindow):
 
     #CORRELATION
     def correlation_files(self):
-        pass
+        #self.generate_histogram(measurements[parameter]["medida"])
+        parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
+        parameters_file_list = parameters_file.split(", ")          # split to create list
+        FileName = widgets.txtDataFile.text() 
+        result_file = ResultFile(FileName)
+        if not result_file.error:
+            if parameters_file!="":
+                measurements = result_file.get_params(parameters_file_list)
+                # while parameter < 2:
+                widgets.txtParametersResult.setPlainText("")
+                for parameter in parameters_file_list:
+                    estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.config_estepa_file))
+                    widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_correlation())
+                if len(parameters_file_list) == 2:
+                    # Get data values from result_file
+                    data_values = result_file.get_data_values(parameters_file)
+                    widgets.txtLoadedValues.setPlainText("")
+                    
+                    print(parameters_file)
+                    np.corrcoef(parameters_file, parameters_file)
+                else:
+                    # Get data values from result_file
+                    
+                    # widgets.txtLoadedValues.setPlainText("Select two parameters")
+                    # colors = {"NORMAL": "#FFFFFF", "ERROR": "#FF3300","WARNING" : "orange"}
+
+                    retval = messageBox(self,"Error getting parameters list","Please, select two parameters!","warning")
+
+        else:
+            retval = messageBox(self,"Error getting Result File",self.result_file.error_message,"warning")
+        #pass   
 
     #DATA FILE
     def open_file_dat(self):
@@ -329,6 +374,7 @@ class MainWindow(QMainWindow):
                     widgets.txtDataFile.setText("")
 
     def generate_histogram(self,data):
+        mpl_style(dark=True)
         # get data
         mu, std = norm.fit(data)
         # Delete all widgets in layout
@@ -343,18 +389,58 @@ class MainWindow(QMainWindow):
         
         # Plot the histogram.
         num_chunks = int(widgets.txtHistogramChunks.text())
-        _static_ax.hist(data, bins=num_chunks, density=True, alpha=0.6, color='b')
+        _static_ax.hist(data, bins=num_chunks, density=True, alpha=0.6, color='c')
         # Plot the PDF.
         xmin, xmax = min(data),max(data)
         x = np.linspace(xmin, xmax, 100)
         p = norm.pdf(x, mu, std)
           
-        _static_ax.plot(x, p, 'k', linewidth=2)
+        _static_ax.plot(x, p, 'w', linewidth=1)
         # Put title in histogram
         title = widgets.cmbParametersFile.currentText()
         _static_ax.set_title(title)
+        
 
 
+        
+
+    def generate_wafermap(self):
+        # Delete all widgets in layout
+        layout = widgets.verticalLayout_wafermap
+        for i in reversed(range(widgets.verticalLayout_wafermap.count())):
+            widgets.verticalLayout_wafermap.itemAt(i).widget().deleteLater()
+        # create a FigureCanvas & add to layout
+        static_canvas = FigureCanvas(Figure())
+        layout.addWidget(NavigationToolbar(static_canvas, self))
+        layout.addWidget(static_canvas)
+        _static_ax = static_canvas.figure.subplots()
+    
+    
+    
+    #     # get wafer
+    #     mu, std = norm.fit(data)
+    #     # Delete all widgets in layout
+    #     layout2 = widgets.verticalLayout_wafermap
+    #     for i in reversed(range(widgets.verticalLayout_wafermap.count())):
+    #         widgets.verticalLayout_wafermap.itemAt(i).widget().deleteLater()
+    #     # create a FigureCanvas & add to layout
+    #     static_canvas = FigureCanvas(Figure())
+    #     layout2.addWidget(NavigationToolbar(static_canvas, self))
+    #     layout2.addWidget(static_canvas)
+    #     _static_ax = static_canvas.figure.subplots()
+        
+    #     # Plot the histogram.
+    #     num_chunks = int(widgets.txtHistogramChunks.text())
+    #     _static_ax.hist(data, bins=num_chunks, density=True, alpha=0.6, color='b')
+    #     # Plot the PDF.
+    #     xmin, xmax = min(data),max(data)
+    #     x = np.linspace(xmin, xmax, 100)
+    #     p = norm.pdf(x, mu, std)
+          
+    #     _static_ax.plot(x, p, 'k', linewidth=2)
+    #     # Put title in histogram
+    #     title = widgets.cmbParametersFile.currentText()
+    #     _static_ax.set_title(title)
     # ----------------
     # BBDD FUNCTIONS
     # ----------------
@@ -490,6 +576,9 @@ class MainWindow(QMainWindow):
                             self.updateTextImportReport("UPLOADING results, please wait...")
                             retVal = self.estepa.inbase(self,inbase_parameters)
                             self.updateTextImportReport("FINISH import process")
+                            #upadte combos technology
+                            self.load_cmbTechnology()
+                            self.load_cmbMask()
                             if retVal[0]:
                                 retval = messageBox(self,"Error uploading info to database",retVal[1],"error")  #retorna l'error que és
                             else:
@@ -693,7 +782,23 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
+        if btnName == "home_analysis":
+            # show estepa configuration
+            widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
+            # show estepa page
+            widgets.stackedWidget.setCurrentWidget(widgets.estepa)
+            UIFunctions.resetStyle(self, btnName)
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
+
         if btnName == "btn_page_consult":
+            # show estepa configuration
+            widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
+            # show estepa page
+            widgets.stackedWidget.setCurrentWidget(widgets.consult_estepa)
+            UIFunctions.resetStyle(self, btnName)
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
+
+        if btnName == "home_consult":
             # show estepa configuration
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
             # show estepa page
@@ -704,11 +809,21 @@ class MainWindow(QMainWindow):
         if btnName == "btn_page_inbase":
             # show estepa configuration
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
+            
             # show estepa page
             widgets.stackedWidget.setCurrentWidget(widgets.inbase)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
-        
+
+        if btnName == "home_upload":
+            # show estepa configuration
+            widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
+            
+            # show estepa page
+            widgets.stackedWidget.setCurrentWidget(widgets.inbase)
+            UIFunctions.resetStyle(self, btnName)
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
+
         if btnName == "btnClearDescription_2":
             widgets.txtLoadedValues.setPlainText("")
 
@@ -735,7 +850,7 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////////////////////////
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
-        #self.dragPos = event.globalPos()
+        self.dragPos = event.globalPos()
         p = event.globalPosition()
         globalPos = p.toPoint()
         self.dragPos = globalPos

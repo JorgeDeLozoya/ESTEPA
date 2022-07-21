@@ -32,6 +32,7 @@ class StatisticsEstepa():
 		self.mean = self.ERROR_VALUE
 		self.median = self.ERROR_VALUE
 		self.stdev = self.ERROR_VALUE
+		self.corr = self.ERROR_VALUE							###
 		self.points_ini = 0
 		self.points_end = 0
 		self.error = False
@@ -52,6 +53,7 @@ class StatisticsEstepa():
 				self.outliers()
 				# load statistics
 				self.load_statistics()
+				self.load_correlation()																				###
 				self.points_end = len(data_list)
 			else:
 				self.error = True	
@@ -71,10 +73,21 @@ class StatisticsEstepa():
 
 		return print_statistics
 
+	def print_correlation(self):																					###
+		print_correlation = self.param + " : " + "\n"
+		print_correlation +=" - Correlation:   \t" + str(self.corr) + "\n"
+		print_correlation +=" - Points:   \t" + str(self.points_end) + "/" + str(self.points_ini) + "\n"
+		print_correlation +=" - Method:   \t" + str(self.config["method"]) + "\n"
+
+		return print_correlation		
+
 	def load_statistics(self):
 		self.mean_estepa()
 		self.median_estepa()
 		self.stdev_estepa()
+
+	def load_correlation(self):
+		self.correlation_estepa()															####
 
 	def mean_estepa(self):
 		if len(self.data_list)>0:
@@ -93,6 +106,12 @@ class StatisticsEstepa():
 			self.stdev = statistics.stdev(self.data_list)
 		else:
 			self.stdev = self.ERROR_VALUE
+	
+	def correlation_estepa(self):
+		if len(self.data_list)==2:
+			self.corr = np.corrcoef(self.data_list)
+		else:
+			self.corr = self.ERROR_VALUE	
 
 	def outliers(self):
 		if self.config["method"] in self.methods:
@@ -138,6 +157,7 @@ class StatisticsEstepa():
 						n = len(self.data_list)
 						if n==0: break
 						self.load_statistics() # calc mean, median & stdev
+						self.load_correlation() # calc correlation															#20/7
 						klim = self.extract_k(n,prvb)
 						xmin = self.mean - float(klim) * self.stdev
 						xmax = self.mean + float(klim) * self.stdev
