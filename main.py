@@ -309,6 +309,8 @@ class MainWindow(QMainWindow):
                     
                     print(parameters_file)
                     np.corrcoef(parameters_file, parameters_file)
+
+                    self.generate_graph_correlation(measurements[parameter]["medida"])
                 else:
                     # Get data values from result_file
                     
@@ -372,6 +374,17 @@ class MainWindow(QMainWindow):
                     widgets.txtDataFileInbase.setText("")
                 if btnName == "btnOpenDataFile":
                     widgets.txtDataFile.setText("")
+
+    def generate_graph_correlation(self,data):
+        mpl_style(dark=True)
+        # get data
+        mu, std = norm.fit(data)
+        # Delete all widgets in layout
+        layout = widgets.verticalLayout_histogram
+        for i in reversed(range(widgets.verticalLayout_histogram.count())):
+            widgets.verticalLayout_histogram.itemAt(i).widget().deleteLater()
+        # create a FigureCanvas & add to layout
+        
 
     def generate_histogram(self,data):
         mpl_style(dark=True)
