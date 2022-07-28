@@ -45,7 +45,6 @@ import statistics               #Biblioteca que inclou les funcions estadistique
 import scipy
 import numpy as np                     
 import json                     #Opció 2
-import random           #temporal
 
 
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
@@ -258,6 +257,9 @@ class MainWindow(QMainWindow):
         parameters_file_list = parameters_file.split(", ")          # split to create list
         FileName = widgets.txtDataFile.text() 
         result_file = ResultFile(FileName)
+
+        print(parameters_file)
+
         # wafermap_file = WafermapFile(FileName)
         if not result_file.error:
             if parameters_file!="":
@@ -287,8 +289,35 @@ class MainWindow(QMainWindow):
         else:
             retval = messageBox(self,"Error getting Result File",self.result_file.error_message,"warning")
 
-    #CORRELATION
+    # CORRELATION
     def correlation_files(self):
+        #V1 
+        # #self.generate_histogram(measurements[parameter]["medida"])
+        # parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
+        # parameters_file_list = parameters_file.split(", ")          # split to create list
+        # FileName = widgets.txtDataFile.text() 
+        # result_file = ResultFile(FileName)
+        # if not result_file.error:
+        #     if parameters_file!="":
+        #         measurements = result_file.get_params(parameters_file_list)
+        #         # while parameter < 2:
+        #         widgets.txtParametersResult.setPlainText("")
+        #         for parameter in parameters_file_list:
+        #             estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.config_estepa_file))
+        #             widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_correlation())
+        #         if len(parameters_file_list) == 2:
+        #             # Get data values from result_file
+        #             data_values = result_file.get_data_values(parameters_file)
+        #             widgets.txtLoadedValues.setPlainText("")
+                    
+        #             print(parameters_file)
+        #             np.corrcoef(parameters_file, parameters_file)
+
+        #             self.generate_graph_correlation(measurements[parameter]["medida"])
+        
+        #V2 (portatil)
+        file_dat = widgets.txtDataFile.text()
+        file_result = ResultFile(file_dat)
         #self.generate_histogram(measurements[parameter]["medida"])
         parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
         parameters_file_list = parameters_file.split(", ")          # split to create list
@@ -307,9 +336,20 @@ class MainWindow(QMainWindow):
                     data_values = result_file.get_data_values(parameters_file)
                     widgets.txtLoadedValues.setPlainText("")
                     
-                    print(parameters_file)
-                    np.corrcoef(parameters_file, parameters_file)
+                    print(parameters_file_list)
+                    parameter1 = parameters_file_list[0]
+                    parameter2 = parameters_file_list[1]
+                    #print(parameters_file)
+                    #print(file_result)
+                    #np.corrcoef(parameters_file, parameters_file)
+                    #file_result_divided = file_result.split()
+                    print(len(parameter1))
+                    print(len(parameter2))
 
+                    #print(file_result_divided)       
+                    #corr, _ = pearsonr(parameter1, parameter2)
+                    correlation = np.corrcoef(parameter1, parameter2)
+                    print(correlation)
                     self.generate_graph_correlation(measurements[parameter]["medida"])
                 else:
                     # Get data values from result_file
@@ -321,7 +361,7 @@ class MainWindow(QMainWindow):
 
         else:
             retval = messageBox(self,"Error getting Result File",self.result_file.error_message,"warning")
-        #pass   
+        # pass   
 
     #DATA FILE
     def open_file_dat(self):
@@ -412,48 +452,10 @@ class MainWindow(QMainWindow):
         # Put title in histogram
         title = widgets.cmbParametersFile.currentText()
         _static_ax.set_title(title)
-        
-
-
-        
-
+    
     def generate_wafermap(self):
-        # Delete all widgets in layout
-        layout = widgets.verticalLayout_wafermap
-        for i in reversed(range(widgets.verticalLayout_wafermap.count())):
-            widgets.verticalLayout_wafermap.itemAt(i).widget().deleteLater()
-        # create a FigureCanvas & add to layout
-        static_canvas = FigureCanvas(Figure())
-        layout.addWidget(NavigationToolbar(static_canvas, self))
-        layout.addWidget(static_canvas)
-        _static_ax = static_canvas.figure.subplots()
-    
-    
-    
-    #     # get wafer
-    #     mu, std = norm.fit(data)
-    #     # Delete all widgets in layout
-    #     layout2 = widgets.verticalLayout_wafermap
-    #     for i in reversed(range(widgets.verticalLayout_wafermap.count())):
-    #         widgets.verticalLayout_wafermap.itemAt(i).widget().deleteLater()
-    #     # create a FigureCanvas & add to layout
-    #     static_canvas = FigureCanvas(Figure())
-    #     layout2.addWidget(NavigationToolbar(static_canvas, self))
-    #     layout2.addWidget(static_canvas)
-    #     _static_ax = static_canvas.figure.subplots()
-        
-    #     # Plot the histogram.
-    #     num_chunks = int(widgets.txtHistogramChunks.text())
-    #     _static_ax.hist(data, bins=num_chunks, density=True, alpha=0.6, color='b')
-    #     # Plot the PDF.
-    #     xmin, xmax = min(data),max(data)
-    #     x = np.linspace(xmin, xmax, 100)
-    #     p = norm.pdf(x, mu, std)
-          
-    #     _static_ax.plot(x, p, 'k', linewidth=2)
-    #     # Put title in histogram
-    #     title = widgets.cmbParametersFile.currentText()
-    #     _static_ax.set_title(title)
+        pass
+
     # ----------------
     # BBDD FUNCTIONS
     # ----------------
@@ -863,7 +865,7 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////////////////////////
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
-        self.dragPos = event.globalPos()
+        self.dragPos = event.globalPosition().toPoint()                                         ###
         p = event.globalPosition()
         globalPos = p.toPoint()
         self.dragPos = globalPos

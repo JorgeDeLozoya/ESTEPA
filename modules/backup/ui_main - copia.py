@@ -1514,6 +1514,21 @@ class Ui_MainWindow(object):
         self.gridLayout_2 = QGridLayout(self.gridLayoutWidget)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.btnCorrelationFiles = QPushButton(self.gridLayoutWidget)
+        self.btnCorrelationFiles.setObjectName(u"btnCorrelationFiles")
+        self.btnCorrelationFiles.setMinimumSize(QSize(120, 30))
+        self.btnCorrelationFiles.setMaximumSize(QSize(120, 16777215))
+        self.btnCorrelationFiles.setFont(font)
+        self.btnCorrelationFiles.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btnCorrelationFiles.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        self.btnCorrelationFiles.setIcon(icon12)
+
+        self.gridLayout_2.addWidget(self.btnCorrelationFiles, 2, 4, 1, 1)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_2.addItem(self.horizontalSpacer_3, 2, 5, 1, 1)
+
         self.btnAnalyzeFiles = QPushButton(self.gridLayoutWidget)
         self.btnAnalyzeFiles.setObjectName(u"btnAnalyzeFiles")
         self.btnAnalyzeFiles.setMinimumSize(QSize(120, 30))
@@ -1524,21 +1539,6 @@ class Ui_MainWindow(object):
         self.btnAnalyzeFiles.setIcon(icon12)
 
         self.gridLayout_2.addWidget(self.btnAnalyzeFiles, 2, 1, 1, 1)
-
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_2.addItem(self.horizontalSpacer_3, 2, 3, 1, 1)
-
-        self.btnCorrelationFiles = QPushButton(self.gridLayoutWidget)
-        self.btnCorrelationFiles.setObjectName(u"btnCorrelationFiles")
-        self.btnCorrelationFiles.setMinimumSize(QSize(120, 30))
-        self.btnCorrelationFiles.setMaximumSize(QSize(120, 16777215))
-        self.btnCorrelationFiles.setFont(font)
-        self.btnCorrelationFiles.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btnCorrelationFiles.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-        self.btnCorrelationFiles.setIcon(icon12)
-
-        self.gridLayout_2.addWidget(self.btnCorrelationFiles, 2, 2, 1, 1)
 
         self.cmbParametersFile = CheckableComboBox(self.gridLayoutWidget)
         self.cmbParametersFile.addItem("")
@@ -1554,7 +1554,7 @@ class Ui_MainWindow(object):
         self.cmbParametersFile.setIconSize(QSize(16, 16))
         self.cmbParametersFile.setFrame(True)
 
-        self.gridLayout_2.addWidget(self.cmbParametersFile, 1, 1, 1, 3)
+        self.gridLayout_2.addWidget(self.cmbParametersFile, 1, 1, 1, 5)
 
         self.labelVersion_19 = QLabel(self.gridLayoutWidget)
         self.labelVersion_19.setObjectName(u"labelVersion_19")
@@ -1568,6 +1568,42 @@ class Ui_MainWindow(object):
         self.horizontalSpacer_4 = QSpacerItem(6, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
         self.gridLayout_2.addItem(self.horizontalSpacer_4, 2, 0, 1, 1)
+
+        self.pushButton = QPushButton(self.gridLayoutWidget)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setMinimumSize(QSize(30, 30))
+        self.pushButton.setMaximumSize(QSize(30, 30))
+        self.pushButton.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
+"\n"
+"#pagesContainer .QPushButton {\n"
+"	border: 2px solid rgb(52, 59, 72);\n"
+"	border-radius: 5px;	\n"
+"	background-color: rgb(52, 59, 72);\n"
+"}\n"
+"\n"
+"#pagesContainer .QPushButton:hover {\n"
+"	background-color: rgb(57, 65, 80);\n"
+"	border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"\n"
+"#pagesContainer .QPushButton:pressed {	\n"
+"	background-color: rgb(35, 40, 49);\n"
+"	border: 2px solid rgb(43, 50, 61);\n"
+"}\n"
+"\n"
+"#pagesContainer .QPushButton:disabled {\n"
+"\n"
+"	background-color: #333333; border: none;\n"
+"}")
+        icon13 = QIcon()
+        icon13.addFile(u":/icons/images/icons/cil-chevron-right.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton.setIcon(icon13)
+
+        self.gridLayout_2.addWidget(self.pushButton, 2, 2, 1, 1)
+
+        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.gridLayout_2.addItem(self.horizontalSpacer_7, 2, 3, 1, 1)
 
         self.optionsESTEPA.addWidget(self.files)
         self.bbdd = QWidget()
@@ -1755,9 +1791,9 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        icon13 = QIcon()
-        icon13.addFile(u":/icons/images/icons/cil-save.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btnSaveDescription_2.setIcon(icon13)
+        icon14 = QIcon()
+        icon14.addFile(u":/icons/images/icons/cil-save.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btnSaveDescription_2.setIcon(icon14)
         self.btnSaveDescription_2.setFlat(False)
 
         self.horizontalLayout_10.addWidget(self.btnSaveDescription_2)
@@ -1789,9 +1825,9 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        icon14 = QIcon()
-        icon14.addFile(u"images/icons/cil-clone.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btnCopyDescription_2.setIcon(icon14)
+        icon15 = QIcon()
+        icon15.addFile(u"images/icons/cil-clone.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btnCopyDescription_2.setIcon(icon15)
 
         self.horizontalLayout_10.addWidget(self.btnCopyDescription_2)
 
@@ -1824,9 +1860,9 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        icon15 = QIcon()
-        icon15.addFile(u":/icons/images/icons/cil-x.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btnClearDescription_2.setIcon(icon15)
+        icon16 = QIcon()
+        icon16.addFile(u":/icons/images/icons/cil-x.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btnClearDescription_2.setIcon(icon16)
         self.btnClearDescription_2.setFlat(False)
 
         self.horizontalLayout_10.addWidget(self.btnClearDescription_2)
@@ -1918,7 +1954,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnSaveDescription_3.setIcon(icon13)
+        self.btnSaveDescription_3.setIcon(icon14)
         self.btnSaveDescription_3.setFlat(False)
 
         self.horizontalLayout_7.addWidget(self.btnSaveDescription_3)
@@ -1950,7 +1986,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnCopyDescription_3.setIcon(icon14)
+        self.btnCopyDescription_3.setIcon(icon15)
 
         self.horizontalLayout_7.addWidget(self.btnCopyDescription_3)
 
@@ -1983,7 +2019,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnClearDescription_3.setIcon(icon15)
+        self.btnClearDescription_3.setIcon(icon16)
         self.btnClearDescription_3.setFlat(False)
 
         self.horizontalLayout_7.addWidget(self.btnClearDescription_3)
@@ -2030,39 +2066,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_20.addItem(self.horizontalSpacer_20)
 
-        self.next_histogram = QPushButton(self.estepa)
-        self.next_histogram.setObjectName(u"next_histogram")
-        self.next_histogram.setMinimumSize(QSize(30, 30))
-        self.next_histogram.setMaximumSize(QSize(30, 16777215))
-        self.next_histogram.setCursor(QCursor(Qt.PointingHandCursor))
-        self.next_histogram.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
-"\n"
-"#pagesContainer .QPushButton {\n"
-"	border: 2px solid rgb(52, 59, 72);\n"
-"	border-radius: 5px;	\n"
-"	background-color: rgb(52, 59, 72);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:hover {\n"
-"	background-color: rgb(57, 65, 80);\n"
-"	border: 2px solid rgb(61, 70, 86);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:pressed {	\n"
-"	background-color: rgb(35, 40, 49);\n"
-"	border: 2px solid rgb(43, 50, 61);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:disabled {\n"
-"\n"
-"	background-color: #333333; border: none;\n"
-"}")
-        icon16 = QIcon()
-        icon16.addFile(u":/icons/images/icons/cil-chevron-right.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.next_histogram.setIcon(icon16)
-
-        self.horizontalLayout_20.addWidget(self.next_histogram)
-
         self.btnClearDescription_4 = QPushButton(self.estepa)
         self.btnClearDescription_4.setObjectName(u"btnClearDescription_4")
         self.btnClearDescription_4.setEnabled(True)
@@ -2092,7 +2095,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnClearDescription_4.setIcon(icon15)
+        self.btnClearDescription_4.setIcon(icon16)
         self.btnClearDescription_4.setFlat(False)
 
         self.horizontalLayout_20.addWidget(self.btnClearDescription_4)
@@ -2174,7 +2177,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnSaveDescription_5.setIcon(icon13)
+        self.btnSaveDescription_5.setIcon(icon14)
         self.btnSaveDescription_5.setFlat(False)
 
         self.horizontalLayout_11.addWidget(self.btnSaveDescription_5)
@@ -2208,7 +2211,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnClearDescription_5.setIcon(icon15)
+        self.btnClearDescription_5.setIcon(icon16)
         self.btnClearDescription_5.setFlat(False)
 
         self.horizontalLayout_11.addWidget(self.btnClearDescription_5)
@@ -2469,7 +2472,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.next_histogram_3.setIcon(icon16)
+        self.next_histogram_3.setIcon(icon13)
 
         self.gridLayout_5.addWidget(self.next_histogram_3, 5, 3, 1, 1)
 
@@ -2598,7 +2601,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.next_histogram_2.setIcon(icon16)
+        self.next_histogram_2.setIcon(icon13)
 
         self.horizontalLayout_22.addWidget(self.next_histogram_2)
 
@@ -2631,7 +2634,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnClearDescription_8.setIcon(icon15)
+        self.btnClearDescription_8.setIcon(icon16)
         self.btnClearDescription_8.setFlat(False)
 
         self.horizontalLayout_22.addWidget(self.btnClearDescription_8)
@@ -2987,7 +2990,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnSaveImportReport.setIcon(icon13)
+        self.btnSaveImportReport.setIcon(icon14)
         self.btnSaveImportReport.setFlat(False)
 
         self.horizontalLayout_31.addWidget(self.btnSaveImportReport)
@@ -3021,7 +3024,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnClearImportReport.setIcon(icon15)
+        self.btnClearImportReport.setIcon(icon16)
         self.btnClearImportReport.setFlat(False)
 
         self.horizontalLayout_31.addWidget(self.btnClearImportReport)
@@ -3197,7 +3200,7 @@ class Ui_MainWindow(object):
 
         self.stackedWidget_configuration.setCurrentIndex(1)
         self.optionsNonAutomatic.setCurrentIndex(1)
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(2)
         self.optionsESTEPA.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
         self.optionsESTEPA_2.setCurrentIndex(0)
@@ -3291,11 +3294,12 @@ class Ui_MainWindow(object):
         self.txtDataFile.setPlaceholderText("")
         self.btnLoadFiles.setText(QCoreApplication.translate("MainWindow", u"Load from files", None))
         self.labelVersion_14.setText(QCoreApplication.translate("MainWindow", u"Load WAFERMAP file", None))
-        self.btnAnalyzeFiles.setText(QCoreApplication.translate("MainWindow", u"Analyze", None))
         self.btnCorrelationFiles.setText(QCoreApplication.translate("MainWindow", u"Correlation", None))
+        self.btnAnalyzeFiles.setText(QCoreApplication.translate("MainWindow", u"Analyze", None))
         self.cmbParametersFile.setItemText(0, QCoreApplication.translate("MainWindow", u"Select instrument", None))
 
         self.labelVersion_19.setText(QCoreApplication.translate("MainWindow", u"Select parameters", None))
+        self.pushButton.setText("")
         self.cmbWafers.setItemText(0, QCoreApplication.translate("MainWindow", u"Select instrument", None))
 
         self.cmbWafers.setCurrentText(QCoreApplication.translate("MainWindow", u"Select instrument", None))
@@ -3350,11 +3354,7 @@ class Ui_MainWindow(object):
         self.txtParametersResult.setToolTip(QCoreApplication.translate("MainWindow", u"Results parameters", None))
 #endif // QT_CONFIG(tooltip)
         self.txtParametersResult.setPlainText("")
-        self.labelVersion_22.setText(QCoreApplication.translate("MainWindow", u"HISTOGRAM", None))
-#if QT_CONFIG(tooltip)
-        self.next_histogram.setToolTip(QCoreApplication.translate("MainWindow", u"Next", None))
-#endif // QT_CONFIG(tooltip)
-        self.next_histogram.setText("")
+        self.labelVersion_22.setText(QCoreApplication.translate("MainWindow", u"GRAPH", None))
 #if QT_CONFIG(tooltip)
         self.btnClearDescription_4.setToolTip(QCoreApplication.translate("MainWindow", u"Clear", None))
 #endif // QT_CONFIG(tooltip)
