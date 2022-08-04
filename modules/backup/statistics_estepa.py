@@ -79,7 +79,7 @@ class StatisticsEstepa():
 		print_correlation +=" - Points:   \t" + str(self.points_end) + "/" + str(self.points_ini) + "\n"
 		print_correlation +=" - Method:   \t" + str(self.config["method"]) + "\n"
 
-		return print_correlation	
+		return print_correlation		
 
 	def load_statistics(self):
 		self.mean_estepa()
@@ -106,8 +106,8 @@ class StatisticsEstepa():
 			self.stdev = statistics.stdev(self.data_list)
 		else:
 			self.stdev = self.ERROR_VALUE
-
-	def correlation_estepa(self):																	###
+	
+	def correlation_estepa(self):
 		if len(self.data_list)==2:
 			self.corr = np.corrcoef(self.data_list)
 		else:

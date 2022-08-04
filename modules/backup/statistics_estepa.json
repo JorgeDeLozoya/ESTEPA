@@ -1,6 +1,6 @@
 {
-                    	"method" : "none", 
-                    	"lna" : false, 
+                    	"method" : "k-sigma", 
+                    	"lna" : true, 
                     	"limmin" : 600, 
                     	"limmax" : 1000 
                     }
