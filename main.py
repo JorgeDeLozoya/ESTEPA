@@ -291,6 +291,34 @@ class MainWindow(QMainWindow):
 
     # CORRELATION
     def correlation_files(self):
+<<<<<<< HEAD
+=======
+        #V1 
+        # #self.generate_histogram(measurements[parameter]["medida"])
+        # parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
+        # parameters_file_list = parameters_file.split(", ")          # split to create list
+        # FileName = widgets.txtDataFile.text() 
+        # result_file = ResultFile(FileName)
+        # if not result_file.error:
+        #     if parameters_file!="":
+        #         measurements = result_file.get_params(parameters_file_list)
+        #         # while parameter < 2:
+        #         widgets.txtParametersResult.setPlainText("")
+        #         for parameter in parameters_file_list:
+        #             estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.config_estepa_file))
+        #             widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_correlation())
+        #         if len(parameters_file_list) == 2:
+        #             # Get data values from result_file
+        #             data_values = result_file.get_data_values(parameters_file)
+        #             widgets.txtLoadedValues.setPlainText("")
+                    
+        #             print(parameters_file)
+        #             np.corrcoef(parameters_file, parameters_file)
+
+        #             self.generate_graph_correlation(measurements[parameter]["medida"])
+        
+        #V2 (portatil)
+>>>>>>> 66116e62bf84f41486a915305e7171552ad16d4d
         file_dat = widgets.txtDataFile.text()
         file_result = ResultFile(file_dat)
         #self.generate_histogram(measurements[parameter]["medida"])
@@ -313,7 +341,20 @@ class MainWindow(QMainWindow):
                     parameter2 = parameters[parameters_file_list[1]]
 
                     widgets.txtLoadedValues.setPlainText("")
+<<<<<<< HEAD
 
+=======
+                    
+                    print(parameters_file_list)
+                    parameter1 = parameters_file_list[0]
+                    parameter2 = parameters_file_list[1]
+                    #print(parameters_file)
+                    #print(file_result)
+                    #np.corrcoef(parameters_file, parameters_file)
+                    #file_result_divided = file_result.split()
+                    print(len(parameter1))
+                    print(len(parameter2))
+>>>>>>> 66116e62bf84f41486a915305e7171552ad16d4d
 
                     #print(file_result_divided)       
                     #corr, _ = pearsonr(parameter1, parameter2)

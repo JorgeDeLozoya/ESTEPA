@@ -7,8 +7,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
+<<<<<<< HEAD
     <width>1472</width>
     <height>894</height>
+=======
+    <width>1425</width>
+    <height>876</height>
+>>>>>>> 66116e62bf84f41486a915305e7171552ad16d4d
    </rect>
   </property>
   <property name="minimumSize">
@@ -3769,7 +3774,11 @@ color:rgb(52, 141, 232)</string>
                                 <string notr="true">background-color: rgb(33, 37, 43);</string>
                                </property>
                                <property name="text">
+<<<<<<< HEAD
                                 <string>Parameter</string>
+=======
+                                <string/>
+>>>>>>> 66116e62bf84f41486a915305e7171552ad16d4d
                                </property>
                                <property name="placeholderText">
                                 <string/>
