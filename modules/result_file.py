@@ -36,10 +36,10 @@ class ResultFile():
 		if os.path.exists(path_to_file):
 			self.lines = []
 			with open(path_to_file) as file_in:
-			    for line in file_in:
-			    	if line!="":
-			        	self.lines.append(line.replace("\n",""))
-			    self.number_lines = len(self.lines)
+				for line in file_in:
+					if line!="":
+						self.lines.append(line.replace("\n",""))
+				self.number_lines = len(self.lines)
 			if self.number_lines==0:
 				#retval = messageBox(self,"Error loading file","File: " + path_to_file + " is empty!","error")	
 				self.error_message = "File: " + path_to_file + " is empty!"
