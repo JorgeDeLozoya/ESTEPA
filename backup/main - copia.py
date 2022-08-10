@@ -45,6 +45,7 @@ import statistics               #Biblioteca que inclou les funcions estadistique
 import scipy
 import numpy as np                     
 import json                     #Opció 2
+import random           #temporal
 
 
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
@@ -257,9 +258,6 @@ class MainWindow(QMainWindow):
         parameters_file_list = parameters_file.split(", ")          # split to create list
         FileName = widgets.txtDataFile.text() 
         result_file = ResultFile(FileName)
-
-        print(parameters_file)
-
         # wafermap_file = WafermapFile(FileName)
         if not result_file.error:
             if parameters_file!="":
@@ -276,13 +274,9 @@ class MainWindow(QMainWindow):
                     # Get data values from result_file
                     data_values = result_file.get_data_values(parameters_file)
                     widgets.txtLoadedValues.setPlainText("")
-                    # widgets.txtCurrentParameter.setPlainText("")
                     # print data values in widget Plain text
                     for chip in data_values:
                         widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+str(chip)+" "+str(data_values[chip]))
-                        # widgets.txtCurrentParameter.setPlainText(parameter)
-                        print(parameter)
-                    
                     # Get histogram
                     self.generate_histogram(measurements[parameter]["medida"])
                     # Get wafermap
@@ -295,48 +289,39 @@ class MainWindow(QMainWindow):
 
     # CORRELATION
     def correlation_files(self):
-        file_dat = widgets.txtDataFile.text()
-        file_result = ResultFile(file_dat)
-        #self.generate_histogram(measurements[parameter]["medida"])
-        parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
-        parameters_file_list = parameters_file.split(", ")          # split to create list
-        FileName = widgets.txtDataFile.text() 
-        result_file = ResultFile(FileName)
-        if not result_file.error:
-            if parameters_file!="":
-                measurements = result_file.get_params(parameters_file_list)
-                widgets.txtParametersResult.setPlainText("")
-                for parameter in parameters_file_list:
-                    estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.config["estepa"]))
-                    widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_correlation())
-                if len(parameters_file_list) == 2:
-                    # Get data values from result_file
-
-                    parameters = result_file.get_params(parameters_file_list)
-                    parameter1 = parameters[parameters_file_list[0]]
-                    parameter2 = parameters[parameters_file_list[1]]
-
-                    widgets.txtLoadedValues.setPlainText("")
-
-
-                    #print(file_result_divided)       
-                    #corr, _ = pearsonr(parameter1, parameter2)
-                    correlation = np.corrcoef(parameter1, parameter2)
-                    print(parameter1)
-                    print(parameter2)
-                    print(correlation)
-                    self.generate_graph_correlation(measurements[parameter]["medida"])
-                else:
-                    # Get data values from result_file
+        # #self.generate_histogram(measurements[parameter]["medida"])
+        # parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
+        # parameters_file_list = parameters_file.split(", ")          # split to create list
+        # FileName = widgets.txtDataFile.text() 
+        # result_file = ResultFile(FileName)
+        # if not result_file.error:
+        #     if parameters_file!="":
+        #         measurements = result_file.get_params(parameters_file_list)
+        #         # while parameter < 2:
+        #         widgets.txtParametersResult.setPlainText("")
+        #         for parameter in parameters_file_list:
+        #             estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.config_estepa_file))
+        #             widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_correlation())
+        #         if len(parameters_file_list) == 2:
+        #             # Get data values from result_file
+        #             data_values = result_file.get_data_values(parameters_file)
+        #             widgets.txtLoadedValues.setPlainText("")
                     
-                    # widgets.txtLoadedValues.setPlainText("Select two parameters")
-                    # colors = {"NORMAL": "#FFFFFF", "ERROR": "#FF3300","WARNING" : "orange"}
+        #             print(parameters_file)
+        #             np.corrcoef(parameters_file, parameters_file)
 
-                    retval = messageBox(self,"Error getting parameters list","Please, select two parameters!","warning")
+        #             self.generate_graph_correlation(measurements[parameter]["medida"])
+        #         else:
+        #             # Get data values from result_file
+                    
+        #             # widgets.txtLoadedValues.setPlainText("Select two parameters")
+        #             # colors = {"NORMAL": "#FFFFFF", "ERROR": "#FF3300","WARNING" : "orange"}
 
-        else:
-            retval = messageBox(self,"Error getting Result File",self.result_file.error_message,"warning")
-        # pass   
+        #             retval = messageBox(self,"Error getting parameters list","Please, select two parameters!","warning")
+
+        # else:
+        #     retval = messageBox(self,"Error getting Result File",self.result_file.error_message,"warning")
+        pass   
 
     #DATA FILE
     def open_file_dat(self):
@@ -840,7 +825,7 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////////////////////////
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
-        self.dragPos = event.globalPosition().toPoint()                                         ###
+        self.dragPos = event.globalPos()
         p = event.globalPosition()
         globalPos = p.toPoint()
         self.dragPos = globalPos

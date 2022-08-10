@@ -18,6 +18,7 @@
 import sys
 import os
 import platform
+import toml
 
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
@@ -92,6 +93,8 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         UIFunctions.uiDefinitions(self)
 
+    
+
         # -----------
         # PAGE ESTEPA
         # -----------
@@ -104,9 +107,12 @@ class MainWindow(QMainWindow):
         }
         # if configuration json file exists load configurationñ from file
         get_json = get_json_file('statistics_estepa',config_estepa_file)
-        self.config_estepa_file = config_estepa_file
+        self.config["estepa"] = config_estepa_file                                          #ERROR
+        # self.config_estepa_file = config_estepa_file
         if get_json!="":
-            self.config_estepa_file = get_json
+            self.config["estepa"] = get_json                                                    #ERROR
+        # self.config_estepa_file = get_json
+
 
         # LOAD FROM FILES
         widgets.btnLoadFiles.clicked.connect(self.load_from_files)
@@ -127,22 +133,25 @@ class MainWindow(QMainWindow):
         widgets.scrollHistogramChunks.valueChanged.connect(lambda: widgets.txtHistogramChunks.setText(str(widgets.scrollHistogramChunks.value())))
         # get values from file json & set widgets
         self.methods = ["none","f-spread","k-sigma"]
-        widgets.cmbOutlinerMethod.setCurrentIndex(self.methods.index(self.config_estepa_file["method"]))
+        widgets.cmbOutlinerMethod.setCurrentIndex(self.methods.index(self.config["estepa"]["method"]))                                                    #ERROR
         #print(config_estepa_file)
-        if self.config_estepa_file["lna"]:
-            widgets.chkNonAutomaticLimits.setChecked(self.config_estepa_file["lna"])
+        if self.config["estepa"]["lna"]:
+            widgets.chkNonAutomaticLimits.setChecked(self.config["estepa"]["lna"])
             widgets.optionsNonAutomatic.setCurrentWidget(widgets.config_nonAutomatic)
         else:
             widgets.chkNonAutomaticLimits.setChecked(False)
             widgets.optionsNonAutomatic.setCurrentWidget(widgets.config_Automatic)
 
-        widgets.txtLimitMin.setText(str(self.config_estepa_file["limmin"]))
-        widgets.txtLimitMax.setText(str(self.config_estepa_file["limmax"]))
+        widgets.txtLimitMin.setText(str(self.config["estepa"]["limmin"]))
+        widgets.txtLimitMax.setText(str(self.config["estepa"]["limmax"]))
 
         widgets.cmbOutlinerMethod.currentIndexChanged.connect(self.save_config_estepa_file)
         widgets.chkNonAutomaticLimits.stateChanged.connect(self.save_config_estepa_file)
         widgets.txtLimitMin.textChanged.connect(self.save_config_estepa_file)
         widgets.txtLimitMax.textChanged.connect(self.save_config_estepa_file)
+        widgets.chkGetAutoLimits.stateChanged.connect(self.save_config_estepa_file)
+
+        widgets.historicalcheck.stateChanged.connect(self.historical_check)
 
         widgets.cmbTechnologyUpload.currentIndexChanged.connect(self.updateTextTechnologyUpload)
         widgets.cmbMaskUpload.currentIndexChanged.connect(self.updateTextMaskUpload)
@@ -157,6 +166,8 @@ class MainWindow(QMainWindow):
         # PAGE INBASE
         widgets.btnOpenDataFileInbase.clicked.connect(self.open_file_dat)
         widgets.btnOpenWafermapFileInbase.clicked.connect(self.open_file_ppg)
+
+        #widgets.historicalcheck.clicked.connect(self.buttonClick)
 
         # configuration pages
         widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_measurements)
@@ -178,6 +189,8 @@ class MainWindow(QMainWindow):
         widgets.btn_page_estepa.clicked.connect(self.buttonClick)
         widgets.btn_page_consult.clicked.connect(self.buttonClick)
         widgets.btn_page_inbase.clicked.connect(self.buttonClick)
+
+        # 
 
 
         # EXTRA LEFT BOX
@@ -212,6 +225,14 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         widgets.stackedWidget.setCurrentWidget(widgets.Home_Window)
         widgets.btn_page_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_page_home.styleSheet()))
+        widgets.btn_page_estepa.setStyleSheet(UIFunctions.selectMenu(widgets.btn_page_estepa.styleSheet()))
+        widgets.btn_page_consult.setStyleSheet(UIFunctions.selectMenu(widgets.btn_page_consult.styleSheet()))
+        widgets.btn_page_inbase.setStyleSheet(UIFunctions.selectMenu(widgets.btn_page_inbase.styleSheet()))
+
+        widgets.home_analysis.setStyleSheet(UIFunctions.selectMenu(widgets.home_analysis.styleSheet()))                   #4/8
+        widgets.home_consult.setStyleSheet(UIFunctions.selectMenu(widgets.home_consult.styleSheet()))
+        widgets.home_upload.setStyleSheet(UIFunctions.selectMenu(widgets.home_upload.styleSheet()))
+
         
 
         # LOAD ESTEPA 
@@ -227,7 +248,7 @@ class MainWindow(QMainWindow):
         get_json = get_json_file('estepa',config_estepa)
         if get_json!="":
             config_estepa = get_json
-        self.estepa = Estepa(config_estepa)
+        self.estepa = Estepa(self.config["connection"])
         if not self.estepa.error:
             self.load_cmbTechnology()
             self.load_cmbMask()
@@ -235,6 +256,10 @@ class MainWindow(QMainWindow):
             retval = messageBox(self,"Error loading ESTEPA class",self.estepa.error_message,"error")
         widgets.cmbParametersFile.clear()
         widgets.cmbParametersBBDD.clear()
+
+        # LOAD configuration TOML
+        self.path_config_file = os.getcwd() + '/config/config.toml'
+        self.load_config() 
 
     # ----------------
     # ESTEPA FUNCTIONS
@@ -269,20 +294,28 @@ class MainWindow(QMainWindow):
 
                 widgets.txtParametersResult.setPlainText("")
                 for parameter in parameters_file_list:
-                    estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.config_estepa_file))
+                    estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.config["estepa"]))
                     widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
                 # GET DATA VALUES, HISTOGRAM & WAFERMAP IF PARAM==1
                 if len(parameters_file_list) == 1:
                     # Get data values from result_file
                     data_values = result_file.get_data_values(parameters_file)
                     widgets.txtLoadedValues.setPlainText("")
-                    # widgets.txtCurrentParameter.setPlainText("")
                     # print data values in widget Plain text
                     for chip in data_values:
                         widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+str(chip)+" "+str(data_values[chip]))
-                        # widgets.txtCurrentParameter.setPlainText(parameter)
-                        print(parameter)
-                    
+                    # Get histogram
+                    self.generate_histogram(measurements[parameter]["medida"])
+                    # Get wafermap
+                    self.generate_wafermap()
+                # GET DATA VALUES, HISTOGRAM & WAFERMAP IF PARAM>>1
+                if len(parameters_file_list) > 1:
+                    # Get data values from result_file
+                    data_values = result_file.get_data_values(parameters_file)
+                    widgets.txtLoadedValues.setPlainText("")
+                    # print data values in widget Plain text
+                    for chip in data_values:
+                        widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+str(chip)+" "+str(data_values[chip]))
                     # Get histogram
                     self.generate_histogram(measurements[parameter]["medida"])
                     # Get wafermap
@@ -623,39 +656,50 @@ class MainWindow(QMainWindow):
                 if len(rangos)==2:
                     widgets.txtLimitMin.setText(str(rangos[0]))
                     widgets.txtLimitMax.setText(str(rangos[1]))
+    
+    def historical_check(self):                                                                                                     #3/8
+        historicalcheck = "false"   
+        if widgets.historicalcheck.isChecked():
+            historicalcheck = "true"
+            widgets.optionsHistorical.setCurrentWidget(widgets.YesHistorical)
+        
+        else:
+            widgets.optionsHistorical.setCurrentWidget(widgets.NoHistorical)   
+
+
+
 
     def save_config_estepa_file(self):
         # change in chk non automatic limits or cmb otuliers method => save estepa file
-        chkNonAutomaticLimits = "false"
-        if widgets.chkNonAutomaticLimits.isChecked():
-            chkNonAutomaticLimits = "true"
+        chkNonAutomaticLimits = widgets.chkNonAutomaticLimits.isChecked()
+        chkGetAutoLimits = widgets.chkGetAutoLimits.isChecked()
+        if chkNonAutomaticLimits:
             widgets.optionsNonAutomatic.setCurrentWidget(widgets.config_nonAutomatic)
             # get rangos
-            self.get_rangos()
+            if chkGetAutoLimits:
+                self.get_rangos()
         else:
             widgets.optionsNonAutomatic.setCurrentWidget(widgets.config_Automatic)
-            
+
         cmbOutlinerMethod = widgets.cmbOutlinerMethod.currentText()
-        txtLimitMax = widgets.txtLimitMax.text()
-        txtLimitMin = widgets.txtLimitMin.text()
+        txtLimitMax = int(widgets.txtLimitMax.text())
+        txtLimitMin = int(widgets.txtLimitMin.text())
+        txtHistogramChunks = int(widgets.txtHistogramChunks.text())
         try:
             if str(txtLimitMin)!="" and str(txtLimitMax)!="" and isinstance(int(txtLimitMin),int) and isinstance(int(txtLimitMax),int):
-                path_file = os.getcwd() + "\\modules\\statistics_estepa.json"
-                # save file
-                texto = '{\n\
-                    \t"method" : "'+ cmbOutlinerMethod +'", \n\
-                    \t"lna" : ' + chkNonAutomaticLimits + ', \n\
-                    \t"limmin" : ' + txtLimitMin + ', \n\
-                    \t"limmax" : ' + txtLimitMax + ' \n\
-                    }\n'
-                with open(path_file, 'w') as f:
-                    f.write(texto)
-
-                self.config_estepa_file = json.loads(texto)
+                self.config["estepa"]["method"] = cmbOutlinerMethod
+                self.config["estepa"]["lna"] = chkNonAutomaticLimits
+                self.config["estepa"]["autolimits"] = chkGetAutoLimits
+                self.config["estepa"]["limmin"] = txtLimitMin
+                self.config["estepa"]["limmax"] = txtLimitMax
+                self.config["estepa"]["chunks"] = txtHistogramChunks
+                toml_file = open(self.path_config_file,"w")
+                toml.dump(self.config, toml_file)
+                toml_file.close()
             else:
                 # get from file
-                widgets.txtLimitMin.setText(str(self.config_estepa_file["limmin"]))
-                widgets.txtLimitMax.setText(str(self.config_estepa_file["limmax"]))
+                widgets.txtLimitMin.setText(str(self.config["estepa"]["limmin"]))
+                widgets.txtLimitMax.setText(str(self.config["estepa"]["limmax"]))
         except:
             pass
 
@@ -737,7 +781,7 @@ class MainWindow(QMainWindow):
             print(measurements)
             
             for parameter in parametersBBDD_list:
-                estadistica = StatisticsEstepa(parameter,measurements[parameter]["medida"],self.config_estepa_file)
+                estadistica = StatisticsEstepa(parameter,measurements[parameter]["medida"],self.config["estepa"])
                 widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
         else:
             widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+"No parameters selected!")
@@ -850,6 +894,48 @@ class MainWindow(QMainWindow):
         #     print('Mouse click: LEFT CLICK')
         # if event.buttons() == Qt.RightButton:
         #     print('Mouse click: RIGHT CLICK')
+
+    # LOAD TOML FILES FUNCTIONS
+    # CONFIG FILE FUNCTIONS
+    def load_config(self):
+        config_string = """
+        title = "PROGRAM config file"
+        [connection]
+        host = "opter6.cnm.es"
+        port = "5432"
+        user = "joaquin"
+        database = "mecao"
+        password = ""
+        autocommit = false
+
+        [estepa]
+        method = "k-sigma"
+        lna = false
+        autolimits = false
+        limmin = 600
+        limmax = 1000
+        chunks = 16
+        """
+
+        
+        
+        if os.path.exists(self.path_config_file):
+            self.load_config_file()
+            
+        else:
+            # create file toml
+            print("Toml doesn't exists: " + self.path_config_file + "!")
+            toml_file = open(self.path_config_file,"w")
+            toml_file.write(config_string)
+            toml_file.close()
+            self.load_config_file()
+
+    def load_config_file(self):
+        with open(self.path_config_file, mode="r") as fp:
+            config = toml.load(fp)
+            self.config = config
+
+
 
 def messageBox(self,title,message,type):
 	if type=="information" or type=="info":
