@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1436</width>
-    <height>786</height>
+    <height>771</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1987,7 +1987,7 @@ background: transparent;
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>2</number>
+                      <number>0</number>
                      </property>
                      <widget class="QWidget" name="Home_Window">
                       <property name="styleSheet">
@@ -2634,7 +2634,7 @@ color:rgb(52, 141, 232)</string>
                               </size>
                              </property>
                              <property name="currentIndex">
-                              <number>1</number>
+                              <number>0</number>
                              </property>
                              <widget class="QWidget" name="files">
                               <widget class="QWidget" name="gridLayoutWidget_4">

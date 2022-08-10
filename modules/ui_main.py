@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1436, 786)
+        MainWindow.resize(1436, 771)
         MainWindow.setMinimumSize(QSize(940, 560))
         self.styleSheet = QWidget(MainWindow)
         self.styleSheet.setObjectName(u"styleSheet")
@@ -3279,8 +3279,8 @@ class Ui_MainWindow(object):
 
         self.stackedWidget_configuration.setCurrentIndex(1)
         self.optionsNonAutomatic.setCurrentIndex(1)
-        self.stackedWidget.setCurrentIndex(2)
-        self.optionsESTEPA.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
+        self.optionsESTEPA.setCurrentIndex(0)
         self.optionsHistorical.setCurrentIndex(1)
 
 
