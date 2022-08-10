@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1436</width>
+    <width>1338</width>
     <height>771</height>
    </rect>
   </property>
@@ -1987,7 +1987,7 @@ background: transparent;
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <widget class="QWidget" name="Home_Window">
                       <property name="styleSheet">
@@ -3752,14 +3752,17 @@ color:rgb(52, 141, 232)</string>
                            <item>
                             <layout class="QHBoxLayout" name="horizontalLayout_15">
                              <item>
-                              <widget class="QLineEdit" name="txtCurrentParameter">
-                               <property name="enabled">
-                                <bool>true</bool>
+                              <widget class="QPlainTextEdit" name="txtCurrentParameter">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
                                </property>
                                <property name="minimumSize">
                                 <size>
                                  <width>82</width>
-                                 <height>30</height>
+                                 <height>40</height>
                                 </size>
                                </property>
                                <property name="maximumSize">
@@ -3768,19 +3771,28 @@ color:rgb(52, 141, 232)</string>
                                  <height>30</height>
                                 </size>
                                </property>
+                               <property name="font">
+                                <font>
+                                 <family>Segoe UI</family>
+                                 <pointsize>10</pointsize>
+                                 <weight>50</weight>
+                                 <italic>false</italic>
+                                 <bold>false</bold>
+                                </font>
+                               </property>
                                <property name="styleSheet">
                                 <string notr="true">background-color: rgb(33, 37, 43);</string>
                                </property>
-                               <property name="text">
-                                <string>Parameter</string>
+                               <property name="undoRedoEnabled">
+                                <bool>true</bool>
                                </property>
-                               <property name="placeholderText">
-                                <string/>
+                               <property name="plainText">
+                                <string>Parameter</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QPushButton" name="pushButton">
+                              <widget class="QPushButton" name="btnNextParameter">
                                <property name="minimumSize">
                                 <size>
                                  <width>30</width>
@@ -7005,7 +7017,7 @@ color:rgb(52, 141, 232)</string>
   <customwidget>
    <class>CheckableComboBox</class>
    <extends>QComboBox</extends>
-   <header location="global">widgets</header>
+   <header>widgets</header>
   </customwidget>
   <customwidget>
    <class>PlotWidget</class>

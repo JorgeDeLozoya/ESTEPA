@@ -1,4 +1,3 @@
-from webbrowser import get
 from functions import *
 from . result_file import *
 from . wafermap_file import *
@@ -146,14 +145,13 @@ class Estepa():
 		self.cur.execute(sql)
 		if self.cur.rowcount>0:
 			row = self.cur.fetchone()
-			#Diccionari[parametro]{23,3,4,5}
+
 			while row is not None:
 				parametro = row[1]
 				chip = row[2]
 				medida = row[3]
 				if parametro not in get_medidas:
 					get_medidas[parametro] = dict()
-					get_medidas[parametro]=int(get_medidas[parametro])							###
 					get_medidas[parametro]["chip"] = list()
 					get_medidas[parametro]["medida"] = list()
 				get_medidas[parametro]["chip"].append(chip)

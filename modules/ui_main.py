@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1436, 771)
+        MainWindow.resize(1338, 771)
         MainWindow.setMinimumSize(QSize(940, 560))
         self.styleSheet = QWidget(MainWindow)
         self.styleSheet.setObjectName(u"styleSheet")
@@ -1847,20 +1847,26 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_15 = QHBoxLayout()
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
-        self.txtCurrentParameter = QLineEdit(self.estepa)
+        self.txtCurrentParameter = QPlainTextEdit(self.estepa)
         self.txtCurrentParameter.setObjectName(u"txtCurrentParameter")
-        self.txtCurrentParameter.setEnabled(True)
-        self.txtCurrentParameter.setMinimumSize(QSize(82, 30))
+        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.txtCurrentParameter.sizePolicy().hasHeightForWidth())
+        self.txtCurrentParameter.setSizePolicy(sizePolicy5)
+        self.txtCurrentParameter.setMinimumSize(QSize(82, 40))
         self.txtCurrentParameter.setMaximumSize(QSize(120, 30))
+        self.txtCurrentParameter.setFont(font)
         self.txtCurrentParameter.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.txtCurrentParameter.setUndoRedoEnabled(True)
 
         self.horizontalLayout_15.addWidget(self.txtCurrentParameter)
 
-        self.pushButton = QPushButton(self.estepa)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setMinimumSize(QSize(30, 30))
-        self.pushButton.setMaximumSize(QSize(30, 30))
-        self.pushButton.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
+        self.btnNextParameter = QPushButton(self.estepa)
+        self.btnNextParameter.setObjectName(u"btnNextParameter")
+        self.btnNextParameter.setMinimumSize(QSize(30, 30))
+        self.btnNextParameter.setMaximumSize(QSize(30, 30))
+        self.btnNextParameter.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
 "\n"
 "#pagesContainer .QPushButton {\n"
 "	border: 2px solid rgb(52, 59, 72);\n"
@@ -1884,9 +1890,9 @@ class Ui_MainWindow(object):
 "}")
         icon16 = QIcon()
         icon16.addFile(u":/icons/images/icons/cil-chevron-right.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton.setIcon(icon16)
+        self.btnNextParameter.setIcon(icon16)
 
-        self.horizontalLayout_15.addWidget(self.pushButton)
+        self.horizontalLayout_15.addWidget(self.btnNextParameter)
 
         self.horizontalSpacer_5 = QSpacerItem(21, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -3279,7 +3285,7 @@ class Ui_MainWindow(object):
 
         self.stackedWidget_configuration.setCurrentIndex(1)
         self.optionsNonAutomatic.setCurrentIndex(1)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
         self.optionsESTEPA.setCurrentIndex(0)
         self.optionsHistorical.setCurrentIndex(1)
 
@@ -3408,9 +3414,8 @@ class Ui_MainWindow(object):
         self.btnClearDescription_2.setToolTip(QCoreApplication.translate("MainWindow", u"Clear", None))
 #endif // QT_CONFIG(tooltip)
         self.btnClearDescription_2.setText("")
-        self.txtCurrentParameter.setText(QCoreApplication.translate("MainWindow", u"Parameter", None))
-        self.txtCurrentParameter.setPlaceholderText("")
-        self.pushButton.setText("")
+        self.txtCurrentParameter.setPlainText(QCoreApplication.translate("MainWindow", u"Parameter", None))
+        self.btnNextParameter.setText("")
 #if QT_CONFIG(tooltip)
         self.txtLoadedValues.setToolTip(QCoreApplication.translate("MainWindow", u"Data values", None))
 #endif // QT_CONFIG(tooltip)
