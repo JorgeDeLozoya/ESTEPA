@@ -15,6 +15,7 @@ from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from PySide6.QtCore import Qt
 
+import main
 #from modules.functions import *
 
 config_estepa_file = {
@@ -23,11 +24,12 @@ config_estepa_file = {
 	"limmin" : 600,
 	"limmax" : 1000
 	}
-	
+
 class StatisticsEstepa():
 	def __init__(self, param, data_list,config_estepa_file):
 		self.param = param
-		self.data_list = data_list # original data list 
+		self.data_list = data_list # original data list
+		self.data_list_ori = data_list
 		self.ERROR_VALUE = -9e99
 		self.ERROR_VALUE2 = 1e30
 		self.mean = self.ERROR_VALUE
@@ -40,12 +42,13 @@ class StatisticsEstepa():
 		self.error_message = ""
 
 		self.methods = ["none","f-spread","k-sigma"]
+		self.corr_methods = ["Pearson", "Spearman"]
 
 		if "method" in config_estepa_file and "lna" in config_estepa_file and "limmin" in config_estepa_file and "limmax" in config_estepa_file:
 			self.config = config_estepa_file # {"method": "None", lna" : False, "limmin" : 0, "limmax" : 100}
 
 		else:
-			self.error = True	
+			self.error = True
 			self.error_message = "Configuration estepa file not valid!"
 		if isinstance(data_list,list):
 			if len(self.data_list)>0:
@@ -57,9 +60,9 @@ class StatisticsEstepa():
 				self.load_correlation()																				###
 				self.points_end = len(data_list)
 			else:
-				self.error = True	
+				self.error = True
 				self.error_message = "List empty!"
-		else: 
+		else:
 			self.error = True
 			self.error_message = "Is not a list!"
 
@@ -79,8 +82,9 @@ class StatisticsEstepa():
 		print_correlation +=" - Correlation:   \t" + str(self.corr) + "\n"
 		print_correlation +=" - Points:   \t" + str(self.points_end) + "/" + str(self.points_ini) + "\n"
 		print_correlation +=" - Method:   \t" + str(self.config["method"]) + "\n"
+		print_correlation +=" - Corr. Method:   \t" + str(self.config["Corr. method"]) + "\n"
 
-		return print_correlation	
+		return print_correlation
 
 	def load_statistics(self):
 		self.mean_estepa()
@@ -100,7 +104,7 @@ class StatisticsEstepa():
 		if len(self.data_list)>0:
 			self.median = statistics.median(self.data_list)
 		else:
-			self.median = self.ERROR_VALUE	
+			self.median = self.ERROR_VALUE
 
 	def stdev_estepa(self):
 		if len(self.data_list)>1:
@@ -108,11 +112,28 @@ class StatisticsEstepa():
 		else:
 			self.stdev = self.ERROR_VALUE
 
-	def correlation_estepa(self):																	###
+	def correlation_estepa(self,data_list2):																	###
 		if len(self.data_list)==2:
-			self.corr = np.corrcoef(self.data_list)
+			self.corr = np.corrcoef(self.data_list, data_list2)
 		else:
-			self.corr = self.ERROR_VALUE	
+			self.corr = self.ERROR_VALUE
+
+	def correlation_methods(self):
+		if self.config["Corr. method"] in self.corr_methods:
+			if self.config["Corr. method"]=="Pearson" and len(self.data_list_ori)>2:
+				# method Pearson
+				pass
+
+			elif self.config["Corr. method"]=="Spearman" and len(self.data_list_ori)>2:
+				# method Spearman
+				pass
+
+			elif self.config["Corr. method"]=="Kendall" and len(self.data_list_ori)>2:
+				# method Spearman
+				pass
+		else:
+			self.error = True
+			self.error_message = "Mode not accepted!"
 
 	def outliers(self):
 		if self.config["method"] in self.methods:
@@ -121,7 +142,7 @@ class StatisticsEstepa():
 			# 2) delete limits not automatic
 			if self.config["lna"]:
 				self.data_list = self.elim_lna()
-			
+
 			# get limits  min (xmin) & max (xmax) of the list sended
 			if self.config["method"]!="none":
 				if self.config["method"]=="f-spread" and len(self.data_list)>2:
@@ -142,8 +163,8 @@ class StatisticsEstepa():
 						r50 = x75 - x25
 						xmin = x25 - 1.5*r50
 						xmax = x75 + 1.5*r50
-						
-						
+
+
 						for data in self.data_list:
 							if data<=xmin or data>=xmax:
 								self.data_list.remove(data)
@@ -168,12 +189,12 @@ class StatisticsEstepa():
 								self.data_list.remove(data)
 								eliminados +=1
 						if eliminados == 0: break
-						
+
 		else:
 			self.error = True
 			self.error_message = "Mode not accepted!"
-	
-	
+
+
 	def elim_err(self):
 		# delete errors in data_list
 		if self.ERROR_VALUE2 in self.data_list:
@@ -216,7 +237,7 @@ class StatisticsEstepa():
 		for i in range(0,number_terms):
 			factor_numbers.append(i*2+1)
 		# calc value serie of erf(valor)
-		for terms in range(1,number_terms): 
+		for terms in range(1,number_terms):
 			# get fact_number
 			fact_number = factor_numbers[terms]
 			# get serie value

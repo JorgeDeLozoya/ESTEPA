@@ -20,8 +20,6 @@ import os
 import platform
 import toml
 
-
-
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
 from modules import *
@@ -33,7 +31,7 @@ from datetime import datetime
 
 from scipy.stats import norm
 from matplotlib.backends.qt_compat import QtWidgets
-from matplotlib.backends.backend_qt5agg import (FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
+from matplotlib.backends.backend_qtagg import (FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.figure import Figure
 from qbstyles import mpl_style
 
@@ -49,8 +47,6 @@ import scipy
 import numpy as np                     
 import json                     #Opció 2
 
-import matplotlib.pyplot as plt
-import pandas as p
 
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 #app = QtWidget.QApplication(sys.argv) Per solucionar el error de QApplication
@@ -97,15 +93,27 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         UIFunctions.uiDefinitions(self)
 
-        # LOAD configuration TOML
-        self.path_config_file = os.getcwd() + '/config/config.toml'
-        self.load_config() 
+    
 
         # -----------
         # PAGE ESTEPA
         # -----------
-        
-        
+        # config default if file doesn't exists
+        config_estepa_file = {
+            "method" : "k-sigma", # none, f-spread or k-sigma
+            "lna" : False,
+            "limmin" : 600,
+            "limmax" : 1000
+        }
+        # if configuration json file exists load configurationñ from file
+        get_json = get_json_file('statistics_estepa',config_estepa_file)
+        self.config["estepa"] = config_estepa_file                                          #ERROR
+        # self.config_estepa_file = config_estepa_file
+        if get_json!="":
+            self.config["estepa"] = get_json                                                    #ERROR
+        # self.config_estepa_file = get_json
+
+
         # LOAD FROM FILES
         widgets.btnLoadFiles.clicked.connect(self.load_from_files)
         widgets.btnAnalyzeFiles.clicked.connect(self.analyze_files)
@@ -123,17 +131,16 @@ class MainWindow(QMainWindow):
 
         # configuration estepa
         widgets.scrollHistogramChunks.valueChanged.connect(lambda: widgets.txtHistogramChunks.setText(str(widgets.scrollHistogramChunks.value())))
-        widgets.txtHistogramChunks.textChanged.connect(self.save_config_estepa_file)
-        # get values from toml config & set widgets
+        # get values from file json & set widgets
         self.methods = ["none","f-spread","k-sigma"]
-        widgets.cmbOutlinerMethod.setCurrentIndex(self.methods.index(self.config["estepa"]["method"]))
-        widgets.chkNonAutomaticLimits.setChecked(self.config["estepa"]["lna"])
+        widgets.cmbOutlinerMethod.setCurrentIndex(self.methods.index(self.config["estepa"]["method"]))                                                    #ERROR
+        #print(config_estepa_file)
         if self.config["estepa"]["lna"]:
+            widgets.chkNonAutomaticLimits.setChecked(self.config["estepa"]["lna"])
             widgets.optionsNonAutomatic.setCurrentWidget(widgets.config_nonAutomatic)
         else:
+            widgets.chkNonAutomaticLimits.setChecked(False)
             widgets.optionsNonAutomatic.setCurrentWidget(widgets.config_Automatic)
-
-        widgets.chkGetAutoLimits.setChecked(self.config["estepa"]["autolimits"])
 
         widgets.txtLimitMin.setText(str(self.config["estepa"]["limmin"]))
         widgets.txtLimitMax.setText(str(self.config["estepa"]["limmax"]))
@@ -169,9 +176,6 @@ class MainWindow(QMainWindow):
         widgets.btnClearDescription_3.clicked.connect(self.buttonClick)
         widgets.btnCopyDescription_2.clicked.connect(self.copy_values)
         widgets.btnCopyDescription_3.clicked.connect(self.copy_results)
-        widgets.btnSaveDescription_2.clicked.connect(self.save_values)
-        widgets.btnSaveDescription_3.clicked.connect(self.save_results)
-        widgets.btnNextParameter.clicked.connect(self.buttonClick)
 
         # HOME MENUS
         widgets.home_analysis.clicked.connect(self.buttonClick)
@@ -185,6 +189,8 @@ class MainWindow(QMainWindow):
         widgets.btn_page_estepa.clicked.connect(self.buttonClick)
         widgets.btn_page_consult.clicked.connect(self.buttonClick)
         widgets.btn_page_inbase.clicked.connect(self.buttonClick)
+
+        # 
 
 
         # EXTRA LEFT BOX
@@ -229,29 +235,31 @@ class MainWindow(QMainWindow):
 
         
 
-        # # LOAD ESTEPA 
-        # config_estepa = {
-        #     "host" : "opter6.cnm.es",
-        #     "port" : "5432",
-        #     "user" : "joaquin",
-        #     "database" : "mecao",
-        #     "password" : "",
-        #     "autocommit" : False
-        # }
-        # # if configuration json file exists load configurationñ from file
-        # get_json = get_json_file('estepa',config_estepa)
-        # if get_json!="":
-        #     config_estepa = get_json
-        # self.estepa = Estepa(self.config["connection"])
-        # if not self.estepa.error:
-        #     self.load_cmbTechnology()
-        #     self.load_cmbMask()
-        # else:
-        #     retval = messageBox(self,"Error loading ESTEPA class",self.estepa.error_message,"error")
-        # widgets.cmbParametersFile.clear()
-        # widgets.cmbParametersBBDD.clear()
+        # LOAD ESTEPA 
+        config_estepa = {
+            "host" : "opter6.cnm.es",
+            "port" : "5432",
+            "user" : "joaquin",
+            "database" : "mecao",
+            "password" : "",
+            "autocommit" : False
+        }
+        # if configuration json file exists load configurationñ from file
+        get_json = get_json_file('estepa',config_estepa)
+        if get_json!="":
+            config_estepa = get_json
+        self.estepa = Estepa(self.config["connection"])
+        if not self.estepa.error:
+            self.load_cmbTechnology()
+            self.load_cmbMask()
+        else:
+            retval = messageBox(self,"Error loading ESTEPA class",self.estepa.error_message,"error")
+        widgets.cmbParametersFile.clear()
+        widgets.cmbParametersBBDD.clear()
 
-        
+        # LOAD configuration TOML
+        self.path_config_file = os.getcwd() + '/config/config.toml'
+        self.load_config() 
 
     # ----------------
     # ESTEPA FUNCTIONS
@@ -292,14 +300,10 @@ class MainWindow(QMainWindow):
                 if len(parameters_file_list) == 1:
                     # Get data values from result_file
                     data_values = result_file.get_data_values(parameters_file)
-                    widgets.txtCurrentParameter.setPlainText("")
                     widgets.txtLoadedValues.setPlainText("")
                     # print data values in widget Plain text
-                    widgets.txtLoadedValues.setPlainText("X     "+"Y        "+"Measurement")
-
                     for chip in data_values:
-                        widgets.txtCurrentParameter.setPlainText(parameter)         
-                        widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+str(chip)+      " "     +str(data_values[chip]))
+                        widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+str(chip)+" "+str(data_values[chip]))
                     # Get histogram
                     self.generate_histogram(measurements[parameter]["medida"])
                     # Get wafermap
@@ -308,19 +312,10 @@ class MainWindow(QMainWindow):
                 if len(parameters_file_list) > 1:
                     # Get data values from result_file
                     data_values = result_file.get_data_values(parameters_file)
-                    widgets.txtCurrentParameter.setPlainText("")
                     widgets.txtLoadedValues.setPlainText("")
                     # print data values in widget Plain text
                     for chip in data_values:
-                        widgets.txtCurrentParameter.setPlainText(parameter)
-                        widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+str(chip)+" "+str(data_values[chip]))  
-
-                    # if btnName == "btnNextParameter":
-                    #     # n = len(parameters_file_list)
-                    #     for i in range(n+1):
-                    #         parameter = parameter + 1
-                    #         widgets.txtCurrentParameter(parameter)
-            
+                        widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+str(chip)+" "+str(data_values[chip]))
                     # Get histogram
                     self.generate_histogram(measurements[parameter]["medida"])
                     # Get wafermap
@@ -351,25 +346,19 @@ class MainWindow(QMainWindow):
                     # Get data values from result_file
 
                     parameters = result_file.get_params(parameters_file_list)
-                    
                     parameter1 = parameters[parameters_file_list[0]]
                     parameter2 = parameters[parameters_file_list[1]]
 
                     widgets.txtLoadedValues.setPlainText("")
 
-                    # Correlation getting values from "medida"
-                    correlation = np.corrcoef(parameter1["medida"], parameter2["medida"])
+
+                    #print(file_result_divided)       
+                    #corr, _ = pearsonr(parameter1, parameter2)
+                    correlation = np.corrcoef(parameter1, parameter2)
+                    print(parameter1)
+                    print(parameter2)
                     print(correlation)
-                    mpl_style(dark=True)
-                    # temp data
-                    
-                    cai = p.Series(parameter1["medida"])
-                    pa = parameter2["medida"]
-                    plt.scatter(pa, cai, s=2)
-                    plt.plot(pa, np.poly1d(np.polyfit(pa, cai, 1))(pa), color='red')
-                    plt.text(9, 0.25, f'Spearman R = {round(p.Series(pa).corr(cai, method="spearman"), 3)}')
-                    plt.show()
-                    # self.generate_graph_correlation(measurements[parameter]["medida"])
+                    self.generate_graph_correlation(measurements[parameter]["medida"])
                 else:
                     # Get data values from result_file
                     
@@ -381,7 +370,6 @@ class MainWindow(QMainWindow):
         else:
             retval = messageBox(self,"Error getting Result File",self.result_file.error_message,"warning")
         # pass   
-
 
     #DATA FILE
     def open_file_dat(self):
@@ -436,22 +424,14 @@ class MainWindow(QMainWindow):
                     widgets.txtDataFile.setText("")
 
     def generate_graph_correlation(self,data):
-        # mpl_style(dark=True)
-        # # temp data
-        
-        # parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
-        # parameters_file_list = parameters_file.split(", ")          # split to create list
-        # parameters = result_file.get_params(parameters_file_list)
-        # parameter1 = parameters[parameters_file_list[0]]
-        # parameter2 = parameters[parameters_file_list[1]]
-
-        # cai = parameter1["medida"]
-        # pa = parameter2["medida"]
-        # plt.scatter(pa, cai, s=2)
-        # plt.plot(pa, np.poly1d(np.polyfit(pa, cai, 1))(pa), color='red')
-        # plt.text(9, 0.25, f'Spearman R = {round(p.Series(pa).corr(cai, method="spearman"), 3)}')
-        # plt.show()
-        pass
+        mpl_style(dark=True)
+        # get data
+        mu, std = norm.fit(data)
+        # Delete all widgets in layout
+        layout = widgets.verticalLayout_histogram
+        for i in reversed(range(widgets.verticalLayout_histogram.count())):
+            widgets.verticalLayout_histogram.itemAt(i).widget().deleteLater()
+        # create a FigureCanvas & add to layout
         
 
     def generate_histogram(self,data):
@@ -884,8 +864,6 @@ class MainWindow(QMainWindow):
         if btnName == "btnClearDescription_3":
             widgets.txtParametersResult.setPlainText("")
 
-        
-
     # COPIAR ELS VALORS
     def copy_values(self):
         widgets.txtLoadedValues.selectAll()
@@ -895,25 +873,6 @@ class MainWindow(QMainWindow):
     def copy_results(self):
         widgets.txtParametersResult.selectAll()
         widgets.txtParametersResult.copy()
-
-    
-    # GUARDAR DADES
-    def save_values(self):
-        with  open("values.txt", "w") as file:
-            content = str(widgets.txtLoadedValues.toPlainText())
-            file.write(content)                                     #Format RUN-WAFER_PARAMETER_values
-            file.close()
-
-    # GUARDAR RESULTATS
-    def save_results(self):
-        with  open("results.txt", "w") as file:
-            content = str(widgets.txtParametersResult.toPlainText())
-            file.write(content)                                      #Format RUN-WAFER_results
-            file.close()
-
-                                                                    #Format RUN-WAFER_PARAMETER_histogram       #modificar el botó de guardar la imatge
-                                                                    #Format RUN-WAFER_PARAMETER_wafermap
-
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
