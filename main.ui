@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1338</width>
-    <height>771</height>
+    <width>1428</width>
+    <height>866</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -4774,7 +4774,7 @@ color:rgb(52, 141, 232)</string>
                                    <rect>
                                     <x>0</x>
                                     <y>10</y>
-                                    <width>421</width>
+                                    <width>291</width>
                                     <height>31</height>
                                    </rect>
                                   </property>
@@ -4794,7 +4794,7 @@ color:rgb(52, 141, 232)</string>
                           <item>
                            <layout class="QGridLayout" name="gridLayout_5">
                             <item row="7" column="1" colspan="2">
-                             <widget class="CheckableComboBox" name="cmbParameters">
+                             <widget class="CheckableComboBox" name="cmbParametersBBDD_2">
                               <property name="enabled">
                                <bool>true</bool>
                               </property>
@@ -4829,7 +4829,7 @@ color:rgb(52, 141, 232)</string>
                                <bool>true</bool>
                               </property>
                               <property name="currentText">
-                               <string notr="true"/>
+                               <string notr="true">Select instrument</string>
                               </property>
                               <property name="iconSize">
                                <size>
@@ -4843,7 +4843,7 @@ color:rgb(52, 141, 232)</string>
                              </widget>
                             </item>
                             <item row="3" column="1" colspan="2">
-                             <widget class="CheckableComboBox" name="cmbRun">
+                             <widget class="CheckableComboBox" name="cmbRuns_2">
                               <property name="enabled">
                                <bool>true</bool>
                               </property>
@@ -4878,7 +4878,7 @@ color:rgb(52, 141, 232)</string>
                                <bool>true</bool>
                               </property>
                               <property name="currentText">
-                               <string notr="true"/>
+                               <string notr="true">Select instrument</string>
                               </property>
                               <property name="iconSize">
                                <size>
@@ -4892,7 +4892,7 @@ color:rgb(52, 141, 232)</string>
                              </widget>
                             </item>
                             <item row="1" column="1" colspan="2">
-                             <widget class="CheckableComboBox" name="cmbTechnologies">
+                             <widget class="CheckableComboBox" name="cmbTechnology_2">
                               <property name="enabled">
                                <bool>true</bool>
                               </property>
@@ -4927,7 +4927,7 @@ color:rgb(52, 141, 232)</string>
                                <bool>true</bool>
                               </property>
                               <property name="currentText">
-                               <string notr="true"/>
+                               <string notr="true">Select instrument</string>
                               </property>
                               <property name="iconSize">
                                <size>
@@ -5023,7 +5023,7 @@ color:rgb(52, 141, 232)</string>
                              </widget>
                             </item>
                             <item row="5" column="1" colspan="2">
-                             <widget class="CheckableComboBox" name="cmbWafer">
+                             <widget class="CheckableComboBox" name="cmbWafers_2">
                               <property name="enabled">
                                <bool>true</bool>
                               </property>
@@ -5058,7 +5058,7 @@ color:rgb(52, 141, 232)</string>
                                <bool>true</bool>
                               </property>
                               <property name="currentText">
-                               <string notr="true">All wafers</string>
+                               <string notr="true">Select instrument &quot;All Wafers&quot;</string>
                               </property>
                               <property name="iconSize">
                                <size>
@@ -5202,6 +5202,44 @@ color:rgb(52, 141, 232)</string>
                               </property>
                               <property name="styleSheet">
                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="9" column="1">
+                             <widget class="QPushButton" name="btnConsult">
+                              <property name="minimumSize">
+                               <size>
+                                <width>120</width>
+                                <height>30</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>120</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Segoe UI</family>
+                                <pointsize>10</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                               </font>
+                              </property>
+                              <property name="cursor">
+                               <cursorShape>PointingHandCursor</cursorShape>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">background-color: rgb(52, 59, 72);</string>
+                              </property>
+                              <property name="text">
+                               <string>Consult</string>
+                              </property>
+                              <property name="icon">
+                               <iconset resource="resources.qrc">
+                                <normaloff>:/icons/images/icons/cil-loop-circular.png</normaloff>:/icons/images/icons/cil-loop-circular.png</iconset>
                               </property>
                              </widget>
                             </item>
@@ -6808,7 +6846,7 @@ color:rgb(52, 141, 232)</string>
                           <number>0</number>
                          </property>
                          <item>
-                          <widget class="QPushButton" name="btn_message">
+                          <widget class="QPushButton" name="btn_directory">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                              <horstretch>0</horstretch>
