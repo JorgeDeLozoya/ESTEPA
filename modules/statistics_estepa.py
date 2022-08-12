@@ -28,8 +28,11 @@ config_estepa_file = {
 class StatisticsEstepa():
 	def __init__(self, param, data_list,config_estepa_file):
 		self.param = param
+
 		self.data_list = data_list 
 		self.data_list_ori = data_list # original data list
+		self.data_list = data_list # original data list
+		self.data_list_ori = data_list
 		self.ERROR_VALUE = -9e99
 		self.ERROR_VALUE2 = 1e30
 		self.mean = self.ERROR_VALUE
@@ -43,6 +46,7 @@ class StatisticsEstepa():
 
 		self.methods = ["none","f-spread","k-sigma"]
 		self.corr_methods = ["Pearson", "Spearman", "Kendall"]
+		self.corr_methods = ["Pearson", "Spearman"]
 
 		if "method" in config_estepa_file and "lna" in config_estepa_file and "limmin" in config_estepa_file and "limmax" in config_estepa_file:
 			self.config = config_estepa_file # {"method": "None", lna" : False, "limmin" : 0, "limmax" : 100}
@@ -88,6 +92,7 @@ class StatisticsEstepa():
 		print_correlation +=" - Corr. Method:   \t" + str(self.config["Corr. method"]) + "\n"
 		print_correlation +=" - Points:   \t" + str(self.points_end) + "/" + str(self.points_ini) + "\n"
 		print_correlation +=" - Method:   \t" + str(self.config["method"]) + "\n"
+		print_correlation +=" - Corr. Method:   \t" + str(self.config["Corr. method"]) + "\n"
 
 		return print_correlation
 
@@ -120,6 +125,7 @@ class StatisticsEstepa():
 	def correlation_estepa(self,data_list2):																	###
 		if len(self.data_list)==2:
 			self.corr = np.corrcoef(self.data_list, data_list2) #Falta definir data_list2
+			self.corr = np.corrcoef(self.data_list, data_list2)
 		else:
 			self.corr = self.ERROR_VALUE
 
@@ -128,10 +134,6 @@ class StatisticsEstepa():
 		if self.config["Corr. method"] in self.corr_methods:
 			if self.config["Corr. method"]=="Pearson" and len(self.data_list_ori)>2:
 				# method Pearson
-				# scipy.stats.pearsonr(self.data_list_ori, data.list2)[0]    # Pearson's r
-				# r, p = scipy.stats.pearsonr(self.data_list_ori, data.list2)	# Pearson, p-value
-
-
 				pass
 
 			elif self.config["Corr. method"]=="Spearman" and len(self.data_list_ori)>2:
@@ -144,6 +146,10 @@ class StatisticsEstepa():
 				# method Kendall
 				# scipy.stats.kendalltau(self.data_list_ori, data.list2)[0]  # Kendall's tau
 				# scipy.stats.kendalltau(self.data_list_ori, data.list2).correlation  # Kendall's tau
+				pass
+
+			elif self.config["Corr. method"]=="Kendall" and len(self.data_list_ori)>2:
+				# method Spearman
 				pass
 		else:
 			self.error = True

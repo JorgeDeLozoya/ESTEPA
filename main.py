@@ -371,6 +371,10 @@ class MainWindow(QMainWindow):
                     plt.text(9, 0.25, f'Spearman R = {round(p.Series(pa).corr(cai, method="spearman"), 3)}')
                     plt.show()
                     self.generate_graph_correlation(measurements[parameter1]["medida"],measurements[parameter2]["medida"])
+                    plt.plot(pa, np.poly1d(np.polyfit(pa, cai, 1))(pa), color='red')
+                    plt.text(9, 0.25, f'Spearman R = {round(p.Series(pa).corr(cai, method="spearman"), 3)}')
+                    plt.show()
+                    # self.generate_graph_correlation(measurements[parameter]["medida"])
                 else:
                     # Get data values from result_file
                     
@@ -476,7 +480,9 @@ class MainWindow(QMainWindow):
         _static_ax.set_title(title)
         # 
         # # temp data
-        
+        # mpl_style(dark=True)
+        # # temp data
+
         # parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
         # parameters_file_list = parameters_file.split(", ")          # split to create list
         # parameters = result_file.get_params(parameters_file_list)
