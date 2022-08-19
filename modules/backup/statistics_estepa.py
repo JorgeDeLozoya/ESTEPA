@@ -4,7 +4,7 @@
 import os
 import statistics
 import json
-from functions import *
+
 #import scipy.integrate as integrate
 import math
 import numpy as np
@@ -16,16 +16,23 @@ from PySide6.QtCore import Qt
 
 #from modules.functions import *
 
+config_estepa_file = {
+	"method" : "k-sigma",
+	"lna" : False,
+	"limmin" : 600,
+	"limmax" : 1000
+	}
+	
 class StatisticsEstepa():
 	def __init__(self, param, data_list,config_estepa_file):
 		self.param = param
-		self.data_list_origen = data_list
 		self.data_list = data_list # original data list 
 		self.ERROR_VALUE = -9e99
 		self.ERROR_VALUE2 = 1e30
 		self.mean = self.ERROR_VALUE
 		self.median = self.ERROR_VALUE
 		self.stdev = self.ERROR_VALUE
+		self.corr = self.ERROR_VALUE							###
 		self.points_ini = 0
 		self.points_end = 0
 		self.error = False
@@ -46,6 +53,7 @@ class StatisticsEstepa():
 				self.outliers()
 				# load statistics
 				self.load_statistics()
+				self.load_correlation()																				###
 				self.points_end = len(data_list)
 			else:
 				self.error = True	
@@ -65,10 +73,21 @@ class StatisticsEstepa():
 
 		return print_statistics
 
+	def print_correlation(self):																					###
+		print_correlation = self.param + " : " + "\n"
+		print_correlation +=" - Correlation:   \t" + str(self.corr) + "\n"
+		print_correlation +=" - Points:   \t" + str(self.points_end) + "/" + str(self.points_ini) + "\n"
+		print_correlation +=" - Method:   \t" + str(self.config["method"]) + "\n"
+
+		return print_correlation		
+
 	def load_statistics(self):
 		self.mean_estepa()
 		self.median_estepa()
 		self.stdev_estepa()
+
+	def load_correlation(self):
+		self.correlation_estepa()															####
 
 	def mean_estepa(self):
 		if len(self.data_list)>0:
@@ -87,83 +106,12 @@ class StatisticsEstepa():
 			self.stdev = statistics.stdev(self.data_list)
 		else:
 			self.stdev = self.ERROR_VALUE
-
-	def f_spread(self):
-		# method f-spread (get quantiles with statistics library)
-		while True:
-			eliminados = 0
-			n = len(self.data_list)
-			if n==0: break
-			arr = self.data_list
-			r1 = (n+1) % 2
-			d1 = int((n+1)/2)
-			r2 = (n+1) % 4
-			d2 = int((n+1)/4)
-			x50 = ((2-r1)*self.kthSmallest(d1,n,arr) + r1*self.kthSmallest(d1+1,n,arr))/2
-			x25 = ((3-r2)*self.kthSmallest(d2,n,arr) + (r2+1)*self.kthSmallest(d2+1,n,arr))/4
-			x75 = ((r2+1)*self.kthSmallest(n-d2,n,arr) + (3-r2)*self.kthSmallest(n-d2+1,n,arr))/4
-			# x25, x50, x75 = statistics.quantiles(self.data_list)
-			r50 = x75 - x25
-			xmin = x25 - 1.5*r50
-			xmax = x75 + 1.5*r50
-				
-			for data in self.data_list:
-				if data<=xmin or data>=xmax:
-					self.data_list.remove(data)
-					eliminados +=1
-			if eliminados == 0: break
-
-	def f_spread2(self):
-		# method f-spread (get quantiles with statistics library)
-		xmin, xmax = [9E99, 9E99]
-		n = len(self.data_list)
-		if n>0:
-			arr = self.data_list
-			r1 = (n+1) % 2
-			d1 = int((n+1)/2)
-			r2 = (n+1) % 4
-			d2 = int((n+1)/4)
-			x50 = ((2-r1)*self.kthSmallest(d1,n,arr) + r1*self.kthSmallest(d1+1,n,arr))/2
-			x25 = ((3-r2)*self.kthSmallest(d2,n,arr) + (r2+1)*self.kthSmallest(d2+1,n,arr))/4
-			x75 = ((r2+1)*self.kthSmallest(n-d2,n,arr) + (3-r2)*self.kthSmallest(n-d2+1,n,arr))/4
-			# x25, x50, x75 = statistics.quantiles(self.data_list)
-			r50 = x75 - x25
-			xmin = x25 - 1.5*r50
-			xmax = x75 + 1.5*r50
-		
-		return xmin, xmax	
-			
-	def k_sigma(self):
-		# method K-SIGMA
-		prvb=0.2
-		while True:
-			eliminados = 0
-			n = len(self.data_list)
-			if n==0: break
-			self.load_statistics() # calc mean, median & stdev
-			klim = self.extract_k(n,prvb)
-			xmin = self.mean - float(klim) * self.stdev
-			xmax = self.mean + float(klim) * self.stdev
-
-			for data in self.data_list:
-				if data<=xmin or data>=xmax:
-					self.data_list.remove(data)
-					eliminados +=1
-			if eliminados == 0: break
-
-	def k_sigma2(self):
-		# method K-SIGMA
-		xmin, xmax = [9E99, 9E99]
-		prvb=0.2
-		n = len(self.data_list)
-		if n>0:
-			self.load_statistics() # calc mean, median & stdev
-			klim = self.extract_k(n,prvb)
-			xmin = self.mean - float(klim) * self.stdev
-			xmax = self.mean + float(klim) * self.stdev
-
-		return xmin, xmax
-		
+	
+	def correlation_estepa(self):
+		if len(self.data_list)==2:
+			self.corr = np.corrcoef(self.data_list)
+		else:
+			self.corr = self.ERROR_VALUE	
 
 	def outliers(self):
 		if self.config["method"] in self.methods:
@@ -175,26 +123,51 @@ class StatisticsEstepa():
 			
 			# get limits  min (xmin) & max (xmax) of the list sended
 			if self.config["method"]!="none":
-				if len(self.data_list)>2:
+				if self.config["method"]=="f-spread" and len(self.data_list)>2:
+					# method f-spread (get quantiles with statistics library)
 					while True:
 						eliminados = 0
-						if self.config["method"]=="f-spread":
-							# method f-spread (get quantiles with statistics library)
-							xmin, xmax = self.f_spread2()
-						if self.config["method"]=="k-sigma":
-							# metode K-SIGMA
-							xmin, xmax = self.k_sigma2()
+						n = len(self.data_list)
+						if n==0: break
+						arr = self.data_list
+						r1 = (n+1) % 2
+						d1 = int((n+1)/2)
+						r2 = (n+1) % 4
+						d2 = int((n+1)/4)
+						x50 = ((2-r1)*self.kthSmallest(d1,n,arr) + r1*self.kthSmallest(d1+1,n,arr))/2
+						x25 = ((3-r2)*self.kthSmallest(d2,n,arr) + (r2+1)*self.kthSmallest(d2+1,n,arr))/4
+						x75 = ((r2+1)*self.kthSmallest(n-d2,n,arr) + (3-r2)*self.kthSmallest(n-d2+1,n,arr))/4
+						# x25, x50, x75 = statistics.quantiles(self.data_list)
+						r50 = x75 - x25
+						xmin = x25 - 1.5*r50
+						xmax = x75 + 1.5*r50
+						
+						
+						for data in self.data_list:
+							if data<=xmin or data>=xmax:
+								self.data_list.remove(data)
+								eliminados +=1
+						if eliminados == 0: break
 
-						if xmin!=9E99 and xmax!=9E99:
-							for data in self.data_list:
-								if data<=xmin or data>=xmax:
-									self.data_list.remove(data)
-									eliminados +=1
-							if eliminados == 0: break
+				elif self.config["method"]=="k-sigma" and len(self.data_list)>2:
+					# metode K-SIGMA
+					prvb=0.2
+					while True:
+						eliminados = 0
+						n = len(self.data_list)
+						if n==0: break
+						self.load_statistics() # calc mean, median & stdev
+						self.load_correlation() # calc correlation															#20/7
+						klim = self.extract_k(n,prvb)
+						xmin = self.mean - float(klim) * self.stdev
+						xmax = self.mean + float(klim) * self.stdev
 
-				else:
-					self.error = True
-					self.error_message = "Not enough points to extract outliers!"		
+						for data in self.data_list:
+							if data<=xmin or data>=xmax:
+								self.data_list.remove(data)
+								eliminados +=1
+						if eliminados == 0: break
+						
 		else:
 			self.error = True
 			self.error_message = "Mode not accepted!"
@@ -219,10 +192,10 @@ class StatisticsEstepa():
 	def kthSmallest(self,k, n, arr):
 		# https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array/
 		# Sort the given array
-		arr_copy = sorted(arr)
+		arr.sort()
 		# Return k'th element in the
 		# sorted array
-		return arr_copy[k-1]
+		return arr[k-1]
 
 	# FUNCTIONS TO RESOLVE K-SIGMA METHOD
 	# K is the value to resolve the ecuation (see integral_k-sigma.png)
@@ -269,61 +242,4 @@ class StatisticsEstepa():
 				break
 
 		return format_float
-
-	def get_data_correlation(self, data1, data2):
-		data1_origen = data1
-		data2_origen = data2
-		method = self.config["method"]
-		if method!="none":
-			self.data_list = data1
-			while True:
-				eliminados = 0
-				if method=="f-spread":
-					# method f-spread (get quantiles with statistics library)
-					xmin, xmax = self.f_spread2()
-				if method=="k-sigma":
-					# metode K-SIGMA
-					xmin, xmax = self.k_sigma2()
-
-				if xmin!=9E99 and xmax!=9E99:
-					count = 0
-					for data in self.data_list:
-						if data<=xmin or data>=xmax:
-							self.data_list.remove(data)
-							data2.pop(count)
-							eliminados +=1
-						count += 1
-					if eliminados == 0: break
-			# delete outliers in second object (statistics_estepa2)
-			data1 = self.data_list
-			self.data_list = data2
-			while True:
-				eliminados = 0
-				if method=="f-spread":
-					# method f-spread (get quantiles with statistics library)
-					xmin, xmax = self.f_spread2()
-				if method=="k-sigma":
-					# metode K-SIGMA
-					xmin, xmax = self.k_sigma2()
-
-				if xmin!=9E99 and xmax!=9E99:
-					count = 0
-					for data in data2:
-						if data<=xmin or data>=xmax:
-							self.data_list.remove(data)
-							data1.pop(count)
-							eliminados +=1
-						count += 1
-					if eliminados == 0: break
-
-
-		return data1, data2
-
-	
-
-
-
-
-
-
 

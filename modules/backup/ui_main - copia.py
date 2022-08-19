@@ -16,11 +16,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFormLayout,
-    QFrame, QGridLayout, QHBoxLayout, QLabel,
-    QLayout, QLineEdit, QListView, QMainWindow,
-    QPlainTextEdit, QPushButton, QRadioButton, QScrollBar,
-    QSizePolicy, QSpacerItem, QStackedWidget, QVBoxLayout,
-    QWidget)
+    QFrame, QGraphicsView, QGridLayout, QHBoxLayout,
+    QLabel, QLayout, QLineEdit, QListView,
+    QMainWindow, QPlainTextEdit, QPushButton, QRadioButton,
+    QScrollBar, QSizePolicy, QSpacerItem, QStackedWidget,
+    QTabWidget, QVBoxLayout, QWidget)
 
 from pyqtgraph import PlotWidget
 from widgets import CheckableComboBox
@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1436, 771)
+        MainWindow.resize(1425, 867)
         MainWindow.setMinimumSize(QSize(940, 560))
         self.styleSheet = QWidget(MainWindow)
         self.styleSheet.setObjectName(u"styleSheet")
@@ -843,10 +843,10 @@ class Ui_MainWindow(object):
         self.config_nonAutomatic.setObjectName(u"config_nonAutomatic")
         self.verticalLayout_44 = QVBoxLayout(self.config_nonAutomatic)
         self.verticalLayout_44.setObjectName(u"verticalLayout_44")
-        self.chkGetAutoLimits = QCheckBox(self.config_nonAutomatic)
-        self.chkGetAutoLimits.setObjectName(u"chkGetAutoLimits")
+        self.getAutoLimits = QCheckBox(self.config_nonAutomatic)
+        self.getAutoLimits.setObjectName(u"getAutoLimits")
 
-        self.verticalLayout_44.addWidget(self.chkGetAutoLimits)
+        self.verticalLayout_44.addWidget(self.getAutoLimits)
 
         self.gridLayout_8 = QGridLayout()
         self.gridLayout_8.setObjectName(u"gridLayout_8")
@@ -1041,11 +1041,14 @@ class Ui_MainWindow(object):
         self.titleRightInfo.setMaximumSize(QSize(16777215, 45))
         font1 = QFont()
         font1.setFamilies([u"Microsoft JhengHei"])
-        font1.setPointSize(14)
+        font1.setPointSize(13)
         font1.setBold(False)
         font1.setItalic(False)
         self.titleRightInfo.setFont(font1)
-        self.titleRightInfo.setStyleSheet(u"font: 75 14pt \"Microsoft JhengHei\";")
+        self.titleRightInfo.setStyleSheet(u"\n"
+"\n"
+"font: 75 13pt \"Microsoft JhengHei\";\n"
+"")
         self.titleRightInfo.setScaledContents(False)
         self.titleRightInfo.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
@@ -1177,7 +1180,6 @@ class Ui_MainWindow(object):
         self.home_analysis.setCursor(QCursor(Qt.PointingHandCursor))
         self.home_analysis.setStyleSheet(u"border-color: rgb(40, 44, 52);\n"
 "color:rgb(52, 141, 232)")
-        self.home_analysis.setLocale(QLocale(QLocale.Spanish, QLocale.Spain))
         icon4 = QIcon()
         icon4.addFile(u"../../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png", QSize(), QIcon.Normal, QIcon.Off)
         icon4.addFile(u":/icons/images/icons/cil-find-in-page.png", QSize(), QIcon.Normal, QIcon.On)
@@ -1226,11 +1228,9 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_6 = QHBoxLayout()
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.verticalLayout_18 = QVBoxLayout()
-        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
-        self.verticalSpacer_4 = QSpacerItem(30, 68, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.horizontalSpacer_5 = QSpacerItem(31, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
-        self.verticalLayout_18.addItem(self.verticalSpacer_4)
+        self.horizontalLayout_6.addItem(self.horizontalSpacer_5)
 
         self.label_6 = QLabel(self.formLayoutWidget_3)
         self.label_6.setObjectName(u"label_6")
@@ -1243,18 +1243,11 @@ class Ui_MainWindow(object):
         self.label_6.setScaledContents(False)
         self.label_6.setWordWrap(False)
 
-        self.verticalLayout_18.addWidget(self.label_6)
-
-        self.verticalSpacer_11 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.verticalLayout_18.addItem(self.verticalSpacer_11)
-
-
-        self.horizontalLayout_6.addLayout(self.verticalLayout_18)
+        self.horizontalLayout_6.addWidget(self.label_6)
 
         self.verticalLayout_16 = QVBoxLayout()
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
-        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.verticalSpacer_3 = QSpacerItem(30, 80, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
         self.verticalLayout_16.addItem(self.verticalSpacer_3)
 
@@ -1273,15 +1266,15 @@ class Ui_MainWindow(object):
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
         self.label_5.setSizePolicy(sizePolicy4)
-        self.label_5.setMinimumSize(QSize(351, 14))
+        self.label_5.setMinimumSize(QSize(351, 5))
         self.label_5.setMaximumSize(QSize(330, 100))
         self.label_5.setStyleSheet(u"font: 75 72pt \"Microsoft JhengHei\";")
 
         self.verticalLayout_16.addWidget(self.label_5)
 
-        self.verticalSpacer_10 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.verticalSpacer_4 = QSpacerItem(13, 37, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
-        self.verticalLayout_16.addItem(self.verticalSpacer_10)
+        self.verticalLayout_16.addItem(self.verticalSpacer_4)
 
 
         self.horizontalLayout_6.addLayout(self.verticalLayout_16)
@@ -1576,6 +1569,38 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addItem(self.horizontalSpacer_4, 2, 0, 1, 1)
 
+        self.pushButton = QPushButton(self.gridLayoutWidget)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setMinimumSize(QSize(30, 30))
+        self.pushButton.setMaximumSize(QSize(30, 30))
+        self.pushButton.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
+"\n"
+"#pagesContainer .QPushButton {\n"
+"	border: 2px solid rgb(52, 59, 72);\n"
+"	border-radius: 5px;	\n"
+"	background-color: rgb(52, 59, 72);\n"
+"}\n"
+"\n"
+"#pagesContainer .QPushButton:hover {\n"
+"	background-color: rgb(57, 65, 80);\n"
+"	border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"\n"
+"#pagesContainer .QPushButton:pressed {	\n"
+"	background-color: rgb(35, 40, 49);\n"
+"	border: 2px solid rgb(43, 50, 61);\n"
+"}\n"
+"\n"
+"#pagesContainer .QPushButton:disabled {\n"
+"\n"
+"	background-color: #333333; border: none;\n"
+"}")
+        icon13 = QIcon()
+        icon13.addFile(u":/icons/images/icons/cil-chevron-right.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton.setIcon(icon13)
+
+        self.gridLayout_2.addWidget(self.pushButton, 2, 2, 1, 1)
+
         self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
         self.gridLayout_2.addItem(self.horizontalSpacer_7, 2, 3, 1, 1)
@@ -1733,7 +1758,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_10.addWidget(self.labelVersion_20)
 
-        self.horizontalSpacer_19 = QSpacerItem(24, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_19 = QSpacerItem(47, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
         self.horizontalLayout_10.addItem(self.horizontalSpacer_19)
 
@@ -1766,9 +1791,9 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        icon13 = QIcon()
-        icon13.addFile(u":/icons/images/icons/cil-save.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btnSaveDescription_2.setIcon(icon13)
+        icon14 = QIcon()
+        icon14.addFile(u":/icons/images/icons/cil-save.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btnSaveDescription_2.setIcon(icon14)
         self.btnSaveDescription_2.setFlat(False)
 
         self.horizontalLayout_10.addWidget(self.btnSaveDescription_2)
@@ -1800,67 +1825,20 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        icon14 = QIcon()
-        icon14.addFile(u"images/icons/cil-clone.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btnCopyDescription_2.setIcon(icon14)
+        icon15 = QIcon()
+        icon15.addFile(u"images/icons/cil-clone.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btnCopyDescription_2.setIcon(icon15)
 
         self.horizontalLayout_10.addWidget(self.btnCopyDescription_2)
 
-        self.btnClear_DataValues = QPushButton(self.estepa)
-        self.btnClear_DataValues.setObjectName(u"btnClear_DataValues")
-        self.btnClear_DataValues.setEnabled(True)
-        self.btnClear_DataValues.setMinimumSize(QSize(30, 30))
-        self.btnClear_DataValues.setMaximumSize(QSize(30, 16777215))
-        self.btnClear_DataValues.setFont(font)
-        self.btnClear_DataValues.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btnClear_DataValues.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
-"\n"
-"#pagesContainer .QPushButton {\n"
-"	border: 2px solid rgb(52, 59, 72);\n"
-"	border-radius: 5px;	\n"
-"	background-color: rgb(52, 59, 72);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:hover {\n"
-"	background-color: rgb(57, 65, 80);\n"
-"	border: 2px solid rgb(61, 70, 86);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:pressed {	\n"
-"	background-color: rgb(35, 40, 49);\n"
-"	border: 2px solid rgb(43, 50, 61);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:disabled {\n"
-"\n"
-"	background-color: #333333; border: none;\n"
-"}")
-        icon15 = QIcon()
-        icon15.addFile(u":/icons/images/icons/cil-x.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btnClear_DataValues.setIcon(icon15)
-        self.btnClear_DataValues.setFlat(False)
-
-        self.horizontalLayout_10.addWidget(self.btnClear_DataValues)
-
-
-        self.verticalLayout_29.addLayout(self.horizontalLayout_10)
-
-        self.horizontalLayout_15 = QHBoxLayout()
-        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
-        self.txtCurrentParameter = QLineEdit(self.estepa)
-        self.txtCurrentParameter.setObjectName(u"txtCurrentParameter")
-        self.txtCurrentParameter.setEnabled(True)
-        self.txtCurrentParameter.setMinimumSize(QSize(82, 30))
-        self.txtCurrentParameter.setMaximumSize(QSize(120, 30))
-        self.txtCurrentParameter.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-
-        self.horizontalLayout_15.addWidget(self.txtCurrentParameter)
-
-        self.btnNextParam = QPushButton(self.estepa)
-        self.btnNextParam.setObjectName(u"btnNextParam")
-        self.btnNextParam.setMinimumSize(QSize(30, 30))
-        self.btnNextParam.setMaximumSize(QSize(30, 30))
-        self.btnNextParam.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
+        self.btnClearDescription_2 = QPushButton(self.estepa)
+        self.btnClearDescription_2.setObjectName(u"btnClearDescription_2")
+        self.btnClearDescription_2.setEnabled(True)
+        self.btnClearDescription_2.setMinimumSize(QSize(30, 30))
+        self.btnClearDescription_2.setMaximumSize(QSize(30, 16777215))
+        self.btnClearDescription_2.setFont(font)
+        self.btnClearDescription_2.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btnClearDescription_2.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
 "\n"
 "#pagesContainer .QPushButton {\n"
 "	border: 2px solid rgb(52, 59, 72);\n"
@@ -1883,22 +1861,42 @@ class Ui_MainWindow(object):
 "	background-color: #333333; border: none;\n"
 "}")
         icon16 = QIcon()
-        icon16.addFile(u":/icons/images/icons/cil-chevron-right.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btnNextParam.setIcon(icon16)
+        icon16.addFile(u":/icons/images/icons/cil-x.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btnClearDescription_2.setIcon(icon16)
+        self.btnClearDescription_2.setFlat(False)
 
-        self.horizontalLayout_15.addWidget(self.btnNextParam)
-
-        self.horizontalSpacer_5 = QSpacerItem(21, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_15.addItem(self.horizontalSpacer_5)
+        self.horizontalLayout_10.addWidget(self.btnClearDescription_2)
 
 
-        self.verticalLayout_29.addLayout(self.horizontalLayout_15)
+        self.verticalLayout_29.addLayout(self.horizontalLayout_10)
+
+        self.tabWidget = QTabWidget(self.estepa)
+        self.tabWidget.setObjectName(u"tabWidget")
+        self.tabWidget.setMaximumSize(QSize(261, 24))
+        self.tabWidget.setCursor(QCursor(Qt.ArrowCursor))
+        self.tabWidget.setContextMenuPolicy(Qt.DefaultContextMenu)
+        self.tabWidget.setStyleSheet(u"QTabBar::tab {\n"
+"background-color: rgb(52, 59, 72);\n"
+"} \n"
+"\n"
+"QTabBar::tab:selected { \n"
+" background-color: rgb(33, 37, 43);\n"
+"}")
+        self.tabWidget.setDocumentMode(True)
+        self.tabWidget.setTabsClosable(False)
+        self.tab = QWidget()
+        self.tab.setObjectName(u"tab")
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QWidget()
+        self.tab_2.setObjectName(u"tab_2")
+        self.tabWidget.addTab(self.tab_2, "")
+
+        self.verticalLayout_29.addWidget(self.tabWidget)
 
         self.txtLoadedValues = QPlainTextEdit(self.estepa)
         self.txtLoadedValues.setObjectName(u"txtLoadedValues")
         self.txtLoadedValues.setMinimumSize(QSize(260, 350))
-        self.txtLoadedValues.setMaximumSize(QSize(400, 350))
+        self.txtLoadedValues.setMaximumSize(QSize(260, 350))
         self.txtLoadedValues.setStyleSheet(u"background-color: rgb(33, 37, 43);")
 
         self.verticalLayout_29.addWidget(self.txtLoadedValues)
@@ -1956,7 +1954,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnSaveDescription_3.setIcon(icon13)
+        self.btnSaveDescription_3.setIcon(icon14)
         self.btnSaveDescription_3.setFlat(False)
 
         self.horizontalLayout_7.addWidget(self.btnSaveDescription_3)
@@ -1988,18 +1986,18 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnCopyDescription_3.setIcon(icon14)
+        self.btnCopyDescription_3.setIcon(icon15)
 
         self.horizontalLayout_7.addWidget(self.btnCopyDescription_3)
 
-        self.btnClear_ParametersResult = QPushButton(self.estepa)
-        self.btnClear_ParametersResult.setObjectName(u"btnClear_ParametersResult")
-        self.btnClear_ParametersResult.setEnabled(True)
-        self.btnClear_ParametersResult.setMinimumSize(QSize(30, 30))
-        self.btnClear_ParametersResult.setMaximumSize(QSize(30, 16777215))
-        self.btnClear_ParametersResult.setFont(font)
-        self.btnClear_ParametersResult.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btnClear_ParametersResult.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
+        self.btnClearDescription_3 = QPushButton(self.estepa)
+        self.btnClearDescription_3.setObjectName(u"btnClearDescription_3")
+        self.btnClearDescription_3.setEnabled(True)
+        self.btnClearDescription_3.setMinimumSize(QSize(30, 30))
+        self.btnClearDescription_3.setMaximumSize(QSize(30, 16777215))
+        self.btnClearDescription_3.setFont(font)
+        self.btnClearDescription_3.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btnClearDescription_3.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
 "\n"
 "#pagesContainer .QPushButton {\n"
 "	border: 2px solid rgb(52, 59, 72);\n"
@@ -2021,10 +2019,10 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnClear_ParametersResult.setIcon(icon15)
-        self.btnClear_ParametersResult.setFlat(False)
+        self.btnClearDescription_3.setIcon(icon16)
+        self.btnClearDescription_3.setFlat(False)
 
-        self.horizontalLayout_7.addWidget(self.btnClear_ParametersResult)
+        self.horizontalLayout_7.addWidget(self.btnClearDescription_3)
 
 
         self.verticalLayout_30.addLayout(self.horizontalLayout_7)
@@ -2068,40 +2066,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_20.addItem(self.horizontalSpacer_20)
 
-        self.btnTheme = QPushButton(self.estepa)
-        self.btnTheme.setObjectName(u"btnTheme")
-        self.btnTheme.setMinimumSize(QSize(100, 30))
-        self.btnTheme.setMaximumSize(QSize(100, 30))
-        self.btnTheme.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
-"\n"
-"#pagesContainer .QPushButton {\n"
-"	border: 2px solid rgb(52, 59, 72);\n"
-"	border-radius: 5px;	\n"
-"	background-color: rgb(52, 59, 72);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:hover {\n"
-"	background-color: rgb(57, 65, 80);\n"
-"	border: 2px solid rgb(61, 70, 86);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:pressed {	\n"
-"	background-color: rgb(35, 40, 49);\n"
-"	border: 2px solid rgb(43, 50, 61);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:disabled {\n"
-"\n"
-"	background-color: #333333; border: none;\n"
-"}")
-
-        self.horizontalLayout_20.addWidget(self.btnTheme)
-
-        self.horizontalLayout_buttons = QHBoxLayout()
-        self.horizontalLayout_buttons.setObjectName(u"horizontalLayout_buttons")
-
-        self.horizontalLayout_20.addLayout(self.horizontalLayout_buttons)
-
         self.btnClearDescription_4 = QPushButton(self.estepa)
         self.btnClearDescription_4.setObjectName(u"btnClearDescription_4")
         self.btnClearDescription_4.setEnabled(True)
@@ -2131,7 +2095,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnClearDescription_4.setIcon(icon15)
+        self.btnClearDescription_4.setIcon(icon16)
         self.btnClearDescription_4.setFlat(False)
 
         self.horizontalLayout_20.addWidget(self.btnClearDescription_4)
@@ -2213,7 +2177,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnSaveDescription_5.setIcon(icon13)
+        self.btnSaveDescription_5.setIcon(icon14)
         self.btnSaveDescription_5.setFlat(False)
 
         self.horizontalLayout_11.addWidget(self.btnSaveDescription_5)
@@ -2247,7 +2211,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnClearDescription_5.setIcon(icon15)
+        self.btnClearDescription_5.setIcon(icon16)
         self.btnClearDescription_5.setFlat(False)
 
         self.horizontalLayout_11.addWidget(self.btnClearDescription_5)
@@ -2258,19 +2222,19 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_33.addLayout(self.horizontalLayout_21)
 
-        self.horizontalLayout_wafermap = QHBoxLayout()
-        self.horizontalLayout_wafermap.setObjectName(u"horizontalLayout_wafermap")
+        self.horizontalLayout_12 = QHBoxLayout()
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
         self.horizontalSpacer_wafermap = QSpacerItem(40, 1, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_wafermap.addItem(self.horizontalSpacer_wafermap)
+        self.horizontalLayout_12.addItem(self.horizontalSpacer_wafermap)
 
         self.verticalLayout_wafermap = QVBoxLayout()
         self.verticalLayout_wafermap.setObjectName(u"verticalLayout_wafermap")
 
-        self.horizontalLayout_wafermap.addLayout(self.verticalLayout_wafermap)
+        self.horizontalLayout_12.addLayout(self.verticalLayout_wafermap)
 
 
-        self.verticalLayout_33.addLayout(self.horizontalLayout_wafermap)
+        self.verticalLayout_33.addLayout(self.horizontalLayout_12)
 
         self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -2294,7 +2258,7 @@ class Ui_MainWindow(object):
         self.label_13.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
         self.layoutWidget = QWidget(self.consult_estepa)
         self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(10, 30, 1311, 441))
+        self.layoutWidget.setGeometry(QRect(10, 50, 1311, 434))
         self.horizontalLayout_14 = QHBoxLayout(self.layoutWidget)
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.horizontalLayout_14.setContentsMargins(0, 0, 0, 0)
@@ -2305,9 +2269,17 @@ class Ui_MainWindow(object):
         self.gridLayout_17 = QGridLayout()
         self.gridLayout_17.setObjectName(u"gridLayout_17")
         self.gridLayout_17.setVerticalSpacing(6)
-        self.horizontalSpacer_11 = QSpacerItem(20, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.optRuns = QRadioButton(self.layoutWidget)
+        self.optRuns.setObjectName(u"optRuns")
+        self.optRuns.setMinimumSize(QSize(130, 0))
+        self.optRuns.setMaximumSize(QSize(150, 16777215))
 
-        self.gridLayout_17.addItem(self.horizontalSpacer_11, 0, 1, 1, 1)
+        self.gridLayout_17.addWidget(self.optRuns, 0, 2, 1, 1)
+
+        self.historicalcheck = QCheckBox(self.layoutWidget)
+        self.historicalcheck.setObjectName(u"historicalcheck")
+
+        self.gridLayout_17.addWidget(self.historicalcheck, 1, 0, 1, 1)
 
         self.optWafers = QRadioButton(self.layoutWidget)
         self.optWafers.setObjectName(u"optWafers")
@@ -2317,60 +2289,9 @@ class Ui_MainWindow(object):
 
         self.gridLayout_17.addWidget(self.optWafers, 0, 0, 1, 1)
 
-        self.historicalcheck = QCheckBox(self.layoutWidget)
-        self.historicalcheck.setObjectName(u"historicalcheck")
+        self.horizontalSpacer_11 = QSpacerItem(20, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
-        self.gridLayout_17.addWidget(self.historicalcheck, 0, 2, 1, 1)
-
-        self.optRuns = QRadioButton(self.layoutWidget)
-        self.optRuns.setObjectName(u"optRuns")
-        self.optRuns.setMinimumSize(QSize(130, 0))
-        self.optRuns.setMaximumSize(QSize(150, 16777215))
-
-        self.gridLayout_17.addWidget(self.optRuns, 1, 0, 1, 1)
-
-        self.optionsHistorical = QStackedWidget(self.layoutWidget)
-        self.optionsHistorical.setObjectName(u"optionsHistorical")
-        self.optionsHistorical.setMinimumSize(QSize(300, 50))
-        self.optionsHistorical.setMaximumSize(QSize(300, 50))
-        self.YesHistorical = QWidget()
-        self.YesHistorical.setObjectName(u"YesHistorical")
-        self.gridLayoutWidget_3 = QWidget(self.YesHistorical)
-        self.gridLayoutWidget_3.setObjectName(u"gridLayoutWidget_3")
-        self.gridLayoutWidget_3.setGeometry(QRect(-1, 9, 271, 31))
-        self.gridLayout = QGridLayout(self.gridLayoutWidget_3)
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalSpacer_6 = QSpacerItem(20, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
-
-        self.gridLayout.addItem(self.horizontalSpacer_6, 0, 1, 1, 1)
-
-        self.btnValues = QRadioButton(self.gridLayoutWidget_3)
-        self.btnValues.setObjectName(u"btnValues")
-        self.btnValues.setMinimumSize(QSize(70, 0))
-        self.btnValues.setMaximumSize(QSize(70, 16777215))
-
-        self.gridLayout.addWidget(self.btnValues, 0, 0, 1, 1)
-
-        self.btnYield = QRadioButton(self.gridLayoutWidget_3)
-        self.btnYield.setObjectName(u"btnYield")
-        self.btnYield.setMaximumSize(QSize(143, 16777215))
-
-        self.gridLayout.addWidget(self.btnYield, 0, 2, 1, 1)
-
-        self.optionsHistorical.addWidget(self.YesHistorical)
-        self.NoHistorical = QWidget()
-        self.NoHistorical.setObjectName(u"NoHistorical")
-        self.gridLayoutWidget_10 = QWidget(self.NoHistorical)
-        self.gridLayoutWidget_10.setObjectName(u"gridLayoutWidget_10")
-        self.gridLayoutWidget_10.setGeometry(QRect(0, 10, 421, 31))
-        self.gridLayout_18 = QGridLayout(self.gridLayoutWidget_10)
-        self.gridLayout_18.setObjectName(u"gridLayout_18")
-        self.gridLayout_18.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.gridLayout_18.setContentsMargins(0, 0, 0, 0)
-        self.optionsHistorical.addWidget(self.NoHistorical)
-
-        self.gridLayout_17.addWidget(self.optionsHistorical, 1, 2, 1, 1)
+        self.gridLayout_17.addItem(self.horizontalSpacer_11, 0, 1, 1, 1)
 
 
         self.horizontalLayout_19.addLayout(self.gridLayout_17)
@@ -2378,52 +2299,95 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_34.addLayout(self.horizontalLayout_19)
 
+        self.optionsESTEPA_2 = QStackedWidget(self.layoutWidget)
+        self.optionsESTEPA_2.setObjectName(u"optionsESTEPA_2")
+        self.optionsESTEPA_2.setMinimumSize(QSize(636, 50))
+        self.optionsESTEPA_2.setMaximumSize(QSize(420, 50))
+        self.files_2 = QWidget()
+        self.files_2.setObjectName(u"files_2")
+        self.gridLayoutWidget_3 = QWidget(self.files_2)
+        self.gridLayoutWidget_3.setObjectName(u"gridLayoutWidget_3")
+        self.gridLayoutWidget_3.setGeometry(QRect(-1, 9, 641, 31))
+        self.gridLayout = QGridLayout(self.gridLayoutWidget_3)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.btnValues = QRadioButton(self.gridLayoutWidget_3)
+        self.btnValues.setObjectName(u"btnValues")
+        self.btnValues.setMinimumSize(QSize(130, 0))
+        self.btnValues.setMaximumSize(QSize(150, 16777215))
+
+        self.gridLayout.addWidget(self.btnValues, 0, 0, 1, 1)
+
+        self.btnYield = QRadioButton(self.gridLayoutWidget_3)
+        self.btnYield.setObjectName(u"btnYield")
+        self.btnYield.setMaximumSize(QSize(150, 16777215))
+
+        self.gridLayout.addWidget(self.btnYield, 0, 2, 1, 1)
+
+        self.horizontalSpacer_6 = QSpacerItem(20, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.gridLayout.addItem(self.horizontalSpacer_6, 0, 1, 1, 1)
+
+        self.optionsESTEPA_2.addWidget(self.files_2)
+        self.bbdd_2 = QWidget()
+        self.bbdd_2.setObjectName(u"bbdd_2")
+        self.gridLayoutWidget_10 = QWidget(self.bbdd_2)
+        self.gridLayoutWidget_10.setObjectName(u"gridLayoutWidget_10")
+        self.gridLayoutWidget_10.setGeometry(QRect(0, 10, 421, 31))
+        self.gridLayout_18 = QGridLayout(self.gridLayoutWidget_10)
+        self.gridLayout_18.setObjectName(u"gridLayout_18")
+        self.gridLayout_18.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.gridLayout_18.setContentsMargins(0, 0, 0, 0)
+        self.optionsESTEPA_2.addWidget(self.bbdd_2)
+
+        self.verticalLayout_34.addWidget(self.optionsESTEPA_2)
+
         self.gridLayout_5 = QGridLayout()
         self.gridLayout_5.setObjectName(u"gridLayout_5")
-        self.cmbParametersBBDD_2 = CheckableComboBox(self.layoutWidget)
-        self.cmbParametersBBDD_2.setObjectName(u"cmbParametersBBDD_2")
-        self.cmbParametersBBDD_2.setEnabled(True)
-        self.cmbParametersBBDD_2.setMinimumSize(QSize(100, 0))
-        self.cmbParametersBBDD_2.setMaximumSize(QSize(300, 16777215))
-        self.cmbParametersBBDD_2.setFont(font)
-        self.cmbParametersBBDD_2.setAutoFillBackground(False)
-        self.cmbParametersBBDD_2.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-        self.cmbParametersBBDD_2.setEditable(True)
-        self.cmbParametersBBDD_2.setCurrentText(u"Select instrument")
-        self.cmbParametersBBDD_2.setIconSize(QSize(16, 16))
-        self.cmbParametersBBDD_2.setFrame(True)
+        self.cmbParameters = CheckableComboBox(self.layoutWidget)
+        self.cmbParameters.setObjectName(u"cmbParameters")
+        self.cmbParameters.setEnabled(True)
+        self.cmbParameters.setMinimumSize(QSize(100, 0))
+        self.cmbParameters.setMaximumSize(QSize(300, 16777215))
+        self.cmbParameters.setFont(font)
+        self.cmbParameters.setAutoFillBackground(False)
+        self.cmbParameters.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.cmbParameters.setEditable(True)
+        self.cmbParameters.setCurrentText(u"")
+        self.cmbParameters.setIconSize(QSize(16, 16))
+        self.cmbParameters.setFrame(True)
 
-        self.gridLayout_5.addWidget(self.cmbParametersBBDD_2, 7, 1, 1, 2)
+        self.gridLayout_5.addWidget(self.cmbParameters, 7, 1, 1, 2)
 
-        self.cmbRunsConsult = CheckableComboBox(self.layoutWidget)
-        self.cmbRunsConsult.setObjectName(u"cmbRunsConsult")
-        self.cmbRunsConsult.setEnabled(True)
-        self.cmbRunsConsult.setMinimumSize(QSize(100, 0))
-        self.cmbRunsConsult.setMaximumSize(QSize(300, 16777215))
-        self.cmbRunsConsult.setFont(font)
-        self.cmbRunsConsult.setAutoFillBackground(False)
-        self.cmbRunsConsult.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-        self.cmbRunsConsult.setEditable(True)
-        self.cmbRunsConsult.setCurrentText(u"Select instrument")
-        self.cmbRunsConsult.setIconSize(QSize(16, 16))
-        self.cmbRunsConsult.setFrame(True)
+        self.cmbRun = CheckableComboBox(self.layoutWidget)
+        self.cmbRun.setObjectName(u"cmbRun")
+        self.cmbRun.setEnabled(True)
+        self.cmbRun.setMinimumSize(QSize(100, 0))
+        self.cmbRun.setMaximumSize(QSize(300, 16777215))
+        self.cmbRun.setFont(font)
+        self.cmbRun.setAutoFillBackground(False)
+        self.cmbRun.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.cmbRun.setEditable(True)
+        self.cmbRun.setCurrentText(u"")
+        self.cmbRun.setIconSize(QSize(16, 16))
+        self.cmbRun.setFrame(True)
 
-        self.gridLayout_5.addWidget(self.cmbRunsConsult, 3, 1, 1, 2)
+        self.gridLayout_5.addWidget(self.cmbRun, 3, 1, 1, 2)
 
-        self.cmbTechnologyConsult = CheckableComboBox(self.layoutWidget)
-        self.cmbTechnologyConsult.setObjectName(u"cmbTechnologyConsult")
-        self.cmbTechnologyConsult.setEnabled(True)
-        self.cmbTechnologyConsult.setMinimumSize(QSize(100, 0))
-        self.cmbTechnologyConsult.setMaximumSize(QSize(300, 16777215))
-        self.cmbTechnologyConsult.setFont(font)
-        self.cmbTechnologyConsult.setAutoFillBackground(False)
-        self.cmbTechnologyConsult.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-        self.cmbTechnologyConsult.setEditable(True)
-        self.cmbTechnologyConsult.setCurrentText(u"Select instrument")
-        self.cmbTechnologyConsult.setIconSize(QSize(16, 16))
-        self.cmbTechnologyConsult.setFrame(True)
+        self.cmbTechnologies = CheckableComboBox(self.layoutWidget)
+        self.cmbTechnologies.setObjectName(u"cmbTechnologies")
+        self.cmbTechnologies.setEnabled(True)
+        self.cmbTechnologies.setMinimumSize(QSize(100, 0))
+        self.cmbTechnologies.setMaximumSize(QSize(300, 16777215))
+        self.cmbTechnologies.setFont(font)
+        self.cmbTechnologies.setAutoFillBackground(False)
+        self.cmbTechnologies.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.cmbTechnologies.setEditable(True)
+        self.cmbTechnologies.setCurrentText(u"")
+        self.cmbTechnologies.setIconSize(QSize(16, 16))
+        self.cmbTechnologies.setFrame(True)
 
-        self.gridLayout_5.addWidget(self.cmbTechnologyConsult, 1, 1, 1, 2)
+        self.gridLayout_5.addWidget(self.cmbTechnologies, 1, 1, 1, 2)
 
         self.labelVersion_26 = QLabel(self.layoutWidget)
         self.labelVersion_26.setObjectName(u"labelVersion_26")
@@ -2456,21 +2420,21 @@ class Ui_MainWindow(object):
 
         self.gridLayout_5.addWidget(self.labelVersion_27, 2, 1, 1, 1)
 
-        self.cmbWafersConsult = CheckableComboBox(self.layoutWidget)
-        self.cmbWafersConsult.addItem("")
-        self.cmbWafersConsult.setObjectName(u"cmbWafersConsult")
-        self.cmbWafersConsult.setEnabled(True)
-        self.cmbWafersConsult.setMinimumSize(QSize(100, 0))
-        self.cmbWafersConsult.setMaximumSize(QSize(300, 16777215))
-        self.cmbWafersConsult.setFont(font)
-        self.cmbWafersConsult.setAutoFillBackground(False)
-        self.cmbWafersConsult.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-        self.cmbWafersConsult.setEditable(True)
-        self.cmbWafersConsult.setCurrentText(u"All wafers")
-        self.cmbWafersConsult.setIconSize(QSize(16, 16))
-        self.cmbWafersConsult.setFrame(True)
+        self.cmbWafer = CheckableComboBox(self.layoutWidget)
+        self.cmbWafer.addItem("")
+        self.cmbWafer.setObjectName(u"cmbWafer")
+        self.cmbWafer.setEnabled(True)
+        self.cmbWafer.setMinimumSize(QSize(100, 0))
+        self.cmbWafer.setMaximumSize(QSize(300, 16777215))
+        self.cmbWafer.setFont(font)
+        self.cmbWafer.setAutoFillBackground(False)
+        self.cmbWafer.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.cmbWafer.setEditable(True)
+        self.cmbWafer.setCurrentText(u"All wafers")
+        self.cmbWafer.setIconSize(QSize(16, 16))
+        self.cmbWafer.setFrame(True)
 
-        self.gridLayout_5.addWidget(self.cmbWafersConsult, 5, 1, 1, 2)
+        self.gridLayout_5.addWidget(self.cmbWafer, 5, 1, 1, 2)
 
         self.labelVersion_28 = QLabel(self.layoutWidget)
         self.labelVersion_28.setObjectName(u"labelVersion_28")
@@ -2508,7 +2472,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.next_histogram_3.setIcon(icon16)
+        self.next_histogram_3.setIcon(icon13)
 
         self.gridLayout_5.addWidget(self.next_histogram_3, 5, 3, 1, 1)
 
@@ -2537,17 +2501,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout_5.addWidget(self.ListWafers, 1, 4, 7, 1)
 
-        self.btnConsult = QPushButton(self.layoutWidget)
-        self.btnConsult.setObjectName(u"btnConsult")
-        self.btnConsult.setMinimumSize(QSize(120, 30))
-        self.btnConsult.setMaximumSize(QSize(120, 16777215))
-        self.btnConsult.setFont(font)
-        self.btnConsult.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btnConsult.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-        self.btnConsult.setIcon(icon12)
-
-        self.gridLayout_5.addWidget(self.btnConsult, 9, 1, 1, 1)
-
 
         self.verticalLayout_34.addLayout(self.gridLayout_5)
 
@@ -2560,134 +2513,38 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_35 = QVBoxLayout()
         self.verticalLayout_35.setObjectName(u"verticalLayout_35")
+        self.horizontalLayout_15 = QHBoxLayout()
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.gridLayout_7 = QGridLayout()
+        self.gridLayout_7.setObjectName(u"gridLayout_7")
+        self.verticalSpacer_11 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_7.addItem(self.verticalSpacer_11, 1, 0, 1, 1)
+
         self.horizontalLayout_9 = QHBoxLayout()
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
-        self.labelVersion_24 = QLabel(self.layoutWidget)
-        self.labelVersion_24.setObjectName(u"labelVersion_24")
-        self.labelVersion_24.setMaximumSize(QSize(200, 20))
-        self.labelVersion_24.setStyleSheet(u"color: rgb(113, 126, 149);")
-        self.labelVersion_24.setLineWidth(1)
-        self.labelVersion_24.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.labelVersion_34 = QLabel(self.layoutWidget)
+        self.labelVersion_34.setObjectName(u"labelVersion_34")
+        self.labelVersion_34.setMinimumSize(QSize(135, 0))
+        self.labelVersion_34.setMaximumSize(QSize(75, 20))
+        self.labelVersion_34.setStyleSheet(u"color: rgb(113, 126, 149);")
+        self.labelVersion_34.setLineWidth(1)
+        self.labelVersion_34.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.horizontalLayout_9.addWidget(self.labelVersion_24)
+        self.horizontalLayout_9.addWidget(self.labelVersion_34)
 
-        self.horizontalSpacer_23 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_23 = QSpacerItem(47, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_9.addItem(self.horizontalSpacer_23)
 
-        self.btnSaveDescription_4 = QPushButton(self.layoutWidget)
-        self.btnSaveDescription_4.setObjectName(u"btnSaveDescription_4")
-        self.btnSaveDescription_4.setEnabled(True)
-        self.btnSaveDescription_4.setMinimumSize(QSize(30, 30))
-        self.btnSaveDescription_4.setMaximumSize(QSize(30, 16777215))
-        self.btnSaveDescription_4.setFont(font)
-        self.btnSaveDescription_4.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btnSaveDescription_4.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
-"\n"
-"#pagesContainer .QPushButton {\n"
-"	border: 2px solid rgb(52, 59, 72);\n"
-"	border-radius: 5px;	\n"
-"	background-color: rgb(52, 59, 72);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:hover {\n"
-"	background-color: rgb(57, 65, 80);\n"
-"	border: 2px solid rgb(61, 70, 86);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:pressed {	\n"
-"	background-color: rgb(35, 40, 49);\n"
-"	border: 2px solid rgb(43, 50, 61);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:disabled {\n"
-"\n"
-"	background-color: #333333; border: none;\n"
-"}")
-        self.btnSaveDescription_4.setIcon(icon13)
-        self.btnSaveDescription_4.setFlat(False)
 
-        self.horizontalLayout_9.addWidget(self.btnSaveDescription_4)
-
-        self.btnCopyDescription_4 = QPushButton(self.layoutWidget)
-        self.btnCopyDescription_4.setObjectName(u"btnCopyDescription_4")
-        self.btnCopyDescription_4.setMinimumSize(QSize(30, 30))
-        self.btnCopyDescription_4.setMaximumSize(QSize(30, 16777215))
-        self.btnCopyDescription_4.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btnCopyDescription_4.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
-"\n"
-"#pagesContainer .QPushButton {\n"
-"	border: 2px solid rgb(52, 59, 72);\n"
-"	border-radius: 5px;	\n"
-"	background-color: rgb(52, 59, 72);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:hover {\n"
-"	background-color: rgb(57, 65, 80);\n"
-"	border: 2px solid rgb(61, 70, 86);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:pressed {	\n"
-"	background-color: rgb(35, 40, 49);\n"
-"	border: 2px solid rgb(43, 50, 61);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:disabled {\n"
-"\n"
-"	background-color: #333333; border: none;\n"
-"}")
-        self.btnCopyDescription_4.setIcon(icon14)
-
-        self.horizontalLayout_9.addWidget(self.btnCopyDescription_4)
-
-        self.btnClearDescription_6 = QPushButton(self.layoutWidget)
-        self.btnClearDescription_6.setObjectName(u"btnClearDescription_6")
-        self.btnClearDescription_6.setEnabled(True)
-        self.btnClearDescription_6.setMinimumSize(QSize(30, 30))
-        self.btnClearDescription_6.setMaximumSize(QSize(30, 16777215))
-        self.btnClearDescription_6.setFont(font)
-        self.btnClearDescription_6.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btnClearDescription_6.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
-"\n"
-"#pagesContainer .QPushButton {\n"
-"	border: 2px solid rgb(52, 59, 72);\n"
-"	border-radius: 5px;	\n"
-"	background-color: rgb(52, 59, 72);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:hover {\n"
-"	background-color: rgb(57, 65, 80);\n"
-"	border: 2px solid rgb(61, 70, 86);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:pressed {	\n"
-"	background-color: rgb(35, 40, 49);\n"
-"	border: 2px solid rgb(43, 50, 61);\n"
-"}\n"
-"\n"
-"#pagesContainer .QPushButton:disabled {\n"
-"\n"
-"	background-color: #333333; border: none;\n"
-"}")
-        self.btnClearDescription_6.setIcon(icon15)
-        self.btnClearDescription_6.setFlat(False)
-
-        self.horizontalLayout_9.addWidget(self.btnClearDescription_6)
+        self.gridLayout_7.addLayout(self.horizontalLayout_9, 0, 0, 1, 1)
 
 
-        self.verticalLayout_35.addLayout(self.horizontalLayout_9)
+        self.horizontalLayout_15.addLayout(self.gridLayout_7)
 
-        self.verticalSpacer_8 = QSpacerItem(15, 24, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
-        self.verticalLayout_35.addItem(self.verticalSpacer_8)
-
-        self.txtParametersResult_2 = QPlainTextEdit(self.layoutWidget)
-        self.txtParametersResult_2.setObjectName(u"txtParametersResult_2")
-        self.txtParametersResult_2.setMinimumSize(QSize(10, 350))
-        self.txtParametersResult_2.setMaximumSize(QSize(16777215, 350))
-        self.txtParametersResult_2.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-
-        self.verticalLayout_35.addWidget(self.txtParametersResult_2)
+        self.verticalLayout_35.addLayout(self.horizontalLayout_15)
 
 
         self.horizontalLayout_14.addLayout(self.verticalLayout_35)
@@ -2744,7 +2601,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.next_histogram_2.setIcon(icon16)
+        self.next_histogram_2.setIcon(icon13)
 
         self.horizontalLayout_22.addWidget(self.next_histogram_2)
 
@@ -2777,7 +2634,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnClearDescription_8.setIcon(icon15)
+        self.btnClearDescription_8.setIcon(icon16)
         self.btnClearDescription_8.setFlat(False)
 
         self.horizontalLayout_22.addWidget(self.btnClearDescription_8)
@@ -3133,7 +2990,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnSaveImportReport.setIcon(icon13)
+        self.btnSaveImportReport.setIcon(icon14)
         self.btnSaveImportReport.setFlat(False)
 
         self.horizontalLayout_31.addWidget(self.btnSaveImportReport)
@@ -3167,7 +3024,7 @@ class Ui_MainWindow(object):
 "\n"
 "	background-color: #333333; border: none;\n"
 "}")
-        self.btnClearImportReport.setIcon(icon15)
+        self.btnClearImportReport.setIcon(icon16)
         self.btnClearImportReport.setFlat(False)
 
         self.horizontalLayout_31.addWidget(self.btnClearImportReport)
@@ -3192,6 +3049,25 @@ class Ui_MainWindow(object):
         self.plot_widget.setGeometry(QRect(0, 0, 1291, 771))
         self.gridLayout_4 = QGridLayout(self.plot_widget)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.gridLayout_3 = QGridLayout()
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.gridLayout_3.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.graph_Waveform = QGraphicsView(self.plot_widget)
+        self.graph_Waveform.setObjectName(u"graph_Waveform")
+        self.graph_Waveform.setMaximumSize(QSize(16777, 16777))
+
+        self.gridLayout_3.addWidget(self.graph_Waveform, 1, 0, 1, 1)
+
+        self.WaveformLabel = QLabel(self.plot_widget)
+        self.WaveformLabel.setObjectName(u"WaveformLabel")
+        self.WaveformLabel.setStyleSheet(u"font: 10pt \"absender\";\n"
+"font: 81 11pt \"Montserrat ExtraBold\";")
+
+        self.gridLayout_3.addWidget(self.WaveformLabel, 0, 0, 1, 1)
+
+
+        self.gridLayout_4.addLayout(self.gridLayout_3, 1, 1, 1, 1)
+
         self.stackedWidget.addWidget(self.page_results)
 
         self.verticalLayout_15.addWidget(self.stackedWidget)
@@ -3233,17 +3109,17 @@ class Ui_MainWindow(object):
         self.verticalLayout_14.setSpacing(0)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
-        self.btnDirectory = QPushButton(self.topMenus)
-        self.btnDirectory.setObjectName(u"btnDirectory")
-        sizePolicy1.setHeightForWidth(self.btnDirectory.sizePolicy().hasHeightForWidth())
-        self.btnDirectory.setSizePolicy(sizePolicy1)
-        self.btnDirectory.setMinimumSize(QSize(0, 45))
-        self.btnDirectory.setFont(font)
-        self.btnDirectory.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btnDirectory.setLayoutDirection(Qt.LeftToRight)
-        self.btnDirectory.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-envelope-open.png);")
+        self.btn_message = QPushButton(self.topMenus)
+        self.btn_message.setObjectName(u"btn_message")
+        sizePolicy1.setHeightForWidth(self.btn_message.sizePolicy().hasHeightForWidth())
+        self.btn_message.setSizePolicy(sizePolicy1)
+        self.btn_message.setMinimumSize(QSize(0, 45))
+        self.btn_message.setFont(font)
+        self.btn_message.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_message.setLayoutDirection(Qt.LeftToRight)
+        self.btn_message.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-envelope-open.png);")
 
-        self.verticalLayout_14.addWidget(self.btnDirectory)
+        self.verticalLayout_14.addWidget(self.btn_message)
 
         self.btn_print = QPushButton(self.topMenus)
         self.btn_print.setObjectName(u"btn_print")
@@ -3322,11 +3198,12 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget_configuration.setCurrentIndex(0)
+        self.stackedWidget_configuration.setCurrentIndex(1)
         self.optionsNonAutomatic.setCurrentIndex(1)
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(2)
         self.optionsESTEPA.setCurrentIndex(0)
-        self.optionsHistorical.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
+        self.optionsESTEPA_2.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -3353,7 +3230,7 @@ class Ui_MainWindow(object):
         self.cmbOutlinerMethod.setItemText(2, QCoreApplication.translate("MainWindow", u"k-sigma", None))
 
         self.chkNonAutomaticLimits.setText(QCoreApplication.translate("MainWindow", u"Non-automatic limits", None))
-        self.chkGetAutoLimits.setText(QCoreApplication.translate("MainWindow", u"Auto limits", None))
+        self.getAutoLimits.setText(QCoreApplication.translate("MainWindow", u"Auto limits", None))
         self.labelVersion_55.setText(QCoreApplication.translate("MainWindow", u"Limit max", None))
         self.labelVersion_56.setText(QCoreApplication.translate("MainWindow", u"Limit min", None))
         self.txtLimitMin.setText("")
@@ -3422,6 +3299,7 @@ class Ui_MainWindow(object):
         self.cmbParametersFile.setItemText(0, QCoreApplication.translate("MainWindow", u"Select instrument", None))
 
         self.labelVersion_19.setText(QCoreApplication.translate("MainWindow", u"Select parameters", None))
+        self.pushButton.setText("")
         self.cmbWafers.setItemText(0, QCoreApplication.translate("MainWindow", u"Select instrument", None))
 
         self.cmbWafers.setCurrentText(QCoreApplication.translate("MainWindow", u"Select instrument", None))
@@ -3450,12 +3328,11 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.btnCopyDescription_2.setText("")
 #if QT_CONFIG(tooltip)
-        self.btnClear_DataValues.setToolTip(QCoreApplication.translate("MainWindow", u"Clear", None))
+        self.btnClearDescription_2.setToolTip(QCoreApplication.translate("MainWindow", u"Clear", None))
 #endif // QT_CONFIG(tooltip)
-        self.btnClear_DataValues.setText("")
-        self.txtCurrentParameter.setText(QCoreApplication.translate("MainWindow", u"Parameter", None))
-        self.txtCurrentParameter.setPlaceholderText("")
-        self.btnNextParam.setText("")
+        self.btnClearDescription_2.setText("")
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"CMAX", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"CMIN", None))
 #if QT_CONFIG(tooltip)
         self.txtLoadedValues.setToolTip(QCoreApplication.translate("MainWindow", u"Data values", None))
 #endif // QT_CONFIG(tooltip)
@@ -3470,15 +3347,14 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.btnCopyDescription_3.setText("")
 #if QT_CONFIG(tooltip)
-        self.btnClear_ParametersResult.setToolTip(QCoreApplication.translate("MainWindow", u"Clear", None))
+        self.btnClearDescription_3.setToolTip(QCoreApplication.translate("MainWindow", u"Clear", None))
 #endif // QT_CONFIG(tooltip)
-        self.btnClear_ParametersResult.setText("")
+        self.btnClearDescription_3.setText("")
 #if QT_CONFIG(tooltip)
         self.txtParametersResult.setToolTip(QCoreApplication.translate("MainWindow", u"Results parameters", None))
 #endif // QT_CONFIG(tooltip)
         self.txtParametersResult.setPlainText("")
         self.labelVersion_22.setText(QCoreApplication.translate("MainWindow", u"GRAPH", None))
-        self.btnTheme.setText(QCoreApplication.translate("MainWindow", u"Modo Oscuro", None))
 #if QT_CONFIG(tooltip)
         self.btnClearDescription_4.setToolTip(QCoreApplication.translate("MainWindow", u"Clear", None))
 #endif // QT_CONFIG(tooltip)
@@ -3493,15 +3369,15 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.btnClearDescription_5.setText("")
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"CONSULT DATA BASE", None))
-        self.optWafers.setText(QCoreApplication.translate("MainWindow", u"Wafers", None))
-        self.historicalcheck.setText(QCoreApplication.translate("MainWindow", u"Historical", None))
         self.optRuns.setText(QCoreApplication.translate("MainWindow", u"Runs", None))
+        self.historicalcheck.setText(QCoreApplication.translate("MainWindow", u"Historical", None))
+        self.optWafers.setText(QCoreApplication.translate("MainWindow", u"Wafers", None))
         self.btnValues.setText(QCoreApplication.translate("MainWindow", u"Values", None))
         self.btnYield.setText(QCoreApplication.translate("MainWindow", u"Yield", None))
         self.labelVersion_26.setText(QCoreApplication.translate("MainWindow", u"Select technology", None))
         self.labelVersion_29.setText(QCoreApplication.translate("MainWindow", u"Select parameters", None))
         self.labelVersion_27.setText(QCoreApplication.translate("MainWindow", u"Select run", None))
-        self.cmbWafersConsult.setItemText(0, QCoreApplication.translate("MainWindow", u"All wafers", None))
+        self.cmbWafer.setItemText(0, QCoreApplication.translate("MainWindow", u"All wafers", None))
 
         self.labelVersion_28.setText(QCoreApplication.translate("MainWindow", u"Select wafer", None))
 #if QT_CONFIG(tooltip)
@@ -3509,24 +3385,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.next_histogram_3.setText("")
         self.labelVersion_31.setText(QCoreApplication.translate("MainWindow", u"WAFERS", None))
-        self.btnConsult.setText(QCoreApplication.translate("MainWindow", u"Consult", None))
-        self.labelVersion_24.setText(QCoreApplication.translate("MainWindow", u"PARAMETERS RESULT", None))
-#if QT_CONFIG(tooltip)
-        self.btnSaveDescription_4.setToolTip(QCoreApplication.translate("MainWindow", u"Save", None))
-#endif // QT_CONFIG(tooltip)
-        self.btnSaveDescription_4.setText("")
-#if QT_CONFIG(tooltip)
-        self.btnCopyDescription_4.setToolTip(QCoreApplication.translate("MainWindow", u"Copy", None))
-#endif // QT_CONFIG(tooltip)
-        self.btnCopyDescription_4.setText("")
-#if QT_CONFIG(tooltip)
-        self.btnClearDescription_6.setToolTip(QCoreApplication.translate("MainWindow", u"Clear", None))
-#endif // QT_CONFIG(tooltip)
-        self.btnClearDescription_6.setText("")
-#if QT_CONFIG(tooltip)
-        self.txtParametersResult_2.setToolTip(QCoreApplication.translate("MainWindow", u"Results parameters", None))
-#endif // QT_CONFIG(tooltip)
-        self.txtParametersResult_2.setPlainText("")
+        self.labelVersion_34.setText(QCoreApplication.translate("MainWindow", u"HISTORICAL DIAGRAM", None))
         self.labelVersion_33.setText(QCoreApplication.translate("MainWindow", u"HISTORICAL DIAGRAM", None))
 #if QT_CONFIG(tooltip)
         self.next_histogram_2.setToolTip(QCoreApplication.translate("MainWindow", u"Next", None))
@@ -3582,7 +3441,8 @@ class Ui_MainWindow(object):
         self.btnClearImportReport.setToolTip(QCoreApplication.translate("MainWindow", u"Clear", None))
 #endif // QT_CONFIG(tooltip)
         self.btnClearImportReport.setText("")
-        self.btnDirectory.setText(QCoreApplication.translate("MainWindow", u"Directory", None))
+        self.WaveformLabel.setText(QCoreApplication.translate("MainWindow", u"Waveform", None))
+        self.btn_message.setText(QCoreApplication.translate("MainWindow", u"Message", None))
         self.btn_print.setText(QCoreApplication.translate("MainWindow", u"Print", None))
         self.btn_logout.setText(QCoreApplication.translate("MainWindow", u"Logout", None))
         self.version.setText(QCoreApplication.translate("MainWindow", u"v7.1", None))

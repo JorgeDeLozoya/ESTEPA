@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1434</width>
-    <height>875</height>
+    <width>1436</width>
+    <height>771</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1180,7 +1180,7 @@ background: transparent;
                    <enum>QFrame::NoFrame</enum>
                   </property>
                   <property name="currentIndex">
-                   <number>1</number>
+                   <number>0</number>
                   </property>
                   <widget class="QWidget" name="configuration_measurements">
                    <layout class="QVBoxLayout" name="verticalLayout_config_meas"/>
@@ -1256,7 +1256,7 @@ background: transparent;
                       <widget class="QWidget" name="config_nonAutomatic">
                        <layout class="QVBoxLayout" name="verticalLayout_44">
                         <item>
-                         <widget class="QCheckBox" name="getAutoLimits">
+                         <widget class="QCheckBox" name="chkGetAutoLimits">
                           <property name="text">
                            <string>Auto limits</string>
                           </property>
@@ -1697,17 +1697,14 @@ background: transparent;
                   <property name="font">
                    <font>
                     <family>Microsoft JhengHei</family>
-                    <pointsize>13</pointsize>
+                    <pointsize>14</pointsize>
                     <weight>9</weight>
                     <italic>false</italic>
                     <bold>false</bold>
                    </font>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">
-
-font: 75 13pt &quot;Microsoft JhengHei&quot;;
-</string>
+                   <string notr="true">font: 75 14pt &quot;Microsoft JhengHei&quot;;</string>
                   </property>
                   <property name="text">
                    <string>ESTEPA</string>
@@ -1990,7 +1987,7 @@ font: 75 13pt &quot;Microsoft JhengHei&quot;;
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>0</number>
+                      <number>3</number>
                      </property>
                      <widget class="QWidget" name="Home_Window">
                       <property name="styleSheet">
@@ -2000,7 +1997,7 @@ font: 75 13pt &quot;Microsoft JhengHei&quot;;
                        <property name="geometry">
                         <rect>
                          <x>120</x>
-                         <y>100</y>
+                         <y>40</y>
                          <width>1111</width>
                          <height>669</height>
                         </rect>
@@ -2054,6 +2051,9 @@ font: 75 13pt &quot;Microsoft JhengHei&quot;;
                             <property name="styleSheet">
                              <string notr="true">border-color: rgb(40, 44, 52);
 color:rgb(52, 141, 232)</string>
+                            </property>
+                            <property name="locale">
+                             <locale language="Spanish" country="Spain"/>
                             </property>
                             <property name="text">
                              <string>Start Analysis</string>
@@ -2161,57 +2161,77 @@ color:rgb(52, 141, 232)</string>
                         <item row="0" column="1">
                          <layout class="QHBoxLayout" name="horizontalLayout_6">
                           <item>
-                           <spacer name="horizontalSpacer_5">
-                            <property name="orientation">
-                             <enum>Qt::Horizontal</enum>
-                            </property>
-                            <property name="sizeType">
-                             <enum>QSizePolicy::Fixed</enum>
-                            </property>
-                            <property name="sizeHint" stdset="0">
-                             <size>
-                              <width>31</width>
-                              <height>20</height>
-                             </size>
-                            </property>
-                           </spacer>
-                          </item>
-                          <item>
-                           <widget class="QLabel" name="label_6">
-                            <property name="minimumSize">
-                             <size>
-                              <width>280</width>
-                              <height>280</height>
-                             </size>
-                            </property>
-                            <property name="maximumSize">
-                             <size>
-                              <width>300</width>
-                              <height>264</height>
-                             </size>
-                            </property>
-                            <property name="autoFillBackground">
-                             <bool>false</bool>
-                            </property>
-                            <property name="styleSheet">
-                             <string notr="true">image: url(:/images/images/images/PyDracula_vertical.png);</string>
-                            </property>
-                            <property name="lineWidth">
-                             <number>0</number>
-                            </property>
-                            <property name="text">
-                             <string/>
-                            </property>
-                            <property name="pixmap">
-                             <pixmap>images/images/Estepa.png</pixmap>
-                            </property>
-                            <property name="scaledContents">
-                             <bool>false</bool>
-                            </property>
-                            <property name="wordWrap">
-                             <bool>false</bool>
-                            </property>
-                           </widget>
+                           <layout class="QVBoxLayout" name="verticalLayout_18">
+                            <item>
+                             <spacer name="verticalSpacer_4">
+                              <property name="orientation">
+                               <enum>Qt::Vertical</enum>
+                              </property>
+                              <property name="sizeType">
+                               <enum>QSizePolicy::Fixed</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>30</width>
+                                <height>68</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                            <item>
+                             <widget class="QLabel" name="label_6">
+                              <property name="minimumSize">
+                               <size>
+                                <width>280</width>
+                                <height>280</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>300</width>
+                                <height>264</height>
+                               </size>
+                              </property>
+                              <property name="autoFillBackground">
+                               <bool>false</bool>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">image: url(:/images/images/images/PyDracula_vertical.png);</string>
+                              </property>
+                              <property name="lineWidth">
+                               <number>0</number>
+                              </property>
+                              <property name="text">
+                               <string/>
+                              </property>
+                              <property name="pixmap">
+                               <pixmap>images/images/Estepa.png</pixmap>
+                              </property>
+                              <property name="scaledContents">
+                               <bool>false</bool>
+                              </property>
+                              <property name="wordWrap">
+                               <bool>false</bool>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <spacer name="verticalSpacer_11">
+                              <property name="orientation">
+                               <enum>Qt::Vertical</enum>
+                              </property>
+                              <property name="sizeType">
+                               <enum>QSizePolicy::Fixed</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>20</width>
+                                <height>40</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                           </layout>
                           </item>
                           <item>
                            <layout class="QVBoxLayout" name="verticalLayout_16">
@@ -2225,8 +2245,8 @@ color:rgb(52, 141, 232)</string>
                               </property>
                               <property name="sizeHint" stdset="0">
                                <size>
-                                <width>30</width>
-                                <height>80</height>
+                                <width>20</width>
+                                <height>40</height>
                                </size>
                               </property>
                              </spacer>
@@ -2264,7 +2284,7 @@ color:rgb(52, 141, 232)</string>
                               <property name="minimumSize">
                                <size>
                                 <width>351</width>
-                                <height>5</height>
+                                <height>14</height>
                                </size>
                               </property>
                               <property name="maximumSize">
@@ -2282,7 +2302,7 @@ color:rgb(52, 141, 232)</string>
                              </widget>
                             </item>
                             <item>
-                             <spacer name="verticalSpacer_4">
+                             <spacer name="verticalSpacer_10">
                               <property name="orientation">
                                <enum>Qt::Vertical</enum>
                               </property>
@@ -2291,8 +2311,8 @@ color:rgb(52, 141, 232)</string>
                               </property>
                               <property name="sizeHint" stdset="0">
                                <size>
-                                <width>13</width>
-                                <height>37</height>
+                                <width>20</width>
+                                <height>40</height>
                                </size>
                               </property>
                              </spacer>
@@ -2869,6 +2889,57 @@ color:rgb(52, 141, 232)</string>
                                 </rect>
                                </property>
                                <layout class="QGridLayout" name="gridLayout_2">
+                                <item row="2" column="4">
+                                 <widget class="QPushButton" name="btnCorrelationFiles">
+                                  <property name="minimumSize">
+                                   <size>
+                                    <width>120</width>
+                                    <height>30</height>
+                                   </size>
+                                  </property>
+                                  <property name="maximumSize">
+                                   <size>
+                                    <width>120</width>
+                                    <height>16777215</height>
+                                   </size>
+                                  </property>
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                    <weight>50</weight>
+                                    <italic>false</italic>
+                                    <bold>false</bold>
+                                   </font>
+                                  </property>
+                                  <property name="cursor">
+                                   <cursorShape>PointingHandCursor</cursorShape>
+                                  </property>
+                                  <property name="styleSheet">
+                                   <string notr="true">background-color: rgb(52, 59, 72);</string>
+                                  </property>
+                                  <property name="text">
+                                   <string>Correlation</string>
+                                  </property>
+                                  <property name="icon">
+                                   <iconset resource="resources.qrc">
+                                    <normaloff>:/icons/images/icons/cil-loop-circular.png</normaloff>:/icons/images/icons/cil-loop-circular.png</iconset>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="2" column="5">
+                                 <spacer name="horizontalSpacer_3">
+                                  <property name="orientation">
+                                   <enum>Qt::Horizontal</enum>
+                                  </property>
+                                  <property name="sizeHint" stdset="0">
+                                   <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                   </size>
+                                  </property>
+                                 </spacer>
+                                </item>
                                 <item row="2" column="1">
                                  <widget class="QPushButton" name="btnAnalyzeFiles">
                                   <property name="minimumSize">
@@ -2907,58 +2978,7 @@ color:rgb(52, 141, 232)</string>
                                   </property>
                                  </widget>
                                 </item>
-                                <item row="2" column="3">
-                                 <spacer name="horizontalSpacer_3">
-                                  <property name="orientation">
-                                   <enum>Qt::Horizontal</enum>
-                                  </property>
-                                  <property name="sizeHint" stdset="0">
-                                   <size>
-                                    <width>40</width>
-                                    <height>20</height>
-                                   </size>
-                                  </property>
-                                 </spacer>
-                                </item>
-                                <item row="2" column="2">
-                                 <widget class="QPushButton" name="btnCorrelationFiles">
-                                  <property name="minimumSize">
-                                   <size>
-                                    <width>120</width>
-                                    <height>30</height>
-                                   </size>
-                                  </property>
-                                  <property name="maximumSize">
-                                   <size>
-                                    <width>120</width>
-                                    <height>16777215</height>
-                                   </size>
-                                  </property>
-                                  <property name="font">
-                                   <font>
-                                    <family>Segoe UI</family>
-                                    <pointsize>10</pointsize>
-                                    <weight>50</weight>
-                                    <italic>false</italic>
-                                    <bold>false</bold>
-                                   </font>
-                                  </property>
-                                  <property name="cursor">
-                                   <cursorShape>PointingHandCursor</cursorShape>
-                                  </property>
-                                  <property name="styleSheet">
-                                   <string notr="true">background-color: rgb(52, 59, 72);</string>
-                                  </property>
-                                  <property name="text">
-                                   <string>Correlation</string>
-                                  </property>
-                                  <property name="icon">
-                                   <iconset resource="resources.qrc">
-                                    <normaloff>:/icons/images/icons/cil-loop-circular.png</normaloff>:/icons/images/icons/cil-loop-circular.png</iconset>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item row="1" column="1" colspan="3">
+                                <item row="1" column="1" colspan="5">
                                  <widget class="CheckableComboBox" name="cmbParametersFile">
                                   <property name="enabled">
                                    <bool>true</bool>
@@ -3045,6 +3065,22 @@ color:rgb(52, 141, 232)</string>
                                   <property name="sizeHint" stdset="0">
                                    <size>
                                     <width>6</width>
+                                    <height>20</height>
+                                   </size>
+                                  </property>
+                                 </spacer>
+                                </item>
+                                <item row="2" column="3">
+                                 <spacer name="horizontalSpacer_7">
+                                  <property name="orientation">
+                                   <enum>Qt::Horizontal</enum>
+                                  </property>
+                                  <property name="sizeType">
+                                   <enum>QSizePolicy::Fixed</enum>
+                                  </property>
+                                  <property name="sizeHint" stdset="0">
+                                   <size>
+                                    <width>40</width>
                                     <height>20</height>
                                    </size>
                                   </property>
@@ -3512,11 +3548,11 @@ color:rgb(52, 141, 232)</string>
                                 <enum>Qt::Horizontal</enum>
                                </property>
                                <property name="sizeType">
-                                <enum>QSizePolicy::Fixed</enum>
+                                <enum>QSizePolicy::Expanding</enum>
                                </property>
                                <property name="sizeHint" stdset="0">
                                 <size>
-                                 <width>47</width>
+                                 <width>24</width>
                                  <height>20</height>
                                 </size>
                                </property>
@@ -3644,7 +3680,7 @@ color:rgb(52, 141, 232)</string>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QPushButton" name="btnClearDescription_2">
+                              <widget class="QPushButton" name="btnClear_DataValues">
                                <property name="enabled">
                                 <bool>true</bool>
                                </property>
@@ -3714,48 +3750,96 @@ color:rgb(52, 141, 232)</string>
                             </layout>
                            </item>
                            <item>
-                            <widget class="QTabWidget" name="tabWidget">
-                             <property name="maximumSize">
-                              <size>
-                               <width>261</width>
-                               <height>24</height>
-                              </size>
-                             </property>
-                             <property name="cursor">
-                              <cursorShape>ArrowCursor</cursorShape>
-                             </property>
-                             <property name="contextMenuPolicy">
-                              <enum>Qt::DefaultContextMenu</enum>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QTabBar::tab {
-background-color: rgb(52, 59, 72);
-} 
+                            <layout class="QHBoxLayout" name="horizontalLayout_15">
+                             <item>
+                              <widget class="QLineEdit" name="txtCurrentParameter">
+                               <property name="enabled">
+                                <bool>true</bool>
+                               </property>
+                               <property name="minimumSize">
+                                <size>
+                                 <width>82</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>120</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                               </property>
+                               <property name="text">
+                                <string>Parameter</string>
+                               </property>
+                               <property name="placeholderText">
+                                <string/>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QPushButton" name="btnNextParam">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>30</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>30</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">/*background-color: rgb(52, 59, 72);*/
 
-QTabBar::tab:selected { 
- background-color: rgb(33, 37, 43);
+#pagesContainer .QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+
+#pagesContainer .QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+
+#pagesContainer .QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}
+
+#pagesContainer .QPushButton:disabled {
+
+	background-color: #333333; border: none;
 }</string>
-                             </property>
-                             <property name="currentIndex">
-                              <number>0</number>
-                             </property>
-                             <property name="documentMode">
-                              <bool>true</bool>
-                             </property>
-                             <property name="tabsClosable">
-                              <bool>false</bool>
-                             </property>
-                             <widget class="QWidget" name="tab">
-                              <attribute name="title">
-                               <string>CMAX</string>
-                              </attribute>
-                             </widget>
-                             <widget class="QWidget" name="tab_2">
-                              <attribute name="title">
-                               <string>CMIN</string>
-                              </attribute>
-                             </widget>
-                            </widget>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="icon">
+                                <iconset resource="resources.qrc">
+                                 <normaloff>:/icons/images/icons/cil-chevron-right.png</normaloff>:/icons/images/icons/cil-chevron-right.png</iconset>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <spacer name="horizontalSpacer_5">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>21</width>
+                                 <height>20</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                            </layout>
                            </item>
                            <item>
                             <widget class="QPlainTextEdit" name="txtLoadedValues">
@@ -3767,7 +3851,7 @@ QTabBar::tab:selected {
                              </property>
                              <property name="maximumSize">
                               <size>
-                               <width>260</width>
+                               <width>400</width>
                                <height>350</height>
                               </size>
                              </property>
@@ -3961,7 +4045,7 @@ QTabBar::tab:selected {
                               </widget>
                              </item>
                              <item>
-                              <widget class="QPushButton" name="btnClearDescription_3">
+                              <widget class="QPushButton" name="btnClear_ParametersResult">
                                <property name="enabled">
                                 <bool>true</bool>
                                </property>
@@ -4105,7 +4189,7 @@ QTabBar::tab:selected {
                                 <number>1</number>
                                </property>
                                <property name="text">
-                                <string>HISTOGRAM</string>
+                                <string>GRAPH</string>
                                </property>
                                <property name="alignment">
                                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -4129,24 +4213,18 @@ QTabBar::tab:selected {
                               </spacer>
                              </item>
                              <item>
-                              <widget class="QPushButton" name="next_histogram">
+                              <widget class="QPushButton" name="btnTheme">
                                <property name="minimumSize">
                                 <size>
-                                 <width>30</width>
+                                 <width>100</width>
                                  <height>30</height>
                                 </size>
                                </property>
                                <property name="maximumSize">
                                 <size>
-                                 <width>30</width>
-                                 <height>16777215</height>
+                                 <width>100</width>
+                                 <height>30</height>
                                 </size>
-                               </property>
-                               <property name="cursor">
-                                <cursorShape>PointingHandCursor</cursorShape>
-                               </property>
-                               <property name="toolTip">
-                                <string>Next</string>
                                </property>
                                <property name="styleSheet">
                                 <string notr="true">/*background-color: rgb(52, 59, 72);*/
@@ -4173,13 +4251,12 @@ QTabBar::tab:selected {
 }</string>
                                </property>
                                <property name="text">
-                                <string/>
-                               </property>
-                               <property name="icon">
-                                <iconset resource="resources.qrc">
-                                 <normaloff>:/icons/images/icons/cil-chevron-right.png</normaloff>:/icons/images/icons/cil-chevron-right.png</iconset>
+                                <string>Modo Oscuro</string>
                                </property>
                               </widget>
+                             </item>
+                             <item>
+                              <layout class="QHBoxLayout" name="horizontalLayout_buttons"/>
                              </item>
                              <item>
                               <widget class="QPushButton" name="btnClearDescription_4">
@@ -4493,7 +4570,7 @@ QTabBar::tab:selected {
                             </layout>
                            </item>
                            <item>
-                            <layout class="QHBoxLayout" name="horizontalLayout_12">
+                            <layout class="QHBoxLayout" name="horizontalLayout_wafermap">
                              <item>
                               <spacer name="horizontalSpacer_wafermap">
                                <property name="orientation">
@@ -4532,224 +4609,6 @@ QTabBar::tab:selected {
                       </layout>
                      </widget>
                      <widget class="QWidget" name="consult_estepa">
-                      <widget class="QWidget" name="verticalLayoutWidget">
-                       <property name="geometry">
-                        <rect>
-                         <x>10</x>
-                         <y>60</y>
-                         <width>441</width>
-                         <height>331</height>
-                        </rect>
-                       </property>
-                       <layout class="QVBoxLayout" name="verticalLayout_18">
-                        <item>
-                         <widget class="QLabel" name="labelVersion_57">
-                          <property name="maximumSize">
-                           <size>
-                            <width>200</width>
-                            <height>20</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">color: rgb(113, 126, 149);</string>
-                          </property>
-                          <property name="lineWidth">
-                           <number>1</number>
-                          </property>
-                          <property name="text">
-                           <string>By RUNS</string>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLabel" name="labelVersion_62">
-                          <property name="maximumSize">
-                           <size>
-                            <width>200</width>
-                            <height>20</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">color: rgb(113, 126, 149);</string>
-                          </property>
-                          <property name="lineWidth">
-                           <number>1</number>
-                          </property>
-                          <property name="text">
-                           <string>By WAFERS</string>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <spacer name="verticalSpacer_10">
-                          <property name="orientation">
-                           <enum>Qt::Vertical</enum>
-                          </property>
-                          <property name="sizeType">
-                           <enum>QSizePolicy::Fixed</enum>
-                          </property>
-                          <property name="sizeHint" stdset="0">
-                           <size>
-                            <width>20</width>
-                            <height>29</height>
-                           </size>
-                          </property>
-                         </spacer>
-                        </item>
-                        <item>
-                         <widget class="QLabel" name="labelVersion_63">
-                          <property name="maximumSize">
-                           <size>
-                            <width>200</width>
-                            <height>20</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">color: rgb(113, 126, 149);</string>
-                          </property>
-                          <property name="lineWidth">
-                           <number>1</number>
-                          </property>
-                          <property name="text">
-                           <string>Historical diagram wafer</string>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QComboBox" name="cmbTechnologyUpload_2">
-                          <property name="minimumSize">
-                           <size>
-                            <width>160</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>16777215</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                            <weight>50</weight>
-                            <italic>false</italic>
-                            <bold>false</bold>
-                           </font>
-                          </property>
-                          <property name="autoFillBackground">
-                           <bool>false</bool>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">background-color: rgb(33, 37, 43);</string>
-                          </property>
-                          <property name="editable">
-                           <bool>true</bool>
-                          </property>
-                          <property name="currentText">
-                           <string/>
-                          </property>
-                          <property name="iconSize">
-                           <size>
-                            <width>16</width>
-                            <height>16</height>
-                           </size>
-                          </property>
-                          <property name="frame">
-                           <bool>true</bool>
-                          </property>
-                          <item>
-                           <property name="text">
-                            <string/>
-                           </property>
-                          </item>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLabel" name="labelVersion_58">
-                          <property name="maximumSize">
-                           <size>
-                            <width>200</width>
-                            <height>20</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">color: rgb(113, 126, 149);</string>
-                          </property>
-                          <property name="lineWidth">
-                           <number>1</number>
-                          </property>
-                          <property name="text">
-                           <string>Historical diagram runs</string>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QComboBox" name="cmbMaskUpload_2">
-                          <property name="minimumSize">
-                           <size>
-                            <width>160</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>16777215</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                            <weight>50</weight>
-                            <italic>false</italic>
-                            <bold>false</bold>
-                           </font>
-                          </property>
-                          <property name="autoFillBackground">
-                           <bool>false</bool>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">background-color: rgb(33, 37, 43);</string>
-                          </property>
-                          <property name="editable">
-                           <bool>true</bool>
-                          </property>
-                          <property name="currentText">
-                           <string/>
-                          </property>
-                          <property name="iconSize">
-                           <size>
-                            <width>16</width>
-                            <height>16</height>
-                           </size>
-                          </property>
-                          <property name="frame">
-                           <bool>true</bool>
-                          </property>
-                          <item>
-                           <property name="text">
-                            <string/>
-                           </property>
-                          </item>
-                         </widget>
-                        </item>
-                       </layout>
-                      </widget>
                       <widget class="QLabel" name="label_13">
                        <property name="geometry">
                         <rect>
@@ -4775,11 +4634,1178 @@ QTabBar::tab:selected {
                         <string notr="true">font: 700 12pt &quot;Segoe UI&quot;;</string>
                        </property>
                        <property name="text">
-                        <string>CONSULT</string>
+                        <string>CONSULT DATA BASE</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
                        </property>
+                      </widget>
+                      <widget class="QWidget" name="layoutWidget">
+                       <property name="geometry">
+                        <rect>
+                         <x>10</x>
+                         <y>30</y>
+                         <width>1311</width>
+                         <height>441</height>
+                        </rect>
+                       </property>
+                       <layout class="QHBoxLayout" name="horizontalLayout_14">
+                        <item>
+                         <layout class="QVBoxLayout" name="verticalLayout_34">
+                          <item>
+                           <layout class="QHBoxLayout" name="horizontalLayout_19">
+                            <item>
+                             <layout class="QGridLayout" name="gridLayout_17">
+                              <property name="verticalSpacing">
+                               <number>6</number>
+                              </property>
+                              <item row="0" column="1">
+                               <spacer name="horizontalSpacer_11">
+                                <property name="orientation">
+                                 <enum>Qt::Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                 <enum>QSizePolicy::Fixed</enum>
+                                </property>
+                                <property name="sizeHint" stdset="0">
+                                 <size>
+                                  <width>20</width>
+                                  <height>20</height>
+                                 </size>
+                                </property>
+                               </spacer>
+                              </item>
+                              <item row="0" column="0">
+                               <widget class="QRadioButton" name="optWafers">
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>130</width>
+                                  <height>0</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>150</width>
+                                  <height>16777215</height>
+                                 </size>
+                                </property>
+                                <property name="text">
+                                 <string>Wafers</string>
+                                </property>
+                                <property name="checked">
+                                 <bool>true</bool>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="0" column="2">
+                               <widget class="QCheckBox" name="historicalcheck">
+                                <property name="text">
+                                 <string>Historical</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="1" column="0">
+                               <widget class="QRadioButton" name="optRuns">
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>130</width>
+                                  <height>0</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>150</width>
+                                  <height>16777215</height>
+                                 </size>
+                                </property>
+                                <property name="text">
+                                 <string>Runs</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="1" column="2">
+                               <widget class="QStackedWidget" name="optionsHistorical">
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>300</width>
+                                  <height>50</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>300</width>
+                                  <height>50</height>
+                                 </size>
+                                </property>
+                                <property name="currentIndex">
+                                 <number>1</number>
+                                </property>
+                                <widget class="QWidget" name="YesHistorical">
+                                 <widget class="QWidget" name="gridLayoutWidget_3">
+                                  <property name="geometry">
+                                   <rect>
+                                    <x>-1</x>
+                                    <y>9</y>
+                                    <width>271</width>
+                                    <height>31</height>
+                                   </rect>
+                                  </property>
+                                  <layout class="QGridLayout" name="gridLayout">
+                                   <item row="0" column="1">
+                                    <spacer name="horizontalSpacer_6">
+                                     <property name="orientation">
+                                      <enum>Qt::Horizontal</enum>
+                                     </property>
+                                     <property name="sizeType">
+                                      <enum>QSizePolicy::Fixed</enum>
+                                     </property>
+                                     <property name="sizeHint" stdset="0">
+                                      <size>
+                                       <width>20</width>
+                                       <height>20</height>
+                                      </size>
+                                     </property>
+                                    </spacer>
+                                   </item>
+                                   <item row="0" column="0">
+                                    <widget class="QRadioButton" name="btnValues">
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>70</width>
+                                       <height>0</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>70</width>
+                                       <height>16777215</height>
+                                      </size>
+                                     </property>
+                                     <property name="text">
+                                      <string>Values</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="0" column="2">
+                                    <widget class="QRadioButton" name="btnYield">
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>143</width>
+                                       <height>16777215</height>
+                                      </size>
+                                     </property>
+                                     <property name="text">
+                                      <string>Yield</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                  </layout>
+                                 </widget>
+                                </widget>
+                                <widget class="QWidget" name="NoHistorical">
+                                 <widget class="QWidget" name="gridLayoutWidget_10">
+                                  <property name="geometry">
+                                   <rect>
+                                    <x>0</x>
+                                    <y>10</y>
+                                    <width>421</width>
+                                    <height>31</height>
+                                   </rect>
+                                  </property>
+                                  <layout class="QGridLayout" name="gridLayout_18">
+                                   <property name="sizeConstraint">
+                                    <enum>QLayout::SetDefaultConstraint</enum>
+                                   </property>
+                                  </layout>
+                                 </widget>
+                                </widget>
+                               </widget>
+                              </item>
+                             </layout>
+                            </item>
+                           </layout>
+                          </item>
+                          <item>
+                           <layout class="QGridLayout" name="gridLayout_5">
+                            <item row="7" column="1" colspan="2">
+                             <widget class="CheckableComboBox" name="cmbParametersBBDD_2">
+                              <property name="enabled">
+                               <bool>true</bool>
+                              </property>
+                              <property name="minimumSize">
+                               <size>
+                                <width>100</width>
+                                <height>0</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>300</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Segoe UI</family>
+                                <pointsize>10</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                               </font>
+                              </property>
+                              <property name="autoFillBackground">
+                               <bool>false</bool>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">background-color: rgb(33, 37, 43);</string>
+                              </property>
+                              <property name="editable">
+                               <bool>true</bool>
+                              </property>
+                              <property name="currentText">
+                               <string notr="true">Select instrument</string>
+                              </property>
+                              <property name="iconSize">
+                               <size>
+                                <width>16</width>
+                                <height>16</height>
+                               </size>
+                              </property>
+                              <property name="frame">
+                               <bool>true</bool>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="3" column="1" colspan="2">
+                             <widget class="CheckableComboBox" name="cmbRunsConsult">
+                              <property name="enabled">
+                               <bool>true</bool>
+                              </property>
+                              <property name="minimumSize">
+                               <size>
+                                <width>100</width>
+                                <height>0</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>300</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Segoe UI</family>
+                                <pointsize>10</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                               </font>
+                              </property>
+                              <property name="autoFillBackground">
+                               <bool>false</bool>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">background-color: rgb(33, 37, 43);</string>
+                              </property>
+                              <property name="editable">
+                               <bool>true</bool>
+                              </property>
+                              <property name="currentText">
+                               <string notr="true">Select instrument</string>
+                              </property>
+                              <property name="iconSize">
+                               <size>
+                                <width>16</width>
+                                <height>16</height>
+                               </size>
+                              </property>
+                              <property name="frame">
+                               <bool>true</bool>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="1" column="1" colspan="2">
+                             <widget class="CheckableComboBox" name="cmbTechnologyConsult">
+                              <property name="enabled">
+                               <bool>true</bool>
+                              </property>
+                              <property name="minimumSize">
+                               <size>
+                                <width>100</width>
+                                <height>0</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>300</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Segoe UI</family>
+                                <pointsize>10</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                               </font>
+                              </property>
+                              <property name="autoFillBackground">
+                               <bool>false</bool>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">background-color: rgb(33, 37, 43);</string>
+                              </property>
+                              <property name="editable">
+                               <bool>true</bool>
+                              </property>
+                              <property name="currentText">
+                               <string notr="true">Select instrument</string>
+                              </property>
+                              <property name="iconSize">
+                               <size>
+                                <width>16</width>
+                                <height>16</height>
+                               </size>
+                              </property>
+                              <property name="frame">
+                               <bool>true</bool>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="0" column="1">
+                             <widget class="QLabel" name="labelVersion_26">
+                              <property name="maximumSize">
+                               <size>
+                                <width>200</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">color: rgb(113, 126, 149);</string>
+                              </property>
+                              <property name="lineWidth">
+                               <number>1</number>
+                              </property>
+                              <property name="text">
+                               <string>Select technology</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="6" column="1">
+                             <widget class="QLabel" name="labelVersion_29">
+                              <property name="maximumSize">
+                               <size>
+                                <width>200</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">color: rgb(113, 126, 149);</string>
+                              </property>
+                              <property name="lineWidth">
+                               <number>1</number>
+                              </property>
+                              <property name="text">
+                               <string>Select parameters</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="9" column="0">
+                             <spacer name="horizontalSpacer_10">
+                              <property name="orientation">
+                               <enum>Qt::Horizontal</enum>
+                              </property>
+                              <property name="sizeType">
+                               <enum>QSizePolicy::Fixed</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>6</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                            <item row="2" column="1">
+                             <widget class="QLabel" name="labelVersion_27">
+                              <property name="maximumSize">
+                               <size>
+                                <width>200</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">color: rgb(113, 126, 149);</string>
+                              </property>
+                              <property name="lineWidth">
+                               <number>1</number>
+                              </property>
+                              <property name="text">
+                               <string>Select run</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="5" column="1" colspan="2">
+                             <widget class="CheckableComboBox" name="cmbWafersConsult">
+                              <property name="enabled">
+                               <bool>true</bool>
+                              </property>
+                              <property name="minimumSize">
+                               <size>
+                                <width>100</width>
+                                <height>0</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>300</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Segoe UI</family>
+                                <pointsize>10</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                               </font>
+                              </property>
+                              <property name="autoFillBackground">
+                               <bool>false</bool>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">background-color: rgb(33, 37, 43);</string>
+                              </property>
+                              <property name="editable">
+                               <bool>true</bool>
+                              </property>
+                              <property name="currentText">
+                               <string notr="true">All wafers</string>
+                              </property>
+                              <property name="iconSize">
+                               <size>
+                                <width>16</width>
+                                <height>16</height>
+                               </size>
+                              </property>
+                              <property name="frame">
+                               <bool>true</bool>
+                              </property>
+                              <item>
+                               <property name="text">
+                                <string>All wafers</string>
+                               </property>
+                              </item>
+                             </widget>
+                            </item>
+                            <item row="4" column="1">
+                             <widget class="QLabel" name="labelVersion_28">
+                              <property name="maximumSize">
+                               <size>
+                                <width>200</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">color: rgb(113, 126, 149);</string>
+                              </property>
+                              <property name="lineWidth">
+                               <number>1</number>
+                              </property>
+                              <property name="text">
+                               <string>Select wafer</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="5" column="3">
+                             <widget class="QPushButton" name="next_histogram_3">
+                              <property name="minimumSize">
+                               <size>
+                                <width>30</width>
+                                <height>30</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>30</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="cursor">
+                               <cursorShape>PointingHandCursor</cursorShape>
+                              </property>
+                              <property name="toolTip">
+                               <string>Next</string>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">/*background-color: rgb(52, 59, 72);*/
+
+#pagesContainer .QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+
+#pagesContainer .QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+
+#pagesContainer .QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}
+
+#pagesContainer .QPushButton:disabled {
+
+	background-color: #333333; border: none;
+}</string>
+                              </property>
+                              <property name="text">
+                               <string/>
+                              </property>
+                              <property name="icon">
+                               <iconset resource="resources.qrc">
+                                <normaloff>:/icons/images/icons/cil-chevron-right.png</normaloff>:/icons/images/icons/cil-chevron-right.png</iconset>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="0" column="4">
+                             <widget class="QLabel" name="labelVersion_31">
+                              <property name="minimumSize">
+                               <size>
+                                <width>100</width>
+                                <height>0</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>100</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">color: rgb(113, 126, 149);</string>
+                              </property>
+                              <property name="lineWidth">
+                               <number>1</number>
+                              </property>
+                              <property name="text">
+                               <string>WAFERS</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="1" column="4" rowspan="7">
+                             <widget class="QListView" name="ListWafers">
+                              <property name="maximumSize">
+                               <size>
+                                <width>300</width>
+                                <height>335</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Segoe UI</family>
+                                <pointsize>10</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                                <kerning>true</kerning>
+                               </font>
+                              </property>
+                              <property name="autoFillBackground">
+                               <bool>false</bool>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">background-color: rgb(33, 37, 43);</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="9" column="1">
+                             <widget class="QPushButton" name="btnConsult">
+                              <property name="minimumSize">
+                               <size>
+                                <width>120</width>
+                                <height>30</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>120</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Segoe UI</family>
+                                <pointsize>10</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                               </font>
+                              </property>
+                              <property name="cursor">
+                               <cursorShape>PointingHandCursor</cursorShape>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">background-color: rgb(52, 59, 72);</string>
+                              </property>
+                              <property name="text">
+                               <string>Consult</string>
+                              </property>
+                              <property name="icon">
+                               <iconset resource="resources.qrc">
+                                <normaloff>:/icons/images/icons/cil-loop-circular.png</normaloff>:/icons/images/icons/cil-loop-circular.png</iconset>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </item>
+                         </layout>
+                        </item>
+                        <item>
+                         <spacer name="horizontalSpacer_22">
+                          <property name="orientation">
+                           <enum>Qt::Horizontal</enum>
+                          </property>
+                          <property name="sizeType">
+                           <enum>QSizePolicy::Fixed</enum>
+                          </property>
+                          <property name="sizeHint" stdset="0">
+                           <size>
+                            <width>20</width>
+                            <height>20</height>
+                           </size>
+                          </property>
+                         </spacer>
+                        </item>
+                        <item>
+                         <layout class="QVBoxLayout" name="verticalLayout_35">
+                          <item>
+                           <layout class="QHBoxLayout" name="horizontalLayout_9">
+                            <item>
+                             <widget class="QLabel" name="labelVersion_24">
+                              <property name="maximumSize">
+                               <size>
+                                <width>200</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">color: rgb(113, 126, 149);</string>
+                              </property>
+                              <property name="lineWidth">
+                               <number>1</number>
+                              </property>
+                              <property name="text">
+                               <string>PARAMETERS RESULT</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <spacer name="horizontalSpacer_23">
+                              <property name="orientation">
+                               <enum>Qt::Horizontal</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>40</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                            <item>
+                             <widget class="QPushButton" name="btnSaveDescription_4">
+                              <property name="enabled">
+                               <bool>true</bool>
+                              </property>
+                              <property name="minimumSize">
+                               <size>
+                                <width>30</width>
+                                <height>30</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>30</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Segoe UI</family>
+                                <pointsize>10</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                               </font>
+                              </property>
+                              <property name="cursor">
+                               <cursorShape>PointingHandCursor</cursorShape>
+                              </property>
+                              <property name="toolTip">
+                               <string>Save</string>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">/*background-color: rgb(52, 59, 72);*/
+
+#pagesContainer .QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+
+#pagesContainer .QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+
+#pagesContainer .QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}
+
+#pagesContainer .QPushButton:disabled {
+
+	background-color: #333333; border: none;
+}</string>
+                              </property>
+                              <property name="text">
+                               <string/>
+                              </property>
+                              <property name="icon">
+                               <iconset resource="resources.qrc">
+                                <normaloff>:/icons/images/icons/cil-save.png</normaloff>:/icons/images/icons/cil-save.png</iconset>
+                              </property>
+                              <property name="flat">
+                               <bool>false</bool>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QPushButton" name="btnCopyDescription_4">
+                              <property name="minimumSize">
+                               <size>
+                                <width>30</width>
+                                <height>30</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>30</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="cursor">
+                               <cursorShape>PointingHandCursor</cursorShape>
+                              </property>
+                              <property name="toolTip">
+                               <string>Copy</string>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">/*background-color: rgb(52, 59, 72);*/
+
+#pagesContainer .QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+
+#pagesContainer .QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+
+#pagesContainer .QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}
+
+#pagesContainer .QPushButton:disabled {
+
+	background-color: #333333; border: none;
+}</string>
+                              </property>
+                              <property name="text">
+                               <string/>
+                              </property>
+                              <property name="icon">
+                               <iconset>
+                                <normaloff>images/icons/cil-clone.png</normaloff>images/icons/cil-clone.png</iconset>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QPushButton" name="btnClearDescription_6">
+                              <property name="enabled">
+                               <bool>true</bool>
+                              </property>
+                              <property name="minimumSize">
+                               <size>
+                                <width>30</width>
+                                <height>30</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>30</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Segoe UI</family>
+                                <pointsize>10</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                               </font>
+                              </property>
+                              <property name="cursor">
+                               <cursorShape>PointingHandCursor</cursorShape>
+                              </property>
+                              <property name="toolTip">
+                               <string>Clear</string>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">/*background-color: rgb(52, 59, 72);*/
+
+#pagesContainer .QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+
+#pagesContainer .QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+
+#pagesContainer .QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}
+
+#pagesContainer .QPushButton:disabled {
+
+	background-color: #333333; border: none;
+}</string>
+                              </property>
+                              <property name="text">
+                               <string/>
+                              </property>
+                              <property name="icon">
+                               <iconset resource="resources.qrc">
+                                <normaloff>:/icons/images/icons/cil-x.png</normaloff>:/icons/images/icons/cil-x.png</iconset>
+                              </property>
+                              <property name="flat">
+                               <bool>false</bool>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </item>
+                          <item>
+                           <spacer name="verticalSpacer_8">
+                            <property name="orientation">
+                             <enum>Qt::Vertical</enum>
+                            </property>
+                            <property name="sizeType">
+                             <enum>QSizePolicy::Fixed</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>15</width>
+                              <height>24</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                          <item>
+                           <widget class="QPlainTextEdit" name="txtParametersResult_2">
+                            <property name="minimumSize">
+                             <size>
+                              <width>10</width>
+                              <height>350</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>16777215</width>
+                              <height>350</height>
+                             </size>
+                            </property>
+                            <property name="toolTip">
+                             <string>Results parameters</string>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">background-color: rgb(33, 37, 43);</string>
+                            </property>
+                            <property name="plainText">
+                             <string/>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </item>
+                       </layout>
+                      </widget>
+                      <widget class="QWidget" name="layoutWidget_2">
+                       <property name="geometry">
+                        <rect>
+                         <x>12</x>
+                         <y>484</y>
+                         <width>1311</width>
+                         <height>261</height>
+                        </rect>
+                       </property>
+                       <layout class="QHBoxLayout" name="horizontalLayout_16">
+                        <item>
+                         <layout class="QVBoxLayout" name="verticalLayout_37">
+                          <item>
+                           <layout class="QHBoxLayout" name="horizontalLayout_22">
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <item>
+                             <widget class="QLabel" name="labelVersion_33">
+                              <property name="minimumSize">
+                               <size>
+                                <width>135</width>
+                                <height>0</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>75</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">color: rgb(113, 126, 149);</string>
+                              </property>
+                              <property name="lineWidth">
+                               <number>1</number>
+                              </property>
+                              <property name="text">
+                               <string>HISTORICAL DIAGRAM</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <spacer name="horizontalSpacer_26">
+                              <property name="orientation">
+                               <enum>Qt::Horizontal</enum>
+                              </property>
+                              <property name="sizeType">
+                               <enum>QSizePolicy::Expanding</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>40</width>
+                                <height>20</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                            <item>
+                             <widget class="QPushButton" name="next_histogram_2">
+                              <property name="minimumSize">
+                               <size>
+                                <width>30</width>
+                                <height>30</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>30</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="cursor">
+                               <cursorShape>PointingHandCursor</cursorShape>
+                              </property>
+                              <property name="toolTip">
+                               <string>Next</string>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">/*background-color: rgb(52, 59, 72);*/
+
+#pagesContainer .QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+
+#pagesContainer .QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+
+#pagesContainer .QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}
+
+#pagesContainer .QPushButton:disabled {
+
+	background-color: #333333; border: none;
+}</string>
+                              </property>
+                              <property name="text">
+                               <string/>
+                              </property>
+                              <property name="icon">
+                               <iconset resource="resources.qrc">
+                                <normaloff>:/icons/images/icons/cil-chevron-right.png</normaloff>:/icons/images/icons/cil-chevron-right.png</iconset>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QPushButton" name="btnClearDescription_8">
+                              <property name="enabled">
+                               <bool>true</bool>
+                              </property>
+                              <property name="minimumSize">
+                               <size>
+                                <width>30</width>
+                                <height>30</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>30</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Segoe UI</family>
+                                <pointsize>10</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                               </font>
+                              </property>
+                              <property name="cursor">
+                               <cursorShape>PointingHandCursor</cursorShape>
+                              </property>
+                              <property name="toolTip">
+                               <string>Clear</string>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">/*background-color: rgb(52, 59, 72);*/
+
+#pagesContainer .QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+
+#pagesContainer .QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+
+#pagesContainer .QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}
+
+#pagesContainer .QPushButton:disabled {
+
+	background-color: #333333; border: none;
+}</string>
+                              </property>
+                              <property name="text">
+                               <string/>
+                              </property>
+                              <property name="icon">
+                               <iconset resource="resources.qrc">
+                                <normaloff>:/icons/images/icons/cil-x.png</normaloff>:/icons/images/icons/cil-x.png</iconset>
+                              </property>
+                              <property name="flat">
+                               <bool>false</bool>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </item>
+                          <item>
+                           <layout class="QHBoxLayout" name="horizontalLayout_histogram_2">
+                            <item>
+                             <spacer name="horizontalSpacer_histogram_2">
+                              <property name="orientation">
+                               <enum>Qt::Horizontal</enum>
+                              </property>
+                              <property name="sizeType">
+                               <enum>QSizePolicy::Expanding</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                               <size>
+                                <width>40</width>
+                                <height>1</height>
+                               </size>
+                              </property>
+                             </spacer>
+                            </item>
+                            <item>
+                             <layout class="QVBoxLayout" name="verticalLayout_histogram_2"/>
+                            </item>
+                           </layout>
+                          </item>
+                          <item>
+                           <spacer name="verticalSpacer_9">
+                            <property name="orientation">
+                             <enum>Qt::Vertical</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>20</width>
+                              <height>40</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </item>
+                        <item>
+                         <layout class="QVBoxLayout" name="verticalLayout_38">
+                          <item>
+                           <layout class="QHBoxLayout" name="horizontalLayout_24">
+                            <item>
+                             <layout class="QVBoxLayout" name="verticalLayout_wafermap_2"/>
+                            </item>
+                           </layout>
+                          </item>
+                         </layout>
+                        </item>
+                       </layout>
                       </widget>
                      </widget>
                      <widget class="QWidget" name="inbase">
@@ -5745,36 +6771,7 @@ QTabBar::tab:selected {
                          <height>771</height>
                         </rect>
                        </property>
-                       <layout class="QGridLayout" name="gridLayout_4">
-                        <item row="1" column="1">
-                         <layout class="QGridLayout" name="gridLayout_3">
-                          <property name="sizeConstraint">
-                           <enum>QLayout::SetDefaultConstraint</enum>
-                          </property>
-                          <item row="1" column="0">
-                           <widget class="QGraphicsView" name="graph_Waveform">
-                            <property name="maximumSize">
-                             <size>
-                              <width>16777</width>
-                              <height>16777</height>
-                             </size>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="0" column="0">
-                           <widget class="QLabel" name="WaveformLabel">
-                            <property name="styleSheet">
-                             <string notr="true">font: 10pt &quot;absender&quot;;
-font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
-                            </property>
-                            <property name="text">
-                             <string>Waveform</string>
-                            </property>
-                           </widget>
-                          </item>
-                         </layout>
-                        </item>
-                       </layout>
+                       <layout class="QGridLayout" name="gridLayout_4"/>
                       </widget>
                      </widget>
                     </widget>
@@ -5883,7 +6880,7 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                           <number>0</number>
                          </property>
                          <item>
-                          <widget class="QPushButton" name="btn_message">
+                          <widget class="QPushButton" name="btnDirectory">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                              <horstretch>0</horstretch>
@@ -5915,7 +6912,7 @@ font: 81 11pt &quot;Montserrat ExtraBold&quot;;</string>
                             <string notr="true">background-image: url(:/icons/images/icons/cil-envelope-open.png);</string>
                            </property>
                            <property name="text">
-                            <string>Message</string>
+                            <string>Directory</string>
                            </property>
                           </widget>
                          </item>
