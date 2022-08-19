@@ -1,6 +1,6 @@
 # ESTEPA
 
-Update v7.6.2
+Update v7.6.2 (17/08/2022)
 
 - Opció de canviar de dades per veure els seus valors corresponents a la funció analyze_files
 - Afegit un botó per canviar entre tema fosc o clar (així ens estalviem els problemes per saber com guardar en el tema clar)
