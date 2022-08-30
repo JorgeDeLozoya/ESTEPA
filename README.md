@@ -16,3 +16,21 @@ Update v7.6.2 (17/08/2022)
 
 - Una funció que guardi la ultima ubicació on es va obrir un fitxer (en comptes de crear un directori permanent)
 - Com idea al menú de la dreta, es podria afegir una opció per canviar el tema del programa a light mode
+
+
+Update v7.6.3 (30/08/2022)
+
+- Configurat el botó per canviar entre tema fosc o clar per l'analisis
+- Funció per guardar la ultima ubicació on es va obrir un fitxer
+
+- Afegides les següents configuracions al inici de la classe MainWindow:
+	 
+
+        self.directorio_trabajo="C:"
+        self.modo_grafico=True  #True = Anàlisi 
+				#False = Correlació
+
+*Queda pendent per aquesta setmana:
+
+- Com idea al menú de la dreta, es podria afegir una opció per canviar el tema del programa a light mode
+- Estructura dels fitxers que es guarden

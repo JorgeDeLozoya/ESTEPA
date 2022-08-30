@@ -2064,13 +2064,13 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_20.addWidget(self.labelVersion_22)
 
-        self.horizontalSpacer_20 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_20 = QSpacerItem(31, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_20.addItem(self.horizontalSpacer_20)
 
         self.btnTheme = QPushButton(self.estepa)
         self.btnTheme.setObjectName(u"btnTheme")
-        self.btnTheme.setMinimumSize(QSize(100, 30))
+        self.btnTheme.setMinimumSize(QSize(145, 30))
         self.btnTheme.setMaximumSize(QSize(100, 30))
         self.btnTheme.setStyleSheet(u"/*background-color: rgb(52, 59, 72);*/\n"
 "\n"
@@ -3324,7 +3324,7 @@ class Ui_MainWindow(object):
 
         self.stackedWidget_configuration.setCurrentIndex(0)
         self.optionsNonAutomatic.setCurrentIndex(1)
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(2)
         self.optionsESTEPA.setCurrentIndex(0)
         self.optionsHistorical.setCurrentIndex(1)
 
@@ -3478,7 +3478,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.txtParametersResult.setPlainText("")
         self.labelVersion_22.setText(QCoreApplication.translate("MainWindow", u"GRAPH", None))
-        self.btnTheme.setText(QCoreApplication.translate("MainWindow", u"Modo Oscuro", None))
+        self.btnTheme.setText(QCoreApplication.translate("MainWindow", u"Cambiar a modo claro", None))
 #if QT_CONFIG(tooltip)
         self.btnClearDescription_4.setToolTip(QCoreApplication.translate("MainWindow", u"Clear", None))
 #endif // QT_CONFIG(tooltip)

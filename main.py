@@ -67,7 +67,8 @@ class MainWindow(QMainWindow):
         # CONFIG
         self.modo_histograma=True
         self.measurements=None
-        self.directorio_trabajo=""  #POR ACABAR
+        self.directorio_trabajo="C:"  #POR ACABAR
+        self.modo_grafico=True  #True = Analisis False = Correlación
 
         # SET AS GLOBAL WIDGETS
         # ///////////////////////////////////////////////////////////////
@@ -274,7 +275,7 @@ class MainWindow(QMainWindow):
 
     #ANALYZE
     def analyze_files(self):
-
+        self.modo_grafico = True
         self.textoParametros={}             #16/8       diccionario
         
         parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
@@ -290,12 +291,12 @@ class MainWindow(QMainWindow):
         if not result_file.error:
             if parameters_file!="":
                 # GET parameters result
-                measurements = result_file.get_params(parameters_file_list)
+                self.measurements = result_file.get_params(parameters_file_list)
                 # wafer = wafermap_file.get_xmax_ymax()
 
                 widgets.txtParametersResult.setPlainText("")
                 for par in parameters_file_list:
-                    estadistica = StatisticsEstepa(par, measurements[par]["medida"], (self.config["estepa"]))
+                    estadistica = StatisticsEstepa(par, self.measurements[par]["medida"], (self.config["estepa"]))
                     widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
                 # GET DATA VALUES, HISTOGRAM & WAFERMAP IF PARAM==1
                 
@@ -303,14 +304,14 @@ class MainWindow(QMainWindow):
                 for fileName in parameters_file_list:
                     self.textoParametros[fileName]=""
                     data_values = result_file.get_data_values(fileName)
-                    widgets.txtParametersResult.setPlainText("X "+"Y "+"Measurement")
                     for chip in data_values:
                         self.textoParametros[fileName]+=str(chip)+" "+str(data_values[chip])+"\n"
                 
                 par=list(self.textoParametros.keys())[self.parametroMostrando]
                 widgets.txtCurrentParameter.setText(par)
+                # widgets.txtLoadedValues.setPlainText("X "+"Y "+"Measurement")
                 widgets.txtLoadedValues.setPlainText(self.textoParametros[par])
-                self.generate_histogram(measurements[par]["medida"])
+                self.generate_histogram()
                 # Get wafermap
                 self.generate_wafermap()   
             else:
@@ -322,15 +323,16 @@ class MainWindow(QMainWindow):
     def next_parameter(self):
         FileName = widgets.txtDataFile.text() 
         result_file = ResultFile(FileName)
-        measurements = result_file.get_params(list(self.textoParametros.keys()))
+        self.measurements = result_file.get_params(list(self.textoParametros.keys()))
         self.parametroMostrando=(self.parametroMostrando+1)%len(self.textoParametros)
         par=list(self.textoParametros.keys())[self.parametroMostrando]
         widgets.txtCurrentParameter.setText(par)
         widgets.txtLoadedValues.setPlainText(self.textoParametros[par])
-        self.generate_histogram(measurements[par]["medida"])                        #ERROR
+        self.generate_histogram()                        #ERROR
 
     # CORRELATION
     def correlation_files(self):
+        self.modo_grafico=False
         error = False
         if widgets.optLoadFiles.isChecked():
             txt_param_selected = widgets.cmbParametersFile.currentText().split(', ')[0]
@@ -397,7 +399,8 @@ class MainWindow(QMainWindow):
         widgets.btnClear_ParametersResult.clicked.emit()
         # delete wafermap
         for i in reversed(range(widgets.horizontalLayout_wafermap.count())):
-            widgets.horizontalLayout_wafermap.itemAt(i).widget().deleteLater()
+            if widgets.horizontalLayout_wafermap.itemAt(i).widget()!=None:
+                widgets.horizontalLayout_wafermap.itemAt(i).widget().deleteLater()
 
         # create a FigureCanvas & add to layout
         static_canvas = FigureCanvas(Figure())
@@ -419,7 +422,7 @@ class MainWindow(QMainWindow):
         # linear regression
         m, b = np.polyfit(data1, data2, 1)
         data22 = [float(x)*m +b  for x in data1]
-        _static_ax.plot(data1, data22, 'k', color='green')
+        _static_ax.plot(data1, data22, 'k', color='green')  #Añadir el color de fondo
 
         _static_ax.set_title(param1_name + " vs " + param2_name)
 
@@ -429,9 +432,10 @@ class MainWindow(QMainWindow):
         btn = self.sender()
         btnName = btn.objectName()
         fileName, _ = QFileDialog.getOpenFileName(self,
-            "Open .dat file", "C:", "Dat Files (*.dat);; All files (*.*)")
+            "Open .dat file", self.directorio_trabajo, "Dat Files (*.dat);; All files (*.*)")
 
         if fileName:
+            self.directorio_trabajo=os.path.dirname(fileName)
             file_result = ResultFile(fileName)
             if not file_result.error:
                 if btnName == "btnOpenDataFileInbase":
@@ -459,6 +463,7 @@ class MainWindow(QMainWindow):
             "Open wafermap file", "C:", "PPG Files (*.ppg);; PPG py Files (*_wafermap.py);; All files (*.*)")
 
         if fileName:
+            self.directorio_trabajo=os.path.dirname(fileName)
             file_wafermap = WafermapFile(fileName)
             if not file_wafermap.error:
                 if btnName == "btnOpenWafermapFileInbase":
@@ -540,10 +545,10 @@ class MainWindow(QMainWindow):
         # #     widgets.verticalLayout_histogram.itemAt(i).widget().deleteLater()
         # # # create a FigureCanvas & add to layout
         
-    def generate_histogram(self,data):
+    def generate_histogram(self):
         par=list(self.textoParametros.keys())[self.parametroMostrando]
         data=self.measurements[par]["medida"]
-        mpl_style(dark=True)
+        mpl_style(dark=self.modo_histograma)
         # get data
         mu, std = norm.fit(data)
         # Delete all widgets in layout
@@ -563,11 +568,15 @@ class MainWindow(QMainWindow):
         xmin, xmax = min(data),max(data)
         x = np.linspace(xmin, xmax, 100)
         p = norm.pdf(x, mu, std)
-          
-        _static_ax.plot(x, p, 'w', linewidth=1)
+        if self.modo_histograma :
+            color_linea="w"
+        else:
+            color_linea="b"
+
+        _static_ax.plot(x, p, color_linea, linewidth=1)
         # Put title in histogram
-        title = widgets.txtCurrentParameter.currentText()
-        _static_ax.set_title(title)
+        # title = widgets.txtCurrentParameter.currentText()
+        # _static_ax.set_title(title)
         # layout = widgets.verticalLayout_histogram
         # for i in reversed(range(widgets.verticalLayout_histogram.count())):
         #     widgets.verticalLayout_histogram.itemAt(i).widget().deleteLater()
@@ -957,7 +966,14 @@ class MainWindow(QMainWindow):
     #CAMBIAR DE TEMA A CLARO                                                                                                                    #NUEVO 18/8
     def change_theme(self):
         self.modo_histograma= not self.modo_histograma
-        self.analyze_files()
+        if self.modo_histograma :
+            widgets.btnTheme.setText("Cambiar a modo claro")
+        else:
+            widgets.btnTheme.setText("Cambiar a modo oscuro")
+        if self.modo_grafico:
+            self.analyze_files()
+        else:
+            self.correlation_files()
 
     # end ESTEPA functions
     # --------------------
