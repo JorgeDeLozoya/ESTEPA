@@ -69,10 +69,27 @@ class StatisticsEstepa():
 
 		return print_statistics
 
+	# def print_correlation_results(self):
+
+	# 	print_correlation = self.param + " : " + "\n"
+	# 	print_correlation +=" - Pearsons correlation:	%.3f , %.3f	\t" % (corr,pvalue) + "\n"
+	# 	print_correlation +=" - Spearmanr correlation:	%.3f , %.3f \t" % (corr2, pvalue2) + "\n"
+	# 	print_correlation +=" - kendalltau correlation:	%.3f , %.3f  \t" % (corr3, pvalue3) + "\n"
+	# 	# print_correlation +=" - Points:   \t" + str(self.points_end) + "/" + str(self.points_ini) + "\n"
+		# return print_correlation
+
 	def load_statistics(self):
 		self.mean_estepa()
 		self.median_estepa()
 		self.stdev_estepa()
+	
+	# def load_correlation(self):
+	# 	self.correlation_files()
+	# 	statistics1 = StatisticsEstepa(parameters_list[0],data1,self.config["estepa"])
+	# 	data1, data2 = statistics1.get_data_correlation(data1,data2)
+	# 	corr, pvalue = self.pearsonr(data1, data2) # Pearson's r, valor p
+	# 	corr2, pvalue2 = self.spearmanr(data1, data2) # Spearman's rho, valor p
+	# 	corr3, pvalue3 = self.kendalltau(data1, data2) # Kendall's tau, valor p
 
 	def mean_estepa(self):
 		if len(self.data_list)>0:
@@ -324,64 +341,60 @@ class StatisticsEstepa():
 				break
 
 		return format_float
-	
+
+	# def get_data_correlation(self, data1, data2):
+	# 	data1_origen = data1
+	# 	data2_origen = data2
+	# 	method = self.config["method"]
+	# 	if method!="none":
+	# 		self.data_list = data1
+	# 		while True:
+	# 			eliminados = 0
+	# 			if method=="f-spread":
+	# 				# method f-spread (get quantiles with statistics library)
+	# 				xmin, xmax = self.f_spread2()
+	# 			if method=="k-sigma":
+	# 				# metode K-SIGMA
+	# 				xmin, xmax = self.k_sigma2()
+
+	# 			if xmin!=9E99 and xmax!=9E99:
+	# 				count = 0
+	# 				for data in self.data_list:
+	# 					if data<=xmin or data>=xmax:
+	# 						self.data_list.remove(data)
+	# 						data2.pop(count)
+	# 						eliminados +=1
+	# 					count += 1
+	# 				if eliminados == 0: break
+	# 		# delete outliers in second object (statistics_estepa2)
+	# 		data1 = self.data_list
+	# 		self.data_list = data2
+	# 		while True:
+	# 			eliminados = 0
+	# 			if method=="f-spread":
+	# 				# method f-spread (get quantiles with statistics library)
+	# 				xmin, xmax = self.f_spread2()
+	# 			if method=="k-sigma":
+	# 				# metode K-SIGMA
+	# 				xmin, xmax = self.k_sigma2()
+
+	# 			if xmin!=9E99 and xmax!=9E99:
+	# 				count = 0
+	# 				for data in data2:
+	# 					if data<=xmin or data>=xmax:
+	# 						self.data_list.remove(data)
+	# 						data1.pop(count)
+	# 						eliminados +=1
+	# 					count += 1
+	# 				if eliminados == 0: break
 
 
-
-
-
-
-
-	def get_data_correlation(self, data1, data2):
-		data1_origen = data1
-		data2_origen = data2
-		method = self.config["method"]
-		if method!="none":
-			self.data_list = data1
-			while True:
-				eliminados = 0
-				if method=="f-spread":
-					# method f-spread (get quantiles with statistics library)
-					xmin, xmax = self.f_spread2()
-				if method=="k-sigma":
-					# metode K-SIGMA
-					xmin, xmax = self.k_sigma2()
-
-				if xmin!=9E99 and xmax!=9E99:
-					count = 0
-					for data in self.data_list:
-						if data<=xmin or data>=xmax:
-							self.data_list.remove(data)
-							data2.pop(count)
-							eliminados +=1
-						count += 1
-					if eliminados == 0: break
-			# delete outliers in second object (statistics_estepa2)
-			data1 = self.data_list
-			self.data_list = data2
-			while True:
-				eliminados = 0
-				if method=="f-spread":
-					# method f-spread (get quantiles with statistics library)
-					xmin, xmax = self.f_spread2()
-				if method=="k-sigma":
-					# metode K-SIGMA
-					xmin, xmax = self.k_sigma2()
-
-				if xmin!=9E99 and xmax!=9E99:
-					count = 0
-					for data in data2:
-						if data<=xmin or data>=xmax:
-							self.data_list.remove(data)
-							data1.pop(count)
-							eliminados +=1
-						count += 1
-					if eliminados == 0: break
-
-
-		return data1, data2
+	# 	return data1, data2
 
 	
+
+
+
 
 
 
