@@ -272,7 +272,8 @@ class MainWindow(QMainWindow):
         # #         retval = messageBox(self,"Error loading ESTEPA class",self.estepa.error_message,"error")
         # # widgets.cmbParametersFile.clear()
         # # widgets.cmbParametersBBDD.clear()
-
+   
+    
     # ----------------
     # ESTEPA FUNCTIONS
     # ----------------
@@ -407,7 +408,7 @@ class MainWindow(QMainWindow):
                 retval = messageBox(self,"Error getting measurements Estepa",self.estepa.error_message,"warning")
             
 
-        if not error:       
+        if not error:
             statistics_correlation = StatisticsEstepa(parameters_list[0],data1,self.config["estepa"],data2)
             data1 = statistics_correlation.data_list
             data2 = statistics_correlation.data_list2
@@ -456,8 +457,6 @@ class MainWindow(QMainWindow):
         layout.addWidget(static_canvas)
         _static_ax = static_canvas.figure.subplots()
         _static_ax.grid(True, color='gray')
-        #_static_ax.set_xlabel(param1_name)
-        #_static_ax.set_ylabel(param2_name)
         _static_ax.scatter(data1, data2)
 
         # linear regression
@@ -559,8 +558,6 @@ class MainWindow(QMainWindow):
         # Put title in histogram
         title = widgets.cmbParametersFile.currentText()
         _static_ax.set_title(title)
-
-
         
     def generate_histogram(self):
         par=list(self.textoParametros.keys())[self.parametroMostrando]
@@ -591,7 +588,6 @@ class MainWindow(QMainWindow):
             color_linea="b"
 
         _static_ax.plot(x, p, color_linea, linewidth=1)
-
     
     def generate_wafermap(self):
         pass
@@ -1066,6 +1062,7 @@ class MainWindow(QMainWindow):
         fileName, _ = QFileDialog.getSaveFileName(self,
             "Save result file", self.values_directory + self.lot + "-" + self.wafer + "_" + par + "_values", "TXT Files (*.txt);; DOC Files (*.doc);; All files (*.*)")
 
+
     # GUARDAR RESULTADOS
     def save_results(self):
         FileName = widgets.txtDataFile.text()
@@ -1078,6 +1075,7 @@ class MainWindow(QMainWindow):
         # get fileName from user
         fileName, _ = QFileDialog.getSaveFileName(self,
             "Save result file", self.results_directory + self.lot + "-" + self.wafer + "_" + par + "_results", "TXT Files (*.txt);; DOC Files (*.doc);; All files (*.*)")
+
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -1140,40 +1138,40 @@ class MainWindow(QMainWindow):
             config = toml.load(fp)
             self.config = config
 
-def messageBox(self,title,message,type):
-    if type=="information" or type=="info":
-        retval = QMessageBox.information(
-            self,
-            title,
-            message,
-            buttons=QMessageBox.Ok ,
-            defaultButton=QMessageBox.Ok,
-        )
-    if type=="warning":
-        retval = QMessageBox.warning(
-            self,
-            title,
-            message,
-            buttons=QMessageBox.Ok ,
-            defaultButton=QMessageBox.Ok,
-        )
-    if type=="error" or type=="critical":
-        retval = QMessageBox.critical(
-            self,
-            title,
-            message,
-            buttons=QMessageBox.Ok ,
-            defaultButton=QMessageBox.Ok,
-        )
-    if type=="question":
-        retval = QMessageBox.question(
-            self,
-            title,
-            message,
-            buttons=QMessageBox.Yes | QMessageBox.No ,
-            defaultButton=QMessageBox.Yes,
-        )
-    return retval
+    def messageBox(self,title,message,type):
+        if type=="information" or type=="info":
+            retval = QMessageBox.information(
+                self,
+                title,
+                message,
+                buttons=QMessageBox.Ok ,
+                defaultButton=QMessageBox.Ok,
+            )
+        if type=="warning":
+            retval = QMessageBox.warning(
+                self,
+                title,
+                message,
+                buttons=QMessageBox.Ok ,
+                defaultButton=QMessageBox.Ok,
+            )
+        if type=="error" or type=="critical":
+            retval = QMessageBox.critical(
+                self,
+                title,
+                message,
+                buttons=QMessageBox.Ok ,
+                defaultButton=QMessageBox.Ok,
+            )
+        if type=="question":
+            retval = QMessageBox.question(
+                self,
+                title,
+                message,
+                buttons=QMessageBox.Yes | QMessageBox.No ,
+                defaultButton=QMessageBox.Yes,
+            )
+        return retval
     
 def get_json_file(filename, var_name):
     # if configuration json file exists load configuratión from file

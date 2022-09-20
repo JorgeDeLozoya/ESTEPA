@@ -1021,7 +1021,7 @@ Button */
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>images/icons/White Icons/option_bar_settings [#1399].png</normaloff>images/icons/White Icons/option_bar_settings [#1399].png</iconset>
+                    <normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/White Icons/option_bar_settings [#1399].png</normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/White Icons/option_bar_settings [#1399].png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -2044,7 +2044,7 @@ background: transparent;
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>2</number>
+                      <number>0</number>
                      </property>
                      <widget class="QWidget" name="Home_Window">
                       <property name="styleSheet">
@@ -2187,8 +2187,8 @@ color:rgb(52, 141, 232)</string>
                                </property>
                                <property name="icon">
                                 <iconset>
-                                 <normaloff>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
-                                 <normalon>:/icons/images/icons/cil-magnifying-glass.png</normalon>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
+                                 <normaloff>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
+                                 <normalon>:/icons/images/icons/cil-magnifying-glass.png</normalon>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
                                </property>
                               </widget>
                              </item>
@@ -2218,8 +2218,8 @@ color:rgb(52, 141, 232)</string>
                                </property>
                                <property name="icon">
                                 <iconset>
-                                 <normaloff>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
-                                 <normalon>:/icons/images/icons/cil-cloud-upload.png</normalon>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
+                                 <normaloff>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
+                                 <normalon>:/icons/images/icons/cil-cloud-upload.png</normalon>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
                                </property>
                               </widget>
                              </item>
@@ -2316,7 +2316,7 @@ color:rgb(52, 141, 232)</string>
                                 <string/>
                                </property>
                                <property name="pixmap">
-                                <pixmap>images/images/Estepa.png</pixmap>
+                                <pixmap>C:/Users/AKAIYFS/.designer/backup/images/images/Estepa.png</pixmap>
                                </property>
                                <property name="scaledContents">
                                 <bool>false</bool>
@@ -2603,8 +2603,8 @@ color:rgb(52, 141, 232)</string>
                              </property>
                              <property name="icon">
                               <iconset>
-                               <normaloff>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
-                               <normalon>:/icons/images/icons/cil-user.png</normalon>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
+                               <normaloff>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
+                               <normalon>:/icons/images/icons/cil-user.png</normalon>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
                              </property>
                             </widget>
                            </item>
@@ -2631,8 +2631,8 @@ color:rgb(52, 141, 232)</string>
                              </property>
                              <property name="icon">
                               <iconset>
-                               <normaloff>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
-                               <normalon>:/icons/images/icons/cil-folder-open.png</normalon>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
+                               <normaloff>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
+                               <normalon>:/icons/images/icons/cil-folder-open.png</normalon>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
                              </property>
                             </widget>
                            </item>
@@ -2659,8 +2659,8 @@ color:rgb(52, 141, 232)</string>
                              </property>
                              <property name="icon">
                               <iconset>
-                               <normaloff>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
-                               <normalon>:/icons/images/icons/cil-notes.png</normalon>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
+                               <normaloff>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
+                               <normalon>:/icons/images/icons/cil-notes.png</normalon>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
                              </property>
                             </widget>
                            </item>
@@ -4246,7 +4246,7 @@ color:rgb(52, 141, 232)</string>
                                    </property>
                                    <property name="icon">
                                     <iconset>
-                                     <normaloff>images/icons/cil-clone.png</normaloff>images/icons/cil-clone.png</iconset>
+                                     <normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/cil-clone.png</normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/cil-clone.png</iconset>
                                    </property>
                                   </widget>
                                  </item>
@@ -5458,7 +5458,7 @@ color:rgb(52, 141, 232)</string>
                               </property>
                               <property name="icon">
                                <iconset>
-                                <normaloff>images/icons/cil-clone.png</normaloff>images/icons/cil-clone.png</iconset>
+                                <normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/cil-clone.png</normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/cil-clone.png</iconset>
                               </property>
                              </widget>
                             </item>
