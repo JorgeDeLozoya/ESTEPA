@@ -36,10 +36,10 @@ class ResultFile():
 		if os.path.exists(path_to_file):
 			self.lines = []
 			with open(path_to_file) as file_in:
-			    for line in file_in:
-			    	if line!="":
-			        	self.lines.append(line.replace("\n",""))
-			    self.number_lines = len(self.lines)
+				for line in file_in:
+					if line!="":
+						self.lines.append(line.replace("\n",""))
+				self.number_lines = len(self.lines)
 			if self.number_lines==0:
 				#retval = messageBox(self,"Error loading file","File: " + path_to_file + " is empty!","error")	
 				self.error_message = "File: " + path_to_file + " is empty!"
@@ -92,7 +92,7 @@ class ResultFile():
 			if self.mode_type=="old":
 				if self.lines[0]!='""':
 					self.process = self.line[0].replace('"','') # run-wafer
-					self.lot = self.process.split("-")[0] # run
+					self.lot = self.process.split("-")[0] # run								#d'aquí agafo el nom del lot i el wafer
 					self.wafer = self.process.split("-")[1] # wafer
 				else:
 					# get process, lot & wafer from name if empty information

@@ -111,13 +111,13 @@ class WafermapFile():
 				# execute py file
 				with open(self.path_to_file,"r") as rnf:
 					try:
-					    exec(rnf.read())
-					    self.wafer_parameters = wafer_parameters
-					    self.wafer_size_inch = float(self.wafer_parameters["wafer_size"])
-					    self.set_wafer_size()
-					    if not "xmax" in self.wafer_parameters or not "ymax" in self.wafer_parameters:
-					    	# get xmax & ymax from wafer_positions
-					    	self.wafer_parameters["xmax"], self.wafer_parameters["ymax"] = self.get_xmax_ymax()
+						exec(rnf.read())
+						self.wafer_parameters = wafer_parameters
+						self.wafer_size_inch = float(self.wafer_parameters["wafer_size"])
+						self.set_wafer_size()
+						if not "xmax" in self.wafer_parameters or not "ymax" in self.wafer_parameters:
+							# get xmax & ymax from wafer_positions
+							self.wafer_parameters["xmax"], self.wafer_parameters["ymax"] = self.get_xmax_ymax()
 
 					except:
 						self.error = True
@@ -145,29 +145,29 @@ class WafermapFile():
 
 	def set_wafer_size(self):
 		if int(self.wafer_size_inch)==1:
-		    self.wafer_size_mm = 25
-		    self.thickness = 1
+			self.wafer_size_mm = 25
+			self.thickness = 1
 		if int(self.wafer_size_inch)==2:
-		    self.wafer_size_mm = 51
-		    self.thickness = 275
+			self.wafer_size_mm = 51
+			self.thickness = 275
 		if int(self.wafer_size_inch)==3:
-		    self.wafer_size_mm = 76
-		    self.thickness = 375
+			self.wafer_size_mm = 76
+			self.thickness = 375
 		if int(self.wafer_size_inch)==4:
-		    self.wafer_size_mm = 100
-		    self.thickness = 525
+			self.wafer_size_mm = 100
+			self.thickness = 525
 		if int(self.wafer_size_inch)==5: # 4.9 inch
-		    self.wafer_size_mm = 125
-		    self.thickness = 625
+			self.wafer_size_mm = 125
+			self.thickness = 625
 		if int(self.wafer_size_inch)==6: # 5.9 inch
-		    self.wafer_size_mm = 150
-		    self.thickness = 675
+			self.wafer_size_mm = 150
+			self.thickness = 675
 		if int(self.wafer_size_inch)==8: # 7.9 inch
-		    self.wafer_size_mm = 200
-		    self.thickness = 725
+			self.wafer_size_mm = 200
+			self.thickness = 725
 		if int(self.wafer_size_inch)==12: # 11.8 inch
-		    self.wafer_size_mm = 300 
-		    self.thickness = 775
+			self.wafer_size_mm = 300 
+			self.thickness = 775
 
 
 	def get_xmax_ymax(self):
@@ -179,8 +179,8 @@ class WafermapFile():
 			
 			elemento_array = elemento.split()
 			if len(elemento_array)!=2:
-			    check_wafer_parameters = False
-			    break
+				check_wafer_parameters = False
+				break
 			# init variables
 			elemento_x = elemento_array[0]
 			elemento_y = elemento_array[1]
@@ -189,23 +189,23 @@ class WafermapFile():
 			num_elemento_x = 0
 			num_elemento_y = 0
 			if elemento_x not in elementos_x_detected:
-			    elementos_x_detected = np.append(elementos_x_detected, elemento_x)
-			    buscar_x = True
+				elementos_x_detected = np.append(elementos_x_detected, elemento_x)
+				buscar_x = True
 			if elemento_y not in elementos_y_detected:
-			    elementos_y_detected = np.append(elementos_y_detected, elemento_y)
-			    buscar_y = True
+				elementos_y_detected = np.append(elementos_y_detected, elemento_y)
+				buscar_y = True
 			if buscar_x and buscar_y:
-			    for elemento_buscar in self.wafer_parameters["wafer_positions"]:
-			        elemento_buscar_array = elemento_buscar.split()
-			        if elemento_buscar_array[0] == elemento_x:
-			            num_elemento_y += 1 # cambiamos el eje porque buscamos sumatorio en vertical
-			        if elemento_buscar_array[1] == elemento_y:
-			            num_elemento_x += 1 # cambiamos el eje porque buscamos sumatorio en horizontal
+				for elemento_buscar in self.wafer_parameters["wafer_positions"]:
+					elemento_buscar_array = elemento_buscar.split()
+					if elemento_buscar_array[0] == elemento_x:
+						num_elemento_y += 1 # cambiamos el eje porque buscamos sumatorio en vertical
+					if elemento_buscar_array[1] == elemento_y:
+						num_elemento_x += 1 # cambiamos el eje porque buscamos sumatorio en horizontal
 
-			    if num_elemento_x>xmax_detected:
-			        xmax_detected = num_elemento_x
-			    if num_elemento_y>ymax_detected:
-			        ymax_detected = num_elemento_y
+				if num_elemento_x>xmax_detected:
+					xmax_detected = num_elemento_x
+				if num_elemento_y>ymax_detected:
+					ymax_detected = num_elemento_y
 		
 
 		return [xmax_detected,ymax_detected]
