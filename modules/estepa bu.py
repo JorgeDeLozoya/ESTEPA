@@ -1,4 +1,3 @@
-from webbrowser import get
 from functions import *
 from . result_file import *
 from . wafermap_file import *
@@ -146,7 +145,7 @@ class Estepa():
 		self.cur.execute(sql)
 		if self.cur.rowcount>0:
 			row = self.cur.fetchone()
-			#Diccionari[parametro]{23,3,4,5}
+
 			while row is not None:
 				parametro = row[1]
 				chip = row[2]

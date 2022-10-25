@@ -112,7 +112,7 @@ class WafermapFile():
 				with open(self.path_to_file,"r") as rnf:
 					try:
 						exec(rnf.read())
-						self.wafer_parameters = wafer_parameters
+						# self.wafer_parameters = wafer_parameters								#necesari?
 						self.wafer_size_inch = float(self.wafer_parameters["wafer_size"])
 						self.set_wafer_size()
 						if not "xmax" in self.wafer_parameters or not "ymax" in self.wafer_parameters:
@@ -370,14 +370,74 @@ class WafermapFile():
 
 		return str(real_origin_chip_x) + " " + str(real_origin_chip_y)
 
+	def get_heatmap_values(self,data_values):
+		# return numpy array 2D to use in heatmap seaborn
+		# pass data_values: dictionary with wafer_positions & value. Ex:
+		# {'0 0': 592.58027418, '-3 0': 593.775609049, '-6 0': 598.320966887, ....}
+		# 0) set np array 2D with zeros. Calc the number of chips in X & Y
+
+		xsize = float(self.wafer_parameters["xsize"])
+		ysize = float(self.wafer_parameters["ysize"])
+		num_chips_X = float(self.wafer_size_mm)*1000/xsize
+		num_chips_Y = float(self.wafer_size_mm)*1000/ysize
+		# set 2D array with zeros
+		separation_Y = 2 # create extra separation chips Y
+		get_heatmap_values = np.empty((int(num_chips_Y + separation_Y),int(num_chips_X)))
+		get_heatmap_values.fill(9E99)
+		# 1) We use the wafermaf class to get wafer_positions, real_origin_chip
+		wafer_positions = self.wafer_parameters["wafer_positions"]
 		
+		real_origin_chip = self.wafer_parameters["real_origin_chip"]
+		real_origin_chip_x, real_origin_chip_y = real_origin_chip.split()
+		
+		num_pos = 0
+		medidas = list()
+		for pos in wafer_positions:
+			posx, posy = pos.split()
+			wafer_position = wafer_positions[num_pos]
+			medida = data_values[wafer_position]
+			wafer_position_x, wafer_position_y = wafer_position.split()
+
+			# real wafer position is the wafer_position + real_origin_chip position
+			real_wafer_position_x = int(wafer_position_x) + int(real_origin_chip_x)
+			real_wafer_position_y = int(wafer_position_y) + int(real_origin_chip_y)
+
+			# for seaborn is positive
+			real_wafer_position_x_sns = int(real_wafer_position_x) * -1
+			real_wafer_position_y_sns = int(real_wafer_position_y) * -1
+
+			# set the value for array position (inverted)
+			get_heatmap_values[real_wafer_position_y_sns][real_wafer_position_x_sns] = medida
+			medidas.append(medida)
+			num_pos+=1
+
+		min_value = min(medidas)
+		max_value = max(medidas)
+
+		if max_value<0:
+			max_value_replace = max_value - max_value*10/100
+		else:
+			max_value_replace = max_value + max_value*10/100
+		if min_value<0:
+			min_value_replace = min_value + min_value*90/100
+		else:
+			min_value_replace = min_value - min_value*90/100
+		
+
+		# Replace values 9E99 for max_value or min_value (depends cmap colors)
+		#get_heatmap_values = np.where(get_heatmap_values==9E99,max_value,get_heatmap_values)
+		get_heatmap_values = np.where(get_heatmap_values==9E99,min_value_replace,get_heatmap_values)
+
+
+
+		return get_heatmap_values
 		
 
 
 		
-	
-	
-	
+
+
+
 
 
 

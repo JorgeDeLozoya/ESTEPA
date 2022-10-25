@@ -1275,3 +1275,38 @@ class QWaferButton(QPushButton):
     @message.deleter
     def message(self):
         del self._message
+
+def messageBox(self,title,message,type):
+    if type=="information" or type=="info":
+        retval = QMessageBox.information(
+            self,
+            title,
+            message,
+            buttons=QMessageBox.Ok ,
+            defaultButton=QMessageBox.Ok,
+        )
+    if type=="warning":
+        retval = QMessageBox.warning(
+            self,
+            title,
+            message,
+            buttons=QMessageBox.Ok ,
+            defaultButton=QMessageBox.Ok,
+        )
+    if type=="error" or type=="critical":
+        retval = QMessageBox.critical(
+            self,
+            title,
+            message,
+            buttons=QMessageBox.Ok ,
+            defaultButton=QMessageBox.Ok,
+        )
+    if type=="question":
+        retval = QMessageBox.question(
+            self,
+            title,
+            message,
+            buttons=QMessageBox.Yes | QMessageBox.No ,
+            defaultButton=QMessageBox.Yes,
+        )
+    return retval

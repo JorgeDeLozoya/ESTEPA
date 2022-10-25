@@ -1,0 +1,17 @@
+title = "PROGRAM config file"
+
+[connection]
+host = "opter6.cnm.es"
+port = "5432"
+user = "joaquin"
+database = "mecao"
+password = ""
+autocommit = false
+
+[estepa]
+method = "k-sigma"
+lna = false
+autolimits = true
+limmin = 20
+limmax = 500
+chunks = 2

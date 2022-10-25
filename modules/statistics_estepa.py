@@ -1,14 +1,14 @@
 # Class to get all statistics needed
 # Get parameters (list with all data) and config (dict with configurations)
 # Config could be get from json file or default config
-import os
-import statistics
-import json
+
+import statistics 	#Biblioteca que inclou les funcions estadistiques
 from functions import *
 #import scipy.integrate as integrate
 import math
 import numpy as np
 
+from scipy.stats import norm, kendalltau, spearmanr, pearsonr, chi2_contingency
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
@@ -32,8 +32,14 @@ class StatisticsEstepa():
 		self.points_end = 0
 		self.error = False
 		self.error_message = ""
+		
 
 		self.methods = ["none","f-spread","k-sigma"]
+
+		if len(data_list2)>0 and len(data_list)!=len(data_list2):
+			self.error = True	
+			self.error_message = "List 1 & List 2 do not have the same length!"
+
 
 		if "method" in config_estepa_file and "lna" in config_estepa_file and "limmin" in config_estepa_file and "limmax" in config_estepa_file:
 			self.config = config_estepa_file # {"method": "None", lna" : False, "limmin" : 0, "limmax" : 100}
@@ -69,28 +75,37 @@ class StatisticsEstepa():
 
 		return print_statistics
 
-	# def print_correlation_results(self):
+ 
+	def print_correlation(self):
+          
+		corr, pvalue = pearsonr(self.data_list, self.data_list2) # Pearson's r, valor p
+		corr2, pvalue2 = spearmanr(self.data_list, self.data_list2) # Spearman's rho, valor p
+		corr3, pvalue3 = kendalltau(self.data_list, self.data_list2) # Kendall's tau, valor p
+		a, b = np.polyfit(self.data_list, self.data_list2, 1)
+		# siga = self.stdev(a)
+		# sigb = self.stdev(b)
+		obs = np.array([[self.data_list],[ self.data_list2]])
+		chi2 = chi2_contingency(obs)
+		# chi22 = chisquare(obs)
 
-	# 	print_correlation = self.param + " : " + "\n"
-	# 	print_correlation +=" - Pearsons correlation:	%.3f , %.3f	\t" % (corr,pvalue) + "\n"
-	# 	print_correlation +=" - Spearmanr correlation:	%.3f , %.3f \t" % (corr2, pvalue2) + "\n"
-	# 	print_correlation +=" - kendalltau correlation:	%.3f , %.3f  \t" % (corr3, pvalue3) + "\n"
-	# 	# print_correlation +=" - Points:   \t" + str(self.points_end) + "/" + str(self.points_ini) + "\n"
-		# return print_correlation
+		print_correlation =" - Pearsons correlation:   %.3f , %.3f \t" % (corr,pvalue) + "\n"
+		print_correlation +=" - Spearmanr correlation:  %.3f , %.3f \t" % (corr2, pvalue2) + "\n"
+		print_correlation +=" - Kendalltau correlation: %.3f , %.3f  \t" % (corr3, pvalue3) + "\n"
+		# print_correlation +=" - Chisquare:  \t" + str(chi22) + "\n"
+		print_correlation +=" - Chisquare:  \t" + str(chi2) + "\n"	
+		print_correlation +=" - a, b: %f , %f \t" %  (a, b) + "\n"
+		# print_correlation +=" - siga: %f \t" % siga + "\n"
+		# print_correlation +=" - sigb: %f \t" % sigb + "\n"
+		print_correlation +=" - Points:   \t" + str(self.points_end) + "/" + str(self.points_ini) + "\n"
+
+		return print_correlation
+
 
 	def load_statistics(self):
 		self.mean_estepa()
 		self.median_estepa()
 		self.stdev_estepa()
 	
-	# def load_correlation(self):
-	# 	self.correlation_files()
-	# 	statistics1 = StatisticsEstepa(parameters_list[0],data1,self.config["estepa"])
-	# 	data1, data2 = statistics1.get_data_correlation(data1,data2)
-	# 	corr, pvalue = self.pearsonr(data1, data2) # Pearson's r, valor p
-	# 	corr2, pvalue2 = self.spearmanr(data1, data2) # Spearman's rho, valor p
-	# 	corr3, pvalue3 = self.kendalltau(data1, data2) # Kendall's tau, valor p
-
 	def mean_estepa(self):
 		if len(self.data_list)>0:
 			self.mean = statistics.mean(self.data_list)
@@ -192,11 +207,13 @@ class StatisticsEstepa():
 			self.elim_err()
 			# 2) delete limits not automatic
 			if self.config["lna"]:
-				self.data_list = self.elim_lna()
+				self.data_list, self.data_list2 = self.elim_lna()
 			
 			# get limits  min (xmin) & max (xmax) of the list sended
 			if self.config["method"]!="none":
 				if len(self.data_list)>2:
+					data_lista = self.data_list
+					data_lista2 = self.data_list2
 					while True:
 						eliminados = 0
 						if self.config["method"]=="f-spread":
@@ -207,11 +224,19 @@ class StatisticsEstepa():
 							xmin, xmax = self.k_sigma2()
 
 						if xmin!=9E99 and xmax!=9E99:
-							for data in self.data_list:
+							long = len(data_lista)-1
+							# inverse loop for delete elements
+							for i in range(long,-1,-1):
+								data = data_lista[i]
 								if data<=xmin or data>=xmax:
-									self.data_list.remove(data)
+									data_lista.pop(i)
+									if len(data_lista2)>0:
+										data_lista2.pop(i)
 									eliminados +=1
 							if eliminados == 0: break
+
+					self.data_list = data_lista
+					self.data_list2 = data_lista2
 
 				else:
 					self.error = True
@@ -220,7 +245,6 @@ class StatisticsEstepa():
 			self.error = True
 			self.error_message = "Mode not accepted!"
 	
-
 	def outliers_correlation(self, data2):
 		self.data_list = self.data_list_origen
 		if self.config["method"] in self.methods:
@@ -262,8 +286,6 @@ class StatisticsEstepa():
 			self.error = True
 			self.error_message = "Mode not accepted!"
 
-
-
 	def elim_err(self):
 		# delete errors in data_list & data_list2
 		position = 0
@@ -273,19 +295,19 @@ class StatisticsEstepa():
 				if len(self.data_list2)>0:
 					self.data_list2.pop(position)
 			position += 1
-		# # delete errors in data_list
-		# if self.ERROR_VALUE2 in self.data_list:
-		# 	self.data_list.remove(self.ERROR_VALUE2)
 
 	def elim_lna(self):
 		# delete lna in data_list
 		data_lista = self.data_list
+		data_lista2 = self.data_list2
 		long = len(data_lista)-1
 		# inverse loop for delete elements
 		for i in range(long,-1,-1):
 			if self.config["limmax"] < data_lista[i] or data_lista[i] < self.config["limmin"]:
-				data_lista.remove(data_lista[i])
-		return data_lista
+				data_lista.pop(i)
+				if len(data_lista2)>0:
+					data_lista2.pop(i)
+		return data_lista, data_lista2
 
 	# method to extract the k'th smallest (sort & get element -1)
 	def kthSmallest(self,k, n, arr):
@@ -324,13 +346,10 @@ class StatisticsEstepa():
 		# return value : 0.5 is the value from integral from -inf to 0
 		return 0.5 + (serie*cte)/2
 
-
 	# FUNCTION : prvb_number
 	# (1/2) + (pow((1-p),(1/N))/2) is a number function of N (number of samples)
-
 	def prvb_number(self,N,prvb):
 		return 0.5 + ((pow((1-prvb),1/N))/2)
-
 
 	# EXTRACT KLIM FOR N SAMPLES & PROBABILITY NUMBER (assumed between 2-4)
 	def extract_k(self,N,prvb,low_limit=2.0,high_limit=4.0):
@@ -342,54 +361,6 @@ class StatisticsEstepa():
 
 		return format_float
 
-	# def get_data_correlation(self, data1, data2):
-	# 	data1_origen = data1
-	# 	data2_origen = data2
-	# 	method = self.config["method"]
-	# 	if method!="none":
-	# 		self.data_list = data1
-	# 		while True:
-	# 			eliminados = 0
-	# 			if method=="f-spread":
-	# 				# method f-spread (get quantiles with statistics library)
-	# 				xmin, xmax = self.f_spread2()
-	# 			if method=="k-sigma":
-	# 				# metode K-SIGMA
-	# 				xmin, xmax = self.k_sigma2()
-
-	# 			if xmin!=9E99 and xmax!=9E99:
-	# 				count = 0
-	# 				for data in self.data_list:
-	# 					if data<=xmin or data>=xmax:
-	# 						self.data_list.remove(data)
-	# 						data2.pop(count)
-	# 						eliminados +=1
-	# 					count += 1
-	# 				if eliminados == 0: break
-	# 		# delete outliers in second object (statistics_estepa2)
-	# 		data1 = self.data_list
-	# 		self.data_list = data2
-	# 		while True:
-	# 			eliminados = 0
-	# 			if method=="f-spread":
-	# 				# method f-spread (get quantiles with statistics library)
-	# 				xmin, xmax = self.f_spread2()
-	# 			if method=="k-sigma":
-	# 				# metode K-SIGMA
-	# 				xmin, xmax = self.k_sigma2()
-
-	# 			if xmin!=9E99 and xmax!=9E99:
-	# 				count = 0
-	# 				for data in data2:
-	# 					if data<=xmin or data>=xmax:
-	# 						self.data_list.remove(data)
-	# 						data1.pop(count)
-	# 						eliminados +=1
-	# 					count += 1
-	# 				if eliminados == 0: break
-
-
-	# 	return data1, data2
 
 	
 

@@ -10,13 +10,12 @@ autocommit = false
 
 [estepa]
 method = "f-spread"
-lna = true
-autolimits = false
-limmin = 600
-limmax = 1000
-chunks = 12
 lna = false
 autolimits = false
-limmin = 600
-limmax = 1000
+limmin = 590
+limmax = 600
 chunks = 2
+
+[directory]
+res_directory = "D:/USUARIS/AKAIYFS/Documents/ESTEPA/Results"
+work_directory = "D:/USUARIS/AKAIYFS/Desktop/ESTEPA ACTUAL/Files/"

@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1167</width>
-    <height>849</height>
+    <width>1212</width>
+    <height>852</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -62,17 +62,19 @@ QToolTip {
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 Bg App */
 #bgApp {	
-	background-color: rgb(40, 44, 52);
+	background-color: rgb(27, 42, 50); /*rgb(40, 44, 52)*/
 	border: 1px solid rgb(44, 49, 58);
 }
 
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 Left Menu */
 #leftMenuBg {	
-	background-color: rgb(33, 37, 43);
+	/*background-color: rgb(33, 37, 43);*/
+background-color: rgb(12,28,35);
 }
 #topLogo {
-	background-color: rgb(33, 37, 43);
+	/*background-color: rgb(33, 37, 43);*/	
+	background-color: rgb(12,28,35);
 	background-image: url(:/images/images/images/PyDracula.png);
 	background-position: centered;
 	background-repeat: no-repeat;
@@ -91,10 +93,10 @@ Left Menu */
 	padding-left: 44px;
 }
 #topMenu .QPushButton:hover {
-	background-color: rgb(40, 44, 52);
+	background-color: rgb(27, 42, 50);
 }
 #topMenu .QPushButton:pressed {	
-	background-color: rgb(189, 147, 249);
+	background-color: rgb(7, 127, 130);
 	color: rgb(255, 255, 255);
 }
 #bottomMenu .QPushButton {	
@@ -107,10 +109,10 @@ Left Menu */
 	padding-left: 44px;
 }
 #bottomMenu .QPushButton:hover {
-	background-color: rgb(40, 44, 52);
+	background-color: rgb(27, 42, 50);
 }
 #bottomMenu .QPushButton:pressed {	
-	background-color: rgb(189, 147, 249);
+	background-color: rgb(7, 127, 130);
 	color: rgb(255, 255, 255);
 }
 #leftMenuFrame{
@@ -123,16 +125,16 @@ Left Menu */
     background-repeat: no-repeat;
 	border: none;
 	border-left: 20px solid transparent;
-	background-color: rgb(37, 41, 48);
+	background-color: rgb(12, 28, 35);
 	text-align: left;
 	padding-left: 44px;
 	color: rgb(113, 126, 149);
 }
 #toggleButton:hover {
-	background-color: rgb(40, 44, 52);
+	background-color: rgb(27, 42, 50);
 }
 #toggleButton:pressed {
-	background-color: rgb(189, 147, 249);
+	background-color: rgb(7, 127, 130);
 }
 
 /* Title Menu */
@@ -145,7 +147,7 @@ Extra Tab */
 	background-color: rgb(44, 49, 58);
 }
 #extraTopBg{	
-	background-color: rgb(189, 147, 249)
+	background-color: rgb(7, 127, 130)
 }
 
 /* Icon */
@@ -165,7 +167,7 @@ Extra Tab */
 
 /* Extra Content */
 #extraContent{
-	border-top: 3px solid rgb(40, 44, 52);
+	border-top: 3px solid rgb(27, 42, 50);
 }
 
 /* Extra Top Menus */
@@ -179,17 +181,18 @@ background-position: left center;
 	padding-left: 44px;
 }
 #extraTopMenu .QPushButton:hover {
-	background-color: rgb(40, 44, 52);
+	background-color:rgb(27, 42, 50);
 }
 #extraTopMenu .QPushButton:pressed {	
-	background-color: rgb(189, 147, 249);
+	background-color: rgb(7, 127, 130);
 	color: rgb(255, 255, 255);
 }
 
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 Content App */
 #contentTopBg{	
-	background-color: rgb(33, 37, 43);
+	/*background-color: rgb(33, 37, 43);*/	
+	background-color: rgb(12,28,35);
 }
 #contentBottom{
 	border-top: 3px solid rgb(44, 49, 58);
@@ -202,7 +205,7 @@ Content App */
 
 /* Theme Settings */
 #extraRightBox { background-color: rgb(44, 49, 58); }
-#themeSettingsTopDetail { background-color: rgb(189, 147, 249); }
+#themeSettingsTopDetail { background-color: rgb(7, 127, 130); }
 
 /* Bottom Bar */
 #bottomBar { background-color: rgb(44, 49, 58); }
@@ -220,10 +223,10 @@ Content App */
 	padding-left: 44px;
 }
 #contentSettings .QPushButton:hover {
-	background-color: rgb(40, 44, 52);
+	background-color:rgb(27, 42, 50);
 }
 #contentSettings .QPushButton:pressed {	
-	background-color: rgb(189, 147, 249);
+	background-color: rgb(7, 127, 130);
 	color: rgb(255, 255, 255);
 }
 
@@ -243,7 +246,7 @@ QTableWidget::item{
 	gridline-color: rgb(44, 49, 60);
 }
 QTableWidget::item:selected{
-	background-color: rgb(189, 147, 249);
+	background-color: rgb(7, 127, 130);
 }
 QHeaderView::section{
 	background-color: rgb(33, 37, 43);
@@ -318,7 +321,7 @@ QScrollBar:horizontal {
 	border-radius: 0px;
 }
 QScrollBar::handle:horizontal {
-    background: rgb(189, 147, 249);
+    background: rgb(7, 127, 130);
     min-width: 25px;
 	border-radius: 4px
 }
@@ -356,7 +359,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
 	border-radius: 0px;
  }
  QScrollBar::handle:vertical {	
-	background: rgb(189, 147, 249);
+	background: rgb(7, 127, 130);
     min-height: 25px;
 	border-radius: 4px
  }
@@ -465,7 +468,7 @@ QSlider::groove:horizontal:hover {
 	background-color: rgb(55, 62, 76);
 }
 QSlider::handle:horizontal {
-    background-color: rgb(189, 147, 249);
+    background-color: rgb(7, 127, 130);
     border: none;
     height: 10px;
     width: 10px;
@@ -489,7 +492,7 @@ QSlider::groove:vertical:hover {
 	background-color: rgb(55, 62, 76);
 }
 QSlider::handle:vertical {
-    background-color: rgb(189, 147, 249);
+    background-color: rgb(7, 127, 130);
 	border: none;
     height: 10px;
     width: 10px;
@@ -639,27 +642,12 @@ Button */
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_17">
              <item>
-              <widget class="QFrame" name="topLogo">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>42</width>
-                 <height>42</height>
-                </size>
-               </property>
-               <property name="whatsThis">
-                <string/>
-               </property>
+              <widget class="QFrame" name="frame">
                <property name="styleSheet">
                 <string notr="true">image: url(:/images/images/images/PyDracula.png);</string>
                </property>
                <property name="frameShape">
-                <enum>QFrame::NoFrame</enum>
+                <enum>QFrame::StyledPanel</enum>
                </property>
                <property name="frameShadow">
                 <enum>QFrame::Raised</enum>
@@ -888,7 +876,7 @@ Button */
                    <string>Consult</string>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-image: url(:/icons/images/icons/cil-magnifying-glass.png)</string>
+                   <string notr="true">background-image: url(:/icons/images/icons/cil-zoom-in.png);</string>
                   </property>
                   <property name="text">
                    <string>Consult Database</string>
@@ -1021,7 +1009,7 @@ Button */
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/White Icons/option_bar_settings [#1399].png</normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/White Icons/option_bar_settings [#1399].png</iconset>
+                    <normaloff>images/icons/White Icons/option_bar_settings [#1399].png</normaloff>images/icons/White Icons/option_bar_settings [#1399].png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -1120,54 +1108,22 @@ Button */
                <property name="verticalSpacing">
                 <number>0</number>
                </property>
-               <item row="0" column="1">
-                <widget class="QPushButton" name="extraCloseColumnBtn">
-                 <property name="minimumSize">
-                  <size>
-                   <width>28</width>
-                   <height>28</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>28</width>
-                   <height>28</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="toolTip">
-                  <string>Close left box</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources.qrc">
-                   <normaloff>:/icons/images/icons/icon_close.png</normaloff>:/icons/images/icons/icon_close.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
                <item row="0" column="0">
                 <widget class="QFrame" name="extraIcon">
                  <property name="minimumSize">
                   <size>
-                   <width>20</width>
+                   <width>70</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>20</width>
+                   <width>70</width>
                    <height>20</height>
                   </size>
+                 </property>
+                 <property name="whatsThis">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configuration&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="frameShape">
                   <enum>QFrame::NoFrame</enum>
@@ -1753,7 +1709,7 @@ background: transparent;
                   </property>
                   <property name="font">
                    <font>
-                    <family>Microsoft JhengHei</family>
+                    <family>MS Shell Dlg 2</family>
                     <pointsize>14</pointsize>
                     <weight>9</weight>
                     <italic>false</italic>
@@ -1761,7 +1717,8 @@ background: transparent;
                    </font>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">font: 75 14pt &quot;Microsoft JhengHei&quot;;</string>
+                   <string notr="true">font: 75 14pt &quot;MS Shell Dlg 2&quot;;
+</string>
                   </property>
                   <property name="text">
                    <string>ESTEPA</string>
@@ -2044,7 +2001,7 @@ background: transparent;
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <widget class="QWidget" name="Home_Window">
                       <property name="styleSheet">
@@ -2146,8 +2103,8 @@ background: transparent;
                                 <cursorShape>PointingHandCursor</cursorShape>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">border-color: rgb(40, 44, 52);
-color:rgb(52, 141, 232)</string>
+                                <string notr="true">border-color: transparent;
+color:rgb(9, 179, 182)</string>
                                </property>
                                <property name="locale">
                                 <locale language="Spanish" country="Spain"/>
@@ -2179,16 +2136,16 @@ color:rgb(52, 141, 232)</string>
                                 <cursorShape>PointingHandCursor</cursorShape>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">border-color: rgb(40, 44, 52);
-color:rgb(52, 141, 232)</string>
+                                <string notr="true">border-color: transparent;
+color:rgb(9, 179, 182)</string>
                                </property>
                                <property name="text">
                                 <string>Consult</string>
                                </property>
                                <property name="icon">
                                 <iconset>
-                                 <normaloff>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
-                                 <normalon>:/icons/images/icons/cil-magnifying-glass.png</normalon>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
+                                 <normaloff>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
+                                 <normalon>:/icons/images/icons/cil-magnifying-glass.png</normalon>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
                                </property>
                               </widget>
                              </item>
@@ -2210,21 +2167,21 @@ color:rgb(52, 141, 232)</string>
                                 <cursorShape>PointingHandCursor</cursorShape>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">border-color: rgb(40, 44, 52);
-color:rgb(52, 141, 232)</string>
+                                <string notr="true">border-color: transparent;
+color:rgb(9, 179, 182)</string>
                                </property>
                                <property name="text">
                                 <string>Upload Files to BBDD</string>
                                </property>
                                <property name="icon">
                                 <iconset>
-                                 <normaloff>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
-                                 <normalon>:/icons/images/icons/cil-cloud-upload.png</normalon>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
+                                 <normaloff>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
+                                 <normalon>:/icons/images/icons/cil-cloud-upload.png</normalon>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
                                </property>
                               </widget>
                              </item>
                              <item row="5" column="0">
-                              <widget class="QPushButton" name="home_upload_2">
+                              <widget class="QPushButton" name="home_reports">
                                <property name="minimumSize">
                                 <size>
                                  <width>73</width>
@@ -2241,8 +2198,8 @@ color:rgb(52, 141, 232)</string>
                                 <cursorShape>PointingHandCursor</cursorShape>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">border-color: rgb(40, 44, 52);
-color:rgb(52, 141, 232)</string>
+                                <string notr="true">border-color: transparent;
+color:rgb(9, 179, 182)</string>
                                </property>
                                <property name="text">
                                 <string>Reports</string>
@@ -2316,7 +2273,7 @@ color:rgb(52, 141, 232)</string>
                                 <string/>
                                </property>
                                <property name="pixmap">
-                                <pixmap>C:/Users/AKAIYFS/.designer/backup/images/images/Estepa.png</pixmap>
+                                <pixmap>images/images/Estepa.png</pixmap>
                                </property>
                                <property name="scaledContents">
                                 <bool>false</bool>
@@ -2478,7 +2435,7 @@ color:rgb(52, 141, 232)</string>
                               <enum>Qt::Horizontal</enum>
                              </property>
                              <property name="sizeType">
-                              <enum>QSizePolicy::Fixed</enum>
+                              <enum>QSizePolicy::Expanding</enum>
                              </property>
                              <property name="sizeHint" stdset="0">
                               <size>
@@ -2595,16 +2552,16 @@ color:rgb(52, 141, 232)</string>
                               <enum>Qt::NoContextMenu</enum>
                              </property>
                              <property name="styleSheet">
-                              <string notr="true">border-color: rgb(40, 44, 52);
-color:rgb(52, 141, 232)</string>
+                              <string notr="true">border-color: transparent;
+color:rgb(9, 179, 182)</string>
                              </property>
                              <property name="text">
                               <string>Logout</string>
                              </property>
                              <property name="icon">
                               <iconset>
-                               <normaloff>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
-                               <normalon>:/icons/images/icons/cil-user.png</normalon>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
+                               <normaloff>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
+                               <normalon>:/icons/images/icons/cil-user.png</normalon>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
                              </property>
                             </widget>
                            </item>
@@ -2623,16 +2580,16 @@ color:rgb(52, 141, 232)</string>
                               </size>
                              </property>
                              <property name="styleSheet">
-                              <string notr="true">border-color: rgb(40, 44, 52);
-color:rgb(52, 141, 232)</string>
+                              <string notr="true">border-color: transparent;
+color:rgb(9, 179, 182)</string>
                              </property>
                              <property name="text">
                               <string>Open Directory</string>
                              </property>
                              <property name="icon">
                               <iconset>
-                               <normaloff>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
-                               <normalon>:/icons/images/icons/cil-folder-open.png</normalon>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
+                               <normaloff>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
+                               <normalon>:/icons/images/icons/cil-folder-open.png</normalon>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
                              </property>
                             </widget>
                            </item>
@@ -2651,16 +2608,16 @@ color:rgb(52, 141, 232)</string>
                               </size>
                              </property>
                              <property name="styleSheet">
-                              <string notr="true">border-color: rgb(40, 44, 52);
-color:rgb(52, 141, 232)</string>
+                              <string notr="true">border-color: transparent;
+color:rgb(9, 179, 182)</string>
                              </property>
                              <property name="text">
                               <string>Examples</string>
                              </property>
                              <property name="icon">
                               <iconset>
-                               <normaloff>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
-                               <normalon>:/icons/images/icons/cil-notes.png</normalon>C:/Users/AKAIYFS/.designer/Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
+                               <normaloff>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</normaloff>
+                               <normalon>:/icons/images/icons/cil-notes.png</normalon>../Users/Jorge/.designer/backup/images/icons/cil-folder-open.png</iconset>
                              </property>
                             </widget>
                            </item>
@@ -2750,6 +2707,9 @@ color:rgb(52, 141, 232)</string>
                                    <height>16777215</height>
                                   </size>
                                  </property>
+                                 <property name="cursor">
+                                  <cursorShape>PointingHandCursor</cursorShape>
+                                 </property>
                                  <property name="text">
                                   <string>Load from files</string>
                                  </property>
@@ -2771,6 +2731,12 @@ color:rgb(52, 141, 232)</string>
                                    <width>150</width>
                                    <height>16777215</height>
                                   </size>
+                                 </property>
+                                 <property name="cursor">
+                                  <cursorShape>PointingHandCursor</cursorShape>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true"/>
                                  </property>
                                  <property name="text">
                                   <string>Load from BBDD</string>
@@ -2939,7 +2905,7 @@ color:rgb(52, 141, 232)</string>
                                        </size>
                                       </property>
                                       <property name="styleSheet">
-                                       <string notr="true">color: rgb(113, 126, 149);</string>
+                                       <string notr="true">color:rgb(9, 179, 182)</string>
                                       </property>
                                       <property name="lineWidth">
                                        <number>1</number>
@@ -2994,11 +2960,15 @@ color:rgb(52, 141, 232)</string>
                                         <bold>false</bold>
                                        </font>
                                       </property>
+                                      <property name="cursor">
+                                       <cursorShape>PointingHandCursor</cursorShape>
+                                      </property>
                                       <property name="autoFillBackground">
                                        <bool>false</bool>
                                       </property>
                                       <property name="styleSheet">
-                                       <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                       <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                       </property>
                                       <property name="editable">
                                        <bool>true</bool>
@@ -3038,7 +3008,7 @@ color:rgb(52, 141, 232)</string>
                                     <item row="2" column="5">
                                      <widget class="QStackedWidget" name="opt_clear">
                                       <property name="currentIndex">
-                                       <number>1</number>
+                                       <number>0</number>
                                       </property>
                                       <widget class="QWidget" name="no"/>
                                       <widget class="QWidget" name="yes">
@@ -3074,8 +3044,8 @@ color:rgb(52, 141, 232)</string>
 
 #pagesContainer .QPushButton {
 	border-radius: 5px;	
-	background-color:rgb(40, 44, 52);
-	border: 2px solid rgb(40, 44, 52);
+	background-color: rgb(27, 42, 50);
+	border: 2px solid rgb(27, 42, 50);
 }
 
 #pagesContainer .QPushButton:hover {
@@ -3168,7 +3138,8 @@ color:rgb(52, 141, 232)</string>
                                     </size>
                                    </property>
                                    <property name="styleSheet">
-                                    <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                    <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                    </property>
                                    <property name="text">
                                     <string/>
@@ -3187,7 +3158,7 @@ color:rgb(52, 141, 232)</string>
                                     </size>
                                    </property>
                                    <property name="styleSheet">
-                                    <string notr="true">color: rgb(113, 126, 149);</string>
+                                    <string notr="true">color:rgb(9, 179, 182)</string>
                                    </property>
                                    <property name="lineWidth">
                                     <number>1</number>
@@ -3218,13 +3189,20 @@ color:rgb(52, 141, 232)</string>
                                     </size>
                                    </property>
                                    <property name="styleSheet">
-                                    <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                    <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                    </property>
                                    <property name="text">
                                     <string/>
                                    </property>
+                                   <property name="frame">
+                                    <bool>true</bool>
+                                   </property>
                                    <property name="placeholderText">
                                     <string/>
+                                   </property>
+                                   <property name="clearButtonEnabled">
+                                    <bool>false</bool>
                                    </property>
                                   </widget>
                                  </item>
@@ -3253,7 +3231,7 @@ color:rgb(52, 141, 232)</string>
                                     </size>
                                    </property>
                                    <property name="styleSheet">
-                                    <string notr="true">color: rgb(113, 126, 149);</string>
+                                    <string notr="true">color:rgb(9, 179, 182)</string>
                                    </property>
                                    <property name="lineWidth">
                                     <number>1</number>
@@ -3752,20 +3730,40 @@ color:rgb(52, 141, 232)</string>
                           </layout>
                          </item>
                          <item>
-                          <spacer name="horizontalSpacer_18">
-                           <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                           </property>
-                           <property name="sizeType">
-                            <enum>QSizePolicy::Fixed</enum>
-                           </property>
-                           <property name="sizeHint" stdset="0">
-                            <size>
-                             <width>20</width>
-                             <height>20</height>
-                            </size>
-                           </property>
-                          </spacer>
+                          <layout class="QVBoxLayout" name="verticalLayout_25">
+                           <item>
+                            <spacer name="horizontalSpacer_30">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeType">
+                              <enum>QSizePolicy::Maximum</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>30</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                           <item>
+                            <spacer name="horizontalSpacer_18">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeType">
+                              <enum>QSizePolicy::Fixed</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>10</width>
+                               <height>80</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                          </layout>
                          </item>
                          <item>
                           <widget class="QStackedWidget" name="stk_results">
@@ -3793,7 +3791,7 @@ color:rgb(52, 141, 232)</string>
                                     </size>
                                    </property>
                                    <property name="styleSheet">
-                                    <string notr="true">color: rgb(113, 126, 149);</string>
+                                    <string notr="true">color:rgb(9, 179, 182)</string>
                                    </property>
                                    <property name="lineWidth">
                                     <number>1</number>
@@ -3817,7 +3815,7 @@ color:rgb(52, 141, 232)</string>
                                    <property name="sizeHint" stdset="0">
                                     <size>
                                      <width>24</width>
-                                     <height>20</height>
+                                     <height>12</height>
                                     </size>
                                    </property>
                                   </spacer>
@@ -3861,8 +3859,8 @@ color:rgb(52, 141, 232)</string>
 	/*border: 2px solid rgb(52, 59, 72);*/
 	border-radius: 5px;	
 	/*background-color: rgb(52, 59, 72);*/
-	background-color:rgb(40, 44, 52);
-	border: 2px solid rgb(40, 44, 52);
+	background-color: rgb(27, 42, 50);
+	border: 2px solid rgb(27, 42, 50);
 }
 
 #pagesContainer .QPushButton:hover {
@@ -3917,8 +3915,8 @@ color:rgb(52, 141, 232)</string>
 
 #pagesContainer .QPushButton {
 	border-radius: 5px;	
-	background-color:rgb(40, 44, 52);
-	border: 2px solid rgb(40, 44, 52);
+	background-color: rgb(27, 42, 50);
+	border: 2px solid rgb(27, 42, 50);
 }
 
 #pagesContainer .QPushButton:hover {
@@ -3967,7 +3965,8 @@ color:rgb(52, 141, 232)</string>
                                     <cursorShape>PointingHandCursor</cursorShape>
                                    </property>
                                    <property name="styleSheet">
-                                    <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                    <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                    </property>
                                    <property name="currentText">
                                     <string>Parameter</string>
@@ -3980,7 +3979,7 @@ color:rgb(52, 141, 232)</string>
                                   </widget>
                                  </item>
                                  <item>
-                                  <widget class="QPushButton" name="btnNextParam">
+                                  <widget class="QStackedWidget" name="stk_parameter">
                                    <property name="minimumSize">
                                     <size>
                                      <width>30</width>
@@ -3989,21 +3988,46 @@ color:rgb(52, 141, 232)</string>
                                    </property>
                                    <property name="maximumSize">
                                     <size>
-                                     <width>30</width>
-                                     <height>30</height>
+                                     <width>50</width>
+                                     <height>50</height>
                                     </size>
                                    </property>
-                                   <property name="cursor">
-                                    <cursorShape>PointingHandCursor</cursorShape>
+                                   <property name="currentIndex">
+                                    <number>2</number>
                                    </property>
-                                   <property name="styleSheet">
-                                    <string notr="true">/*background-color: rgb(52, 59, 72);*/
+                                   <widget class="QWidget" name="mode_analyze">
+                                    <widget class="QPushButton" name="btnNextParam">
+                                     <property name="geometry">
+                                      <rect>
+                                       <x>0</x>
+                                       <y>0</y>
+                                       <width>30</width>
+                                       <height>30</height>
+                                      </rect>
+                                     </property>
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>30</width>
+                                       <height>30</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>30</width>
+                                       <height>30</height>
+                                      </size>
+                                     </property>
+                                     <property name="cursor">
+                                      <cursorShape>PointingHandCursor</cursorShape>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true">/*background-color: rgb(52, 59, 72);*/
 
 #pagesContainer .QPushButton {
 	
 	border-radius: 5px;	
-	background-color:rgb(40, 44, 52);
-	border: 2px solid rgb(40, 44, 52);
+	background-color: rgb(27, 42, 50);
+	border: 2px solid rgb(27, 42, 50);
 }
 
 #pagesContainer .QPushButton:hover {
@@ -4020,14 +4044,75 @@ color:rgb(52, 141, 232)</string>
 
 	background-color: #333333; border: none;
 }</string>
-                                   </property>
-                                   <property name="text">
-                                    <string/>
-                                   </property>
-                                   <property name="icon">
-                                    <iconset resource="resources.qrc">
-                                     <normaloff>:/icons/images/icons/cil-chevron-right.png</normaloff>:/icons/images/icons/cil-chevron-right.png</iconset>
-                                   </property>
+                                     </property>
+                                     <property name="text">
+                                      <string/>
+                                     </property>
+                                     <property name="icon">
+                                      <iconset resource="resources.qrc">
+                                       <normaloff>:/icons/images/icons/cil-chevron-right.png</normaloff>:/icons/images/icons/cil-chevron-right.png</iconset>
+                                     </property>
+                                    </widget>
+                                   </widget>
+                                   <widget class="QWidget" name="mode_no"/>
+                                   <widget class="QWidget" name="mode_correlation">
+                                    <widget class="QPushButton" name="btnNextParamCorr">
+                                     <property name="geometry">
+                                      <rect>
+                                       <x>0</x>
+                                       <y>0</y>
+                                       <width>30</width>
+                                       <height>30</height>
+                                      </rect>
+                                     </property>
+                                     <property name="minimumSize">
+                                      <size>
+                                       <width>30</width>
+                                       <height>30</height>
+                                      </size>
+                                     </property>
+                                     <property name="maximumSize">
+                                      <size>
+                                       <width>30</width>
+                                       <height>30</height>
+                                      </size>
+                                     </property>
+                                     <property name="cursor">
+                                      <cursorShape>PointingHandCursor</cursorShape>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true">/*background-color: rgb(52, 59, 72);*/
+
+#pagesContainer .QPushButton {
+	border-radius: 5px;	
+	background-color: rgb(27, 42, 50);
+	border: 2px solid rgb(27, 42, 50);
+}
+
+#pagesContainer .QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+
+#pagesContainer .QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}
+
+#pagesContainer .QPushButton:disabled {
+
+	background-color: #333333; border: none;
+}</string>
+                                     </property>
+                                     <property name="text">
+                                      <string/>
+                                     </property>
+                                     <property name="icon">
+                                      <iconset resource="resources.qrc">
+                                       <normaloff>:/icons/images/icons/cil-chevron-right.png</normaloff>:/icons/images/icons/cil-chevron-right.png</iconset>
+                                     </property>
+                                    </widget>
+                                   </widget>
                                   </widget>
                                  </item>
                                  <item>
@@ -4049,7 +4134,7 @@ color:rgb(52, 141, 232)</string>
                                 <widget class="QPlainTextEdit" name="txtLoadedValues">
                                  <property name="minimumSize">
                                   <size>
-                                   <width>260</width>
+                                   <width>290</width>
                                    <height>350</height>
                                   </size>
                                  </property>
@@ -4062,8 +4147,12 @@ color:rgb(52, 141, 232)</string>
                                  <property name="toolTip">
                                   <string>Data values</string>
                                  </property>
+                                 <property name="autoFillBackground">
+                                  <bool>false</bool>
+                                 </property>
                                  <property name="styleSheet">
-                                  <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                  <string notr="true">background-color: rgb(12,28,35);
+</string>
                                  </property>
                                  <property name="plainText">
                                   <string/>
@@ -4073,20 +4162,40 @@ color:rgb(52, 141, 232)</string>
                               </layout>
                              </item>
                              <item>
-                              <spacer name="horizontalSpacer_14">
-                               <property name="orientation">
-                                <enum>Qt::Horizontal</enum>
-                               </property>
-                               <property name="sizeType">
-                                <enum>QSizePolicy::Fixed</enum>
-                               </property>
-                               <property name="sizeHint" stdset="0">
-                                <size>
-                                 <width>10</width>
-                                 <height>80</height>
-                                </size>
-                               </property>
-                              </spacer>
+                              <layout class="QVBoxLayout" name="verticalLayout_20">
+                               <item>
+                                <spacer name="horizontalSpacer_33">
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="sizeType">
+                                  <enum>QSizePolicy::Maximum</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>30</width>
+                                   <height>20</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item>
+                                <spacer name="horizontalSpacer_14">
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="sizeType">
+                                  <enum>QSizePolicy::Minimum</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>10</width>
+                                   <height>80</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                              </layout>
                              </item>
                              <item>
                               <layout class="QVBoxLayout" name="verticalLayout_30">
@@ -4101,7 +4210,7 @@ color:rgb(52, 141, 232)</string>
                                     </size>
                                    </property>
                                    <property name="styleSheet">
-                                    <string notr="true">color: rgb(113, 126, 149);</string>
+                                    <string notr="true">color:rgb(9, 179, 182)</string>
                                    </property>
                                    <property name="lineWidth">
                                     <number>1</number>
@@ -4165,8 +4274,8 @@ color:rgb(52, 141, 232)</string>
 #pagesContainer .QPushButton {
 	
 	border-radius: 5px;	
-	background-color:rgb(40, 44, 52);
-	border: 2px solid rgb(40, 44, 52);
+	background-color: rgb(27, 42, 50);
+	border: 2px solid rgb(27, 42, 50);
 }
 
 #pagesContainer .QPushButton:hover {
@@ -4222,8 +4331,8 @@ color:rgb(52, 141, 232)</string>
 #pagesContainer .QPushButton {
 	
 	border-radius: 5px;	
-	background-color:rgb(40, 44, 52);
-	border: 2px solid rgb(40, 44, 52);
+	background-color: rgb(27, 42, 50);
+	border: 2px solid rgb(27, 42, 50);
 }
 
 #pagesContainer .QPushButton:hover {
@@ -4246,7 +4355,7 @@ color:rgb(52, 141, 232)</string>
                                    </property>
                                    <property name="icon">
                                     <iconset>
-                                     <normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/cil-clone.png</normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/cil-clone.png</iconset>
+                                     <normaloff>images/icons/cil-clone.png</normaloff>images/icons/cil-clone.png</iconset>
                                    </property>
                                   </widget>
                                  </item>
@@ -4263,7 +4372,7 @@ color:rgb(52, 141, 232)</string>
                                  <property name="sizeHint" stdset="0">
                                   <size>
                                    <width>15</width>
-                                   <height>30</height>
+                                   <height>35</height>
                                   </size>
                                  </property>
                                 </spacer>
@@ -4272,7 +4381,7 @@ color:rgb(52, 141, 232)</string>
                                 <widget class="QPlainTextEdit" name="txtParametersResult">
                                  <property name="minimumSize">
                                   <size>
-                                   <width>0</width>
+                                   <width>290</width>
                                    <height>350</height>
                                   </size>
                                  </property>
@@ -4286,7 +4395,7 @@ color:rgb(52, 141, 232)</string>
                                   <string>Results parameters</string>
                                  </property>
                                  <property name="styleSheet">
-                                  <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                  <string notr="true">background-color: rgb(12,28,35);</string>
                                  </property>
                                  <property name="plainText">
                                   <string/>
@@ -4349,7 +4458,7 @@ color:rgb(52, 141, 232)</string>
                                     </size>
                                    </property>
                                    <property name="styleSheet">
-                                    <string notr="true">color: rgb(113, 126, 149);</string>
+                                    <string notr="true">color:rgb(9, 179, 182)</string>
                                    </property>
                                    <property name="lineWidth">
                                     <number>1</number>
@@ -4414,7 +4523,7 @@ color:rgb(52, 141, 232)</string>
                                  <property name="sizeHint" stdset="0">
                                   <size>
                                    <width>20</width>
-                                   <height>40</height>
+                                   <height>100</height>
                                   </size>
                                  </property>
                                 </spacer>
@@ -4468,7 +4577,7 @@ color:rgb(52, 141, 232)</string>
                                       </size>
                                      </property>
                                      <property name="styleSheet">
-                                      <string notr="true">color: rgb(113, 126, 149);</string>
+                                      <string notr="true">color:rgb(9, 179, 182)</string>
                                      </property>
                                      <property name="lineWidth">
                                       <number>1</number>
@@ -4535,8 +4644,8 @@ color:rgb(52, 141, 232)</string>
 #pagesContainer .QPushButton {
 	
 	border-radius: 5px;	
-	background-color:rgb(40, 44, 52);
-	border: 2px solid rgb(40, 44, 52);
+	background-color: rgb(27, 42, 50);
+	border: 2px solid rgb(27, 42, 50);
 }
 
 #pagesContainer .QPushButton:hover {
@@ -4586,7 +4695,11 @@ color:rgb(52, 141, 232)</string>
                                   </spacer>
                                  </item>
                                  <item>
-                                  <layout class="QVBoxLayout" name="verticalLayout_wafermap"/>
+                                  <layout class="QVBoxLayout" name="verticalLayout_wafermap">
+                                   <item>
+                                    <layout class="QGridLayout" name="gridLayout_wafermap"/>
+                                   </item>
+                                  </layout>
                                  </item>
                                 </layout>
                                </item>
@@ -4598,7 +4711,7 @@ color:rgb(52, 141, 232)</string>
                                  <property name="sizeHint" stdset="0">
                                   <size>
                                    <width>20</width>
-                                   <height>40</height>
+                                   <height>100</height>
                                   </size>
                                  </property>
                                 </spacer>
@@ -4610,6 +4723,99 @@ color:rgb(52, 141, 232)</string>
                           </widget>
                          </item>
                         </layout>
+                       </item>
+                       <item>
+                        <widget class="QStackedWidget" name="stk_results_2">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>60</height>
+                          </size>
+                         </property>
+                         <property name="currentIndex">
+                          <number>1</number>
+                         </property>
+                         <widget class="QWidget" name="results_yes">
+                          <layout class="QVBoxLayout" name="verticalLayout_24">
+                           <item>
+                            <layout class="QHBoxLayout" name="horizontalLayout_26">
+                             <item>
+                              <spacer name="horizontalSpacer_29">
+                               <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                               </property>
+                               <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>40</width>
+                                 <height>20</height>
+                                </size>
+                               </property>
+                              </spacer>
+                             </item>
+                             <item>
+                              <widget class="QPushButton" name="btn_save">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>70</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>70</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: rgb(52, 59, 72);</string>
+                               </property>
+                               <property name="text">
+                                <string>Save</string>
+                               </property>
+                               <property name="icon">
+                                <iconset resource="resources.qrc">
+                                 <normaloff>:/icons/images/icons/cil-save.png</normaloff>:/icons/images/icons/cil-save.png</iconset>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QPushButton" name="btn_clear">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>70</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>70</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: rgb(52, 59, 72);</string>
+                               </property>
+                               <property name="text">
+                                <string>Clear</string>
+                               </property>
+                               <property name="icon">
+                                <iconset resource="resources.qrc">
+                                 <normaloff>:/icons/images/icons/cil-x.png</normaloff>:/icons/images/icons/cil-x.png</iconset>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                          </layout>
+                         </widget>
+                         <widget class="QWidget" name="results_no"/>
+                        </widget>
                        </item>
                       </layout>
                      </widget>
@@ -4862,7 +5068,8 @@ color:rgb(52, 141, 232)</string>
                                <bool>false</bool>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">background-color: rgb(33, 37, 43);</string>
+                               <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                               </property>
                               <property name="editable">
                                <bool>true</bool>
@@ -4911,7 +5118,8 @@ color:rgb(52, 141, 232)</string>
                                <bool>false</bool>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">background-color: rgb(33, 37, 43);</string>
+                               <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                               </property>
                               <property name="editable">
                                <bool>true</bool>
@@ -4960,7 +5168,8 @@ color:rgb(52, 141, 232)</string>
                                <bool>false</bool>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">background-color: rgb(33, 37, 43);</string>
+                               <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                               </property>
                               <property name="editable">
                                <bool>true</bool>
@@ -4988,7 +5197,7 @@ color:rgb(52, 141, 232)</string>
                                </size>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">color: rgb(113, 126, 149);</string>
+                               <string notr="true">color:rgb(9, 179, 182)</string>
                               </property>
                               <property name="lineWidth">
                                <number>1</number>
@@ -5010,7 +5219,7 @@ color:rgb(52, 141, 232)</string>
                                </size>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">color: rgb(113, 126, 149);</string>
+                               <string notr="true">color:rgb(9, 179, 182)</string>
                               </property>
                               <property name="lineWidth">
                                <number>1</number>
@@ -5048,7 +5257,7 @@ color:rgb(52, 141, 232)</string>
                                </size>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">color: rgb(113, 126, 149);</string>
+                               <string notr="true">color:rgb(9, 179, 182)</string>
                               </property>
                               <property name="lineWidth">
                                <number>1</number>
@@ -5091,7 +5300,8 @@ color:rgb(52, 141, 232)</string>
                                <bool>false</bool>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">background-color: rgb(33, 37, 43);</string>
+                               <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                               </property>
                               <property name="editable">
                                <bool>true</bool>
@@ -5124,7 +5334,7 @@ color:rgb(52, 141, 232)</string>
                                </size>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">color: rgb(113, 126, 149);</string>
+                               <string notr="true">color:rgb(9, 179, 182)</string>
                               </property>
                               <property name="lineWidth">
                                <number>1</number>
@@ -5161,9 +5371,9 @@ color:rgb(52, 141, 232)</string>
                                <string notr="true">/*background-color: rgb(52, 59, 72);*/
 
 #pagesContainer .QPushButton {
-	border: 2px solid rgb(52, 59, 72);
 	border-radius: 5px;	
-	background-color: rgb(52, 59, 72);
+	background-color: rgb(27, 42, 50);
+	border: 2px solid rgb(27, 42, 50);
 }
 
 #pagesContainer .QPushButton:hover {
@@ -5205,7 +5415,7 @@ color:rgb(52, 141, 232)</string>
                                </size>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">color: rgb(113, 126, 149);</string>
+                               <string notr="true">color:rgb(9, 179, 182)</string>
                               </property>
                               <property name="lineWidth">
                                <number>1</number>
@@ -5240,7 +5450,9 @@ color:rgb(52, 141, 232)</string>
                                <bool>false</bool>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">background-color: rgb(33, 37, 43);</string>
+                               <string notr="true">background-color: rgb(12,28,35);
+border: transparent;
+</string>
                               </property>
                              </widget>
                             </item>
@@ -5315,7 +5527,7 @@ color:rgb(52, 141, 232)</string>
                                </size>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">color: rgb(113, 126, 149);</string>
+                               <string notr="true">color:rgb(9, 179, 182)</string>
                               </property>
                               <property name="lineWidth">
                                <number>1</number>
@@ -5458,7 +5670,7 @@ color:rgb(52, 141, 232)</string>
                               </property>
                               <property name="icon">
                                <iconset>
-                                <normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/cil-clone.png</normaloff>C:/Users/AKAIYFS/.designer/backup/images/icons/cil-clone.png</iconset>
+                                <normaloff>images/icons/cil-clone.png</normaloff>images/icons/cil-clone.png</iconset>
                               </property>
                              </widget>
                             </item>
@@ -5566,7 +5778,8 @@ color:rgb(52, 141, 232)</string>
                              <string>Results parameters</string>
                             </property>
                             <property name="styleSheet">
-                             <string notr="true">background-color: rgb(33, 37, 43);</string>
+                             <string notr="true">background-color: rgb(12,28,35);
+</string>
                             </property>
                             <property name="plainText">
                              <string/>
@@ -5609,7 +5822,7 @@ color:rgb(52, 141, 232)</string>
                                </size>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">color: rgb(113, 126, 149);</string>
+                               <string notr="true">color:rgb(9, 179, 182)</string>
                               </property>
                               <property name="lineWidth">
                                <number>1</number>
@@ -5956,7 +6169,8 @@ color:rgb(52, 141, 232)</string>
                                 </size>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -5984,7 +6198,8 @@ color:rgb(52, 141, 232)</string>
                                 </size>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6012,7 +6227,8 @@ color:rgb(52, 141, 232)</string>
                                 </size>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6109,7 +6325,8 @@ color:rgb(52, 141, 232)</string>
                                 <bool>false</bool>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="editable">
                                 <bool>true</bool>
@@ -6189,7 +6406,8 @@ color:rgb(52, 141, 232)</string>
                                 </size>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6261,7 +6479,8 @@ color:rgb(52, 141, 232)</string>
                                 </size>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6311,7 +6530,8 @@ color:rgb(52, 141, 232)</string>
                                 </size>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6339,7 +6559,8 @@ color:rgb(52, 141, 232)</string>
                                 </size>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6420,7 +6641,8 @@ color:rgb(52, 141, 232)</string>
                                 <bool>false</bool>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="editable">
                                 <bool>true</bool>
@@ -6462,7 +6684,8 @@ color:rgb(52, 141, 232)</string>
                                 </size>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6534,7 +6757,8 @@ color:rgb(52, 141, 232)</string>
                                 </size>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6653,9 +6877,9 @@ color:rgb(52, 141, 232)</string>
                               <string notr="true">/*background-color: rgb(52, 59, 72);*/
 
 #pagesContainer .QPushButton {
-	border: 2px solid rgb(52, 59, 72);
 	border-radius: 5px;	
-	background-color: rgb(52, 59, 72);
+	background-color: rgb(27, 42, 50);
+	border: 2px solid rgb(27, 42, 50);
 }
 
 #pagesContainer .QPushButton:hover {
@@ -6721,9 +6945,9 @@ color:rgb(52, 141, 232)</string>
                               <string notr="true">/*background-color: rgb(52, 59, 72);*/
 
 #pagesContainer .QPushButton {
-	border: 2px solid rgb(52, 59, 72);
 	border-radius: 5px;	
-	background-color: rgb(52, 59, 72);
+	background-color: rgb(27, 42, 50);
+	border: 2px solid rgb(27, 42, 50);
 }
 
 #pagesContainer .QPushButton:hover {
@@ -6758,7 +6982,8 @@ color:rgb(52, 141, 232)</string>
                          <item>
                           <widget class="QPlainTextEdit" name="txtImportReport">
                            <property name="styleSheet">
-                            <string notr="true">background-color: rgb(33, 37, 43);</string>
+                            <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(27, 42, 50);</string>
                            </property>
                           </widget>
                          </item>
@@ -6773,12 +6998,12 @@ color:rgb(52, 141, 232)</string>
                          <x>0</x>
                          <y>0</y>
                          <width>521</width>
-                         <height>411</height>
+                         <height>321</height>
                         </rect>
                        </property>
                        <layout class="QGridLayout" name="gridLayout_6">
                         <item row="2" column="1">
-                         <widget class="QPushButton" name="btn_values_directory">
+                         <widget class="QPushButton" name="btn_working_directory">
                           <property name="minimumSize">
                            <size>
                             <width>120</width>
@@ -6812,6 +7037,57 @@ color:rgb(52, 141, 232)</string>
                           <property name="icon">
                            <iconset resource="resources.qrc">
                             <normaloff>:/icons/images/icons/cil-folder-open.png</normaloff>:/icons/images/icons/cil-folder-open.png</iconset>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="0">
+                         <widget class="QLabel" name="labelVersion_25">
+                          <property name="maximumSize">
+                           <size>
+                            <width>200</width>
+                            <height>20</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">color: rgb(113, 126, 149);</string>
+                          </property>
+                          <property name="lineWidth">
+                           <number>1</number>
+                          </property>
+                          <property name="text">
+                           <string>WORKING Directory</string>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="2" column="0">
+                         <widget class="QLineEdit" name="txt_working_directory">
+                          <property name="enabled">
+                           <bool>false</bool>
+                          </property>
+                          <property name="minimumSize">
+                           <size>
+                            <width>300</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>300</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(12,28,35);</string>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                          <property name="placeholderText">
+                           <string/>
                           </property>
                          </widget>
                         </item>
@@ -6840,117 +7116,7 @@ color:rgb(52, 141, 232)</string>
                           </property>
                          </widget>
                         </item>
-                        <item row="2" column="0">
-                         <widget class="QLineEdit" name="txt_values_directory">
-                          <property name="enabled">
-                           <bool>false</bool>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>300</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>300</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">background-color: rgb(33, 37, 43);</string>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="placeholderText">
-                           <string/>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="1" column="0">
-                         <widget class="QLabel" name="labelVersion_25">
-                          <property name="maximumSize">
-                           <size>
-                            <width>200</width>
-                            <height>20</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">color: rgb(113, 126, 149);</string>
-                          </property>
-                          <property name="lineWidth">
-                           <number>1</number>
-                          </property>
-                          <property name="text">
-                           <string>VALUES Directory</string>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="3" column="0">
-                         <widget class="QLabel" name="labelVersion_34">
-                          <property name="maximumSize">
-                           <size>
-                            <width>200</width>
-                            <height>20</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">color: rgb(113, 126, 149);</string>
-                          </property>
-                          <property name="lineWidth">
-                           <number>1</number>
-                          </property>
-                          <property name="text">
-                           <string>WAFERMAP Directory</string>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                         </widget>
-                        </item>
                         <item row="4" column="1">
-                         <widget class="QPushButton" name="btn_wafermap_directory">
-                          <property name="minimumSize">
-                           <size>
-                            <width>120</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>120</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                            <weight>50</weight>
-                            <italic>false</italic>
-                            <bold>false</bold>
-                           </font>
-                          </property>
-                          <property name="cursor">
-                           <cursorShape>PointingHandCursor</cursorShape>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">background-color: rgb(52, 59, 72);</string>
-                          </property>
-                          <property name="text">
-                           <string>Set Directory</string>
-                          </property>
-                          <property name="icon">
-                           <iconset resource="resources.qrc">
-                            <normaloff>:/icons/images/icons/cil-folder-open.png</normaloff>:/icons/images/icons/cil-folder-open.png</iconset>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="6" column="1">
                          <widget class="QPushButton" name="btn_results_directory">
                           <property name="minimumSize">
                            <size>
@@ -6988,67 +7154,7 @@ color:rgb(52, 141, 232)</string>
                           </property>
                          </widget>
                         </item>
-                        <item row="8" column="1">
-                         <widget class="QPushButton" name="btn_graph_directory">
-                          <property name="minimumSize">
-                           <size>
-                            <width>120</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>120</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                            <weight>50</weight>
-                            <italic>false</italic>
-                            <bold>false</bold>
-                           </font>
-                          </property>
-                          <property name="cursor">
-                           <cursorShape>PointingHandCursor</cursorShape>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">background-color: rgb(52, 59, 72);</string>
-                          </property>
-                          <property name="text">
-                           <string>Set Directory</string>
-                          </property>
-                          <property name="icon">
-                           <iconset resource="resources.qrc">
-                            <normaloff>:/icons/images/icons/cil-folder-open.png</normaloff>:/icons/images/icons/cil-folder-open.png</iconset>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="7" column="0">
-                         <widget class="QLabel" name="labelVersion_32">
-                          <property name="maximumSize">
-                           <size>
-                            <width>200</width>
-                            <height>20</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">color: rgb(113, 126, 149);</string>
-                          </property>
-                          <property name="lineWidth">
-                           <number>1</number>
-                          </property>
-                          <property name="text">
-                           <string>GRAPH Directory</string>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="5" column="0">
+                        <item row="3" column="0">
                          <widget class="QLabel" name="labelVersion_30">
                           <property name="maximumSize">
                            <size>
@@ -7070,7 +7176,7 @@ color:rgb(52, 141, 232)</string>
                           </property>
                          </widget>
                         </item>
-                        <item row="6" column="0">
+                        <item row="4" column="0">
                          <widget class="QLineEdit" name="txt_results_directory">
                           <property name="enabled">
                            <bool>false</bool>
@@ -7088,63 +7194,8 @@ color:rgb(52, 141, 232)</string>
                            </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">background-color: rgb(33, 37, 43);</string>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="placeholderText">
-                           <string/>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="4" column="0">
-                         <widget class="QLineEdit" name="txt_wafermap_directory">
-                          <property name="enabled">
-                           <bool>false</bool>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>300</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>300</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">background-color: rgb(33, 37, 43);</string>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="placeholderText">
-                           <string/>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="8" column="0">
-                         <widget class="QLineEdit" name="txt_graph_directory">
-                          <property name="enabled">
-                           <bool>false</bool>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>300</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>300</width>
-                            <height>30</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">background-color: rgb(33, 37, 43);</string>
+                           <string notr="true">background-color: rgb(12,28,35);
+border-color:rgb(12,28,35);</string>
                           </property>
                           <property name="text">
                            <string/>
@@ -7422,16 +7473,6 @@ color:rgb(52, 141, 232)</string>
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="version">
-                  <property name="text">
-                   <string>v7.1</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
                  <widget class="QFrame" name="frame_size_grip">
                   <property name="minimumSize">
                    <size>
@@ -7445,11 +7486,27 @@ color:rgb(52, 141, 232)</string>
                     <height>16777215</height>
                    </size>
                   </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(27, 42, 50);</string>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::NoFrame</enum>
                   </property>
                   <property name="frameShadow">
                    <enum>QFrame::Raised</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="version">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(27, 42, 50);</string>
+                  </property>
+                  <property name="text">
+                   <string>v7.6.5</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -7476,6 +7533,7 @@ color:rgb(52, 141, 232)</string>
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="resources.qrc"/>
   <include location="resources.qrc"/>
  </resources>
  <connections/>

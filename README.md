@@ -73,3 +73,11 @@ Update v7.6.5 (16/09/2022)
 - Botó per fer els reports
 
 - Per guest, només visible consult, reports i analyze**
+
+
+
+
+- Afegit el ReportLab per fer els reports i guardar els analisis
+- Creat el directori de treball d'usuari al toml
+- Canvis en la pantalla d'anàlisi
+- Solucionats els problemes amb la correlació

@@ -1,4 +1,3 @@
-from webbrowser import get
 from functions import *
 from . result_file import *
 from . wafermap_file import *
@@ -34,18 +33,18 @@ class Estepa():
 				
 
 				# set autocommit
-				if "autocommit" in config_estepa:		#per aplicar totes les sentencies automaticament ###
+				if "autocommit" in config_estepa:
 					self.conn.autocommit = config_estepa["autocommit"]
 				else:
-					self.conn.autocommit = False		#no interesa que es vagi executant una darrere l'altre
+					self.conn.autocommit = False
 				
 				# create a cursor
-				self.cur = self.conn.cursor()	#per fer les consultes
+				self.cur = self.conn.cursor()
 				# execute a statement
-				self.cur.execute('SELECT version()')	#comprovar que funciona
+				self.cur.execute('SELECT version()')
 
 				# display the PostgreSQL database server version
-				self.db_version = self.cur.fetchone()		#s'assigna a la db version
+				self.db_version = self.cur.fetchone()
 				
 
 			else:
@@ -72,11 +71,14 @@ class Estepa():
 
 
 	def get_connect_string(self):
-		return "host=" + self.host + " dbname=" + str(self.database) + " port=" + str(self.port) + " user=" + str(self.user) + " connect_timeout = " + str(self.timeout)		#afegir passsword
-
+		if self.password != "":
+			return "host=" + self.host + " dbname=" + str(self.database) + " port=" + str(self.port) + " user=" + str(self.user) + " password=" + str(self.password) + " connect_timeout = " + str(self.timeout)
+		else:
+			return "host=" + self.host + " dbname=" + str(self.database) + " port=" + str(self.port) + " user=" + str(self.user) + " connect_timeout = " + str(self.timeout)
+	
 	def get_technologies(self,run=""):
-		get_technologies = list()		#per obtenir totes les tecnologies dels runs
-		sql = "select distinct tecnologia from runs"		#distinct per no repetir les tecnologies
+		get_technologies = list()
+		sql = "select distinct tecnologia from runs"
 		if run!="":
 			sql += " WHERE run='" + run + "'"
 		self.cur.execute(sql)
@@ -86,9 +88,9 @@ class Estepa():
 				get_technologies.append(row[0])
 				row = self.cur.fetchone()
 
-		return get_technologies		#obtenir un array de les tech. que tenim
+		return get_technologies
 
-	def create_technology(self,run,fecha,tecnologia):		#si no està la tecn. a la bbdd que volem, el ususari escriu la que utilitza
+	def create_technology(self,run,fecha,tecnologia):
 		create_technology = True
 		try:
 			sql = "INSERT INTO runs (run,fecha,tecnologia) VALUES (%s,%s,%s)"
@@ -146,7 +148,7 @@ class Estepa():
 		self.cur.execute(sql)
 		if self.cur.rowcount>0:
 			row = self.cur.fetchone()
-			#Diccionari[parametro]{23,3,4,5}
+
 			while row is not None:
 				parametro = row[1]
 				chip = row[2]
@@ -232,7 +234,8 @@ class Estepa():
 				self.cur.execute(sql_insert, (geometria, wafer_size, xsize, ysize,xmaxim,ymaxim,nchips))
 				# self.conn.commit()
 			else:
-				sql_upadte = "UPDATE geometrias "
+				sql_update = "UPDATE geometrias set wafer_size = %s, xsize = %s, ysize = %s, ymaxim = %s, xmaxim, ymaxim = %s, nchips = %s WHERE geometria = %s"
+				self.cur.execute(sql_update, (wafer_size, xsize, ysize,xmaxim,ymaxim,nchips,geometria))
 		except:
 			create_geometrias = False
 
@@ -445,7 +448,7 @@ class Estepa():
 					# create object wafermap file
 					wafermap_file = WafermapFile(inbase_parameters["wafermapFile"])
 
-					geometria = wafermap_file.wafer_parameters["wafer_name"]	#captura de parametres per crear la nova geometria
+					geometria = wafermap_file.wafer_parameters["wafer_name"]
 					wafer_size = wafermap_file.wafer_parameters["wafer_size"]
 					xsize = wafermap_file.wafer_parameters["xsize"]
 					ysize = wafermap_file.wafer_parameters["ysize"]
@@ -467,7 +470,7 @@ class Estepa():
 										if self.create_medidas(mainWindow, inbase_parameters):
 											if not self.conn.autocommit:
 												mainWindow.updateTextImportReport("COMMIT process...")
-												self.conn.commit()	#commit per generar si no hi han erradas
+												self.conn.commit()
 										else:
 											error = True
 											error_message = "Error uploading medidas information!"
@@ -492,7 +495,7 @@ class Estepa():
 
 			if error and not self.conn.autocommit:
 				mainWindow.updateTextImportReport("ROLLBACK process...")
-				self.conn.rollback()			#per recuperar la base de dades en l'estat anterior
+				self.conn.rollback()
 				error_message = "Error in transaction Reverting all other operations of a transaction: " + error_message
 
 			return [error, error_message]
@@ -501,7 +504,7 @@ class Estepa():
 			mainWindow.updateTextImportReport("Error in transaction: " + errorDatabase)
 			if not self.conn.autocommit:
 				mainWindow.updateTextImportReport("ROLLBACK process...")
-				self.conn.rollback()										#per recuperar la base de dades en l'estat anterior
+				self.conn.rollback()
 				return [False, "Error in transaction Reverting all other operations of a transaction: " + errorDatabase]
 			return [False, "Error in transaction: " + errorDatabase]
 

@@ -5,6 +5,9 @@
     "version": "0.2.0",
     "configurations": [
         {
+<<<<<<< HEAD
+            "name": "Python: archivo actual",
+=======
             "name": "Launch Program",
             "program": "${workspaceFolder}/app.js",
             "request": "launch",
@@ -15,12 +18,17 @@
         },
         {
             "name": "Depurar",
+>>>>>>> 2b7b7720f829e28f71d388deac76e3a3303a1707
             "type": "python",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true
+<<<<<<< HEAD
+        }
+=======
         },
 
+>>>>>>> 2b7b7720f829e28f71d388deac76e3a3303a1707
     ]
 }

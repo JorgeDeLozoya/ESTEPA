@@ -14,22 +14,36 @@
 #
 # ///////////////////////////////////////////////////////////////
 
+import sys
+import os
+import platform
+import toml
+
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
-from widgets import *
-from functions import *
 from modules import *
-
-# GENERAL FUNCTIONS
-# ///////////////////////////////////////////////////////////////
-import sys, platform, os, toml, json, matplotlib.pyplot as plt, numpy as np, pandas as pd, seaborn as sns
-from matplotlib.backends.backend_qt5agg import (FigureCanvas, NavigationToolbar2QT as NavigationToolbar)        #Si no és qt5agg no agafa el NavigationToolbar
-from scipy.stats import norm, kendalltau, spearmanr, pearsonr, chi2_contingency
-from matplotlib.backends.qt_compat import QtWidgets         #No reconeix
-from matplotlib.figure import Figure
-from io import StringIO, open
+from widgets import *
+# general functions
+from functions import *
+# datetime
 from datetime import datetime
+
+from scipy.stats import norm, kendalltau, spearmanr, pearsonr, chi2_contingency
+from matplotlib.backends.qt_compat import QtWidgets
+from matplotlib.backends.backend_qtagg import (FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
+from matplotlib.figure import Figure
 from qbstyles import mpl_style
+from scipy.stats import norm
+from io import open             #mòdul per obrir fitxers externs      
+import pyqtgraph as pg     
+import seaborn as sb                      
+import statistics               #Biblioteca que inclou les funcions estadistiques
+import scipy
+import numpy as np                     
+import json                     #Opció 2
+import matplotlib.pyplot as plt
+import pandas as p
+
 
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 #app = QtWidget.QApplication(sys.argv) Per solucionar el error de QApplication
@@ -47,15 +61,15 @@ class MainWindow(QMainWindow):
         self.histogram_mode=True
         self.measurements=None
         self.working_directory="D:\\USUARIS\\AKAIYFS\\Desktop\\ESTEPA ACTUAL\\Files\\"  #PER ACABAR "C:"
-        # self.results_directory="D:\\USUARIS\\AKAIYFS\\Documents\\ESTEPA\\Results\\" 
+        self.results_directory="D:\\USUARIS\\AKAIYFS\\Documents\\ESTEPA\\Results\\" 
         self.graph_mode=True    #True = Analisis 
                                 #False = Correlación
-        # self.path_config_file = os.getcwd() + '/config/config.toml'
+                                # self.path_config_file = os.getcwd() + '/config/config.toml'
 
         # SET AS GLOBAL WIDGETS
         # ///////////////////////////////////////////////////////////////
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)   
+        self.ui.setupUi(self)
         global widgets  #var global per tots els widgets
         widgets = self.ui
         
@@ -70,9 +84,7 @@ class MainWindow(QMainWindow):
         
         # SET MINIMUN WINDOW SIZE
         self.setMinimumSize(1360, 1000)
-        
         # ///////////////////////////////////////////////////////////////
-                
         # APPLY TEXTS
         
         self.setWindowTitle(title)
@@ -114,7 +126,6 @@ class MainWindow(QMainWindow):
         # configuration estepa
         widgets.scrollHistogramChunks.valueChanged.connect(lambda: widgets.txtHistogramChunks.setText(str(widgets.scrollHistogramChunks.value())))
         widgets.txtHistogramChunks.textChanged.connect(self.save_config_estepa_file)
-        
         # get values from toml config & set widgets
         self.methods = ["none","f-spread","k-sigma"]
         widgets.cmbOutlinerMethod.setCurrentIndex(self.methods.index(self.config["estepa"]["method"]))
@@ -154,7 +165,6 @@ class MainWindow(QMainWindow):
         widgets.btnOpenDataFile.clicked.connect(self.open_file_dat)
         widgets.btnOpenWafermapFile.clicked.connect(self.open_file_ppg)
         widgets.btn_results_directory.clicked.connect(self.set_results_directory)
-        widgets.btn_working_directory.clicked.connect(self.set_working_directory)
         
         # PAGE INBASE
         widgets.btnOpenDataFileInbase.clicked.connect(self.open_file_dat)
@@ -171,7 +181,7 @@ class MainWindow(QMainWindow):
         widgets.btnNextParam.clicked.connect(self.next_parameter_analyze)
         widgets.btnNextParamCorr.clicked.connect(self.next_parameter_correlation)     
         widgets.stk_parameter.setCurrentWidget(widgets.mode_no) 
-        
+           
         
         # widgets configuration
         widgets.stk_results.setCurrentWidget(widgets.no_data)
@@ -187,7 +197,7 @@ class MainWindow(QMainWindow):
         widgets.home_analysis.clicked.connect(self.buttonClick)
         widgets.home_consult.clicked.connect(self.buttonClick)
         widgets.home_upload.clicked.connect(self.buttonClick)
-        widgets.home_reports.clicked.connect(self.buttonClick)  
+        widgets.home_reports.clicked.connect(self.buttonClick)             ###EDITAR NOM
 
         #LEFT MENUS
         widgets.btn_page_home.clicked.connect(self.buttonClick)
@@ -195,7 +205,7 @@ class MainWindow(QMainWindow):
         widgets.btn_page_consult.clicked.connect(self.buttonClick)
         widgets.btn_page_inbase.clicked.connect(self.buttonClick)
         widgets.btn_page_reports.clicked.connect(self.buttonClick)
-            
+             
         #RIGHT MENUS
         widgets.btnDirectory.clicked.connect(self.buttonClick)
 
@@ -205,6 +215,7 @@ class MainWindow(QMainWindow):
         def openCloseLeftBox():
             UIFunctions.toggleLeftBox(self, True)
         widgets.toggleLeftBox.clicked.connect(openCloseLeftBox)
+        widgets.extraCloseColumnBtn.clicked.connect(openCloseLeftBox)
 
         # EXTRA RIGHT BOX
         def openCloseRightBox():
@@ -266,19 +277,12 @@ class MainWindow(QMainWindow):
 
     #DIRECTORIES
     def set_results_directory(self):
+        # GET BUTTON CLICKED
         btn = self.sender()
         btnName = btn.objectName()
         self.result_directory = QFileDialog.getExistingDirectory(self, "Set Results Directory")
         print(self.result_directory)
         widgets.txt_results_directory.setText(self.result_directory)
-        
-    def set_working_directory(self):
-        btn = self.sender()
-        btnName = btn.objectName()
-        self.working_directory = QFileDialog.getExistingDirectory(self, "Set Working Directory")
-        print(self.working_directory)
-        widgets.txt_working_directory.setText(self.working_directory)
-        
         
     #LOAD FROM FILES
     def load_from_files(self):
@@ -341,13 +345,15 @@ class MainWindow(QMainWindow):
                     data_values = result_file.get_data_values(fileName)
                     for chip in data_values:
                         self.textoParametros[fileName]+=str(chip)+"\t"+str(data_values[chip])+"\n"
+                        # self.textoParametros[fileName]+=str(chip).replace(" ") +"\t"+str(data_values[chip])+"      \n"        fer un replace del " " per "\t"
                 
                 par=list(self.textoParametros.keys())[self.parametroMostrando]
-                # print(par)                  #cmax(pF)
-                # print(parameters_file)      #cmax(pF), cmin(pF)
-                # print(parameters_file_list) #['cmax(pF)', 'cmin(pF)']
+                print(par)                  #cmax(pF)
+                print(parameters_file)      #cmax(pF), cmin(pF)
+                print(parameters_file_list) #['cmax(pF)', 'cmin(pF)']
                 widgets.cmbCurrentParameter.setCurrentText(par)
                 
+                # widgets.txtLoadedValues.setPlainText("X".ljust(20) + "Y".ljust(20) + "Measurement" + "\n" + self.textoParametros[par])
                 self.data_value = self.textoParametros[par].replace(" ", "\t")
                 widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
                 widgets.lbl_graph.setText("HISTOGRAM")
@@ -390,7 +396,7 @@ class MainWindow(QMainWindow):
                     widgets.cmbCurrentParameter.addItems(parameters_file_list)    
                     data1 = measurements[parameters_list[0]]["medida"]
                     data2 = measurements[parameters_list[1]]["medida"]
-        
+         
                 else:
                     error = True
                     retval = messageBox(self,"Error selecting variables","Select 2 parameters for correlation","warning")    
@@ -413,7 +419,7 @@ class MainWindow(QMainWindow):
                 retval = messageBox(self,"Error getting measurements Estepa",self.estepa.error_message,"warning")
 
         if not error:
-            
+               
             statistics_correlation = StatisticsEstepa(parameters_list[0],data1,self.config["estepa"],data2)
             data1 = statistics_correlation.data_list
             data2 = statistics_correlation.data_list2
@@ -466,7 +472,7 @@ class MainWindow(QMainWindow):
         widgets.cmbCurrentParameter.setCurrentText(par)
         self.data_value = self.textoParametros[par].replace(" ", "\t")
         widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
-        
+           
     def print_correlation(self,data1,data2,param1_name,param2_name):
         # Delete all widgets in layout
         layout = widgets.verticalLayout_histogram
@@ -485,7 +491,7 @@ class MainWindow(QMainWindow):
 
         toolbar = NavigationToolbar(static_canvas, self)
         toolbar.setStyleSheet("color: white;"
-                            "background-color:#343B48")
+                               "background-color:#343B48")
         
         layout_buttons.addWidget(toolbar)
         layout.addWidget(static_canvas)
@@ -592,26 +598,15 @@ class MainWindow(QMainWindow):
         x = np.linspace(xmin, xmax, 100)
         p = norm.pdf(x, mu, std)
 
-        if self.histogram_mode :
-            _static_ax.plot(x, mu, std, 'w', linewidth=1)
-            # Put title in histogram
-            title = widgets.cmbParametersFile.currentText()
-            _static_ax.set_title(title)
-            
-            _static_ax.plot(x, p, 'w', linewidth=1)
-            # Put title in histogram
-            title = widgets.cmbParametersFile.currentText()
-            _static_ax.set_title(title)
-        else:
-            _static_ax.plot(x, mu, std, 'k', linewidth=1)
-            # Put title in histogram
-            title = widgets.cmbParametersFile.currentText()
-            _static_ax.set_title(title)
-            
-            _static_ax.plot(x, p, 'k', linewidth=1)
-            # Put title in histogram
-            title = widgets.cmbParametersFile.currentText()
-            _static_ax.set_title(title)      
+        _static_ax.plot(x, mu, std, 'w', linewidth=1)
+        # Put title in histogram
+        title = widgets.cmbParametersFile.currentText()
+        _static_ax.set_title(title)
+        
+        _static_ax.plot(x, p, 'w', linewidth=1)
+        # Put title in histogram
+        title = widgets.cmbParametersFile.currentText()
+        _static_ax.set_title(title)
         
     def generate_histogram(self):
         par=list(self.textoParametros.keys())[self.parametroMostrando]
@@ -632,8 +627,8 @@ class MainWindow(QMainWindow):
     
         toolbar = NavigationToolbar(static_canvas, self)
         toolbar.setStyleSheet("color: white;"
-                            "background-color:#343B48")
-            
+                               "background-color:#343B48")
+              
         layout_buttons.addWidget(toolbar)
         layout.addWidget(static_canvas)
         _static_ax = static_canvas.figure.subplots()
@@ -648,68 +643,38 @@ class MainWindow(QMainWindow):
         if self.histogram_mode :
             color_linea="w"
         else:
-            color_linea="k"
+            color_linea="b"
 
         _static_ax.plot(x, p, color_linea, linewidth=1)
     
     def generate_wafermap(self):
         pass
-        # # grid = QGridLayout()  
-        # # self.setLayout(grid)
-        
-        # # FileName = widgets.txtWafermapFile.text() 
-        # # Wafermap_file = WafermapFile(FileName)
-        
-        # # positions = [(i, j) for i in range(Wafermap_file.wafer_parameters["xsize"]) for j in range(Wafermap_file.wafer_parameters["ysize"])]
-        # # for position, name in zip(positions, Wafermap_file.wafer_parameters["wafer_size"]):
-        # #     if name == '':
-        # #         continue
-        # # button = QPushButton(name)
-        # # layout = widgets.gridLayout_wafermap
-        # # layout.addWidget(button, *position)       
-        
-        
+        # par=list(self.textoParametros.keys())[self.parametroMostrando]
+        # data=self.measurements[par]["medida"]
         # mpl_style(dark=self.histogram_mode)
-        
-        # # Delete all widgets in layout
         # layout = widgets.verticalLayout_wafermap
-        
         # for i in reversed(range(widgets.verticalLayout_wafermap.count())):
-        #     widgets.verticalLayout_histogram.itemAt(i).widget().deleteLater()
-            
+        #     widgets.verticalLayout_wafermap.itemAt(i).widget().deleteLater()
+           
         # # create a FigureCanvas & add to layout
         # static_canvas = FigureCanvas(Figure())
-    
         # toolbar = NavigationToolbar(static_canvas, self)
         # toolbar.setStyleSheet("color: white;"
-        #                     "background-color:#343B48")
-            
+        #                        "background-color:#343B48")
         # layout.addWidget(static_canvas)
-        # ax = static_canvas.figure.subplots()
-    
-        
-        # data_str = StringIO('''TAG     A   B   C   D   E   F   G   H   I   J
-        # TAG_1   0   0   0   0   2   2   0   0   0   0
-        # TAG_2   0   0   0   3   4   6   5   0   0   0
-        # TAG_3   0   0   4   2   7   4   6   4   0   0
-        # TAG_4   0   5   7   3   2   3   6   5   2   0
-        # TAG_5   2   4   2   8   9   2   2   2   2   2
-        # TAG_6   2   6   8   7   6   6   4   5   2   2
-        # TAG_7   0   2   9   5   6   6   6   3   2   0
-        # TAG_8   0   0   2   2   4   4   2   2   0   0
-        # TAG_9   0   0   0   2   7   5   2   0   0   0
-        # TAG_10  0   0   0   0   2   2   0   0   0   0''')
-
-        # df = pd.read_csv(data_str, delim_whitespace=True)
-        # df.set_index('TAG', inplace=True)
-        # values = df.to_numpy(dtype=float)
-        # ax = sns.heatmap(values, cmap='Reds', vmin=0, vmax=15, linewidth=1, square=True)
-        # sns.heatmap(values, xticklabels=df.columns, yticklabels=df.index,
-        #             cmap=plt.get_cmap('binary'), vmin=0, vmax=2, mask=values > 1, cbar=False, ax=ax)
-        
-        
-        # ax.plot(linewidth=1)
-        # plt.show()
+        # _static_ax = static_canvas.figure.subplots()
+        # # FileName = widgets.txtWafermapFile.text() 
+        # # file_wafermap = WaferFile(FileName)
+        # wm_app.WaferMapApp(discrete_xyd,
+        #                wafer_info.die_size,
+        #                wafer_info.center_xy,
+        #                wafer_info.dia,
+        #                wafer_info.edge_excl,
+        #                wafer_info.flat_excl,
+        #                data_type=DataType.DISCRETE,
+        #                show_die_gridlines=False,
+        #                )
+        # file_wafermap.wm_info.WaferInfo(self.wafer_size_mm, self.wafer_parameters["real_origin_chip"], dia=150, edge_excl=5, flat_excl=5)
 
 
     # ----------------
@@ -1185,27 +1150,30 @@ class MainWindow(QMainWindow):
     # GUARDAR VALORES
     def save_values(self):
         FileName = widgets.txtDataFile.text()
-        result_file = ResultFile(FileName)         
+        result_file = ResultFile(FileName)      
+        # self.result_directory = QFileDialog.getExistingDirectory(self, "Set Results Directory")    
         self.lot = result_file.process.split("-")[0] # run
         self.wafer = result_file.process.split("-")[1] # wafer
         par=list(self.textoParametros.keys())[self.parametroMostrando]
-        print(widgets.txt_results_directory)        
+        print(self.result_directory)        
         fileName, _ = QFileDialog.getSaveFileName(self,
-            "Save result file", str(widgets.txt_results_directory) + self.lot + "-" + self.wafer + "_" + par + "_values", "TXT Files (*.txt);; DOC Files (*.doc);; All files (*.*)")
+            "Save result file", self.result_directory + self.lot + "-" + self.wafer + "_" + par + "_values", "TXT Files (*.txt);; DOC Files (*.doc);; All files (*.*)")
 
 
     # GUARDAR RESULTADOS
     def save_results(self):
-        FileName = widgets.txtDataFile.text()    
+        FileName = widgets.txtDataFile.text()
+        result_file = ResultFile(FileName)
+        # self.result_directory = QFileDialog.getExistingDirectory(self, "Set Results Directory")        
         self.lot = result_file.process.split("-")[0] # run
         self.wafer = result_file.process.split("-")[1] # wafer
         par=list(self.textoParametros.keys())[self.parametroMostrando]
-        
+
         fileName, _ = QFileDialog.getSaveFileName(self,
-            "Save result file", str(widgets.txt_results_directory) + self.lot + "-" + self.wafer + "_" + par + "_results", "TXT Files (*.txt);; DOC Files (*.doc);; All files (*.*)")
+            "Save result file", self.result_directory + self.lot + "-" + self.wafer + "_" + par + "_results", "TXT Files (*.txt);; DOC Files (*.doc);; All files (*.*)")
                                                                     
-        #Format RUN-WAFER_PARAMETER_histogram      Modificar botó guardar imatge
-        #Format RUN-WAFER_PARAMETER_wafermap
+        #Formato RUN-WAFER_PARAMETER_histogram      Modificar botón guardar imagen
+        #Formato RUN-WAFER_PARAMETER_wafermap
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -1221,6 +1189,12 @@ class MainWindow(QMainWindow):
         p = event.globalPosition()
         globalPos = p.toPoint()
         self.dragPos = globalPos
+
+        # PRINT MOUSE EVENTS
+        # if event.buttons() == Qt.LeftButton:
+        #     print('Mouse click: LEFT CLICK')
+        # if event.buttons() == Qt.RightButton:
+        #     print('Mouse click: RIGHT CLICK')
 
     # LOAD TOML FILES FUNCTIONS
     # CONFIG FILE FUNCTIONS
@@ -1312,7 +1286,7 @@ def get_json_file(filename, var_name):
     except:
         return ""
     return var_name
-            
+              
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon("icon.ico"))
