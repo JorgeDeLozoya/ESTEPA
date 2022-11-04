@@ -48,7 +48,13 @@ Update v7.6.5 (16/09/2022)
 - Inici de configuració pels directoris
 
 
+Update v7.6.6 (25/10/2022)
 
+- Afegit Heatmap.py per fer proves per fer el wafermap
+
+Update v7.7 (4/11/2022)
+
+- Afegida la primera versió del wafermap al analyze
 
 
 

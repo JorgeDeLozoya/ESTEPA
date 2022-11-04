@@ -1,3 +1,4 @@
+@echo off
 Rem Compiling main.ui
 pyside6-uic main.ui> ui_main.py
 Rem copy to folder modules

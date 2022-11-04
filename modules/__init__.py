@@ -37,3 +37,10 @@ from . estepa import *
 
 # MATPLOTLIB WIDGET
 #from . mplwidget import *
+
+# WAFER FUNCTIONS
+from . wafers import *
+
+# RESULTS (READ) FILE FUNCTIONS
+from . result_file import *
+from . wafermap_file import *

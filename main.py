@@ -22,11 +22,13 @@ from modules import *
 
 # GENERAL FUNCTIONS
 # ///////////////////////////////////////////////////////////////
-import sys, platform, os, toml, json, matplotlib.pyplot as plt, numpy as np, pandas as pd, seaborn as sns
+import sys, platform, os, toml, mplcursors, json, matplotlib.pyplot as plt, numpy as np, pandas as pd, seaborn as sns, matplotlib as mpl
 from matplotlib.backends.backend_qt5agg import (FigureCanvas, NavigationToolbar2QT as NavigationToolbar)        #Si no és qt5agg no agafa el NavigationToolbar
 from scipy.stats import norm, kendalltau, spearmanr, pearsonr, chi2_contingency
 from matplotlib.backends.qt_compat import QtWidgets         #No reconeix
 from matplotlib.figure import Figure
+from matplotlib.colors import LinearSegmentedColormap
+import mplcursors
 from io import StringIO, open
 from datetime import datetime
 from qbstyles import mpl_style
@@ -74,7 +76,6 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
                 
         # APPLY TEXTS
-        
         self.setWindowTitle(title)
         widgets.titleRightInfo.setText(description)
 
@@ -296,8 +297,6 @@ class MainWindow(QMainWindow):
         parameters_list.insert(0,"All parameters")
         widgets.cmbParametersFile.addItems(parameters_list)
         
-        
-
     #ANALYZE
     def analyze_files(self):
         self.graph_mode = True
@@ -343,6 +342,7 @@ class MainWindow(QMainWindow):
                         self.textoParametros[fileName]+=str(chip)+"\t"+str(data_values[chip])+"\n"
                 
                 par=list(self.textoParametros.keys())[self.parametroMostrando]
+                self.par =par
                 # print(par)                  #cmax(pF)
                 # print(parameters_file)      #cmax(pF), cmin(pF)
                 # print(parameters_file_list) #['cmax(pF)', 'cmin(pF)']
@@ -353,7 +353,7 @@ class MainWindow(QMainWindow):
                 widgets.lbl_graph.setText("HISTOGRAM")
                 self.generate_histogram()
                 # Get wafermap
-                self.generate_wafermap()   
+                self.generate_wafermap(data_values)   
             else:
                 retval = messageBox(self,"Error getting parameters list","Please, select at least one parameter!","warning")
         else:
@@ -439,7 +439,7 @@ class MainWindow(QMainWindow):
             widgets.lbl_graph.setText("CORRELATION")
                                                             
     # NEXT PARAMETER ANALYZE
-    def next_parameter_analyze(self):
+    def next_parameter_analyze(self, data_values):
         widgets.stk_parameter.setCurrentWidget(widgets.mode_analyze) 
         widgets.txtLoadedValues.setPlainText("")
         widgets.cmbCurrentParameter.setCurrentText("")
@@ -452,8 +452,9 @@ class MainWindow(QMainWindow):
         self.data_value = self.textoParametros[par].replace(" ", "\t")
         widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
         self.generate_histogram()                        #ERROR
+        self.generate_wafermap(data_values) 
         
-    # NEXT PARAMETER ANALYZE
+    # NEXT PARAMETER CORRELATION
     def next_parameter_correlation(self):
         widgets.stk_parameter.setCurrentWidget(widgets.mode_correlation) 
         widgets.txtLoadedValues.setPlainText("")
@@ -536,7 +537,7 @@ class MainWindow(QMainWindow):
         btn = self.sender()
         btnName = btn.objectName()
         fileName, _ = QFileDialog.getOpenFileName(self,
-            "Open wafermap file", self.working_directory, "PPG Files (*.ppg);; PPG py Files (*_wafermap.py);; All files (*.*)")
+            "Open wafermap file", self.working_directory, "PPG py Files (*_wafermap.py);; PPG Files (*.ppg);; All files (*.*)")
 
         if fileName:
             self.working_directory=os.path.dirname(fileName)
@@ -621,11 +622,11 @@ class MainWindow(QMainWindow):
         mu, std = norm.fit(data)
         # Delete all widgets in layout
         layout = widgets.verticalLayout_histogram
-        layout_buttons = widgets.horizontalLayout_buttons
+        layout_buttons = widgets.horizontalLayout_btnHistogram
         for i in reversed(range(widgets.verticalLayout_histogram.count())):
             widgets.verticalLayout_histogram.itemAt(i).widget().deleteLater()
-        for i in reversed(range(widgets.horizontalLayout_buttons.count())):
-            widgets.horizontalLayout_buttons.itemAt(i).widget().deleteLater()
+        for i in reversed(range(widgets.horizontalLayout_btnHistogram.count())):
+            widgets.horizontalLayout_btnHistogram.itemAt(i).widget().deleteLater()
             
         # create a FigureCanvas & add to layout
         static_canvas = FigureCanvas(Figure())
@@ -652,66 +653,143 @@ class MainWindow(QMainWindow):
 
         _static_ax.plot(x, p, color_linea, linewidth=1)
     
-    def generate_wafermap(self):
-        pass
-        # # grid = QGridLayout()  
-        # # self.setLayout(grid)
-        
-        # # FileName = widgets.txtWafermapFile.text() 
-        # # Wafermap_file = WafermapFile(FileName)
-        
-        # # positions = [(i, j) for i in range(Wafermap_file.wafer_parameters["xsize"]) for j in range(Wafermap_file.wafer_parameters["ysize"])]
-        # # for position, name in zip(positions, Wafermap_file.wafer_parameters["wafer_size"]):
-        # #     if name == '':
-        # #         continue
-        # # button = QPushButton(name)
-        # # layout = widgets.gridLayout_wafermap
-        # # layout.addWidget(button, *position)       
-        
-        
-        # mpl_style(dark=self.histogram_mode)
-        
-        # # Delete all widgets in layout
-        # layout = widgets.verticalLayout_wafermap
-        
-        # for i in reversed(range(widgets.verticalLayout_wafermap.count())):
-        #     widgets.verticalLayout_histogram.itemAt(i).widget().deleteLater()
+    def generate_wafermap(self, data_values):
+        # Delete all widgets in layout
+        layout = widgets.horizontalLayout_wafermap
+        layout_buttons = widgets.horizontalLayout_btnWafermap
+        for i in reversed(range(widgets.horizontalLayout_wafermap.count())):
+            widgets.horizontalLayout_wafermap.itemAt(i).widget().deleteLater()
+        for i in reversed(range(widgets.horizontalLayout_btnWafermap.count())):
+            widgets.horizontalLayout_btnWafermap.itemAt(i).widget().deleteLater()
             
-        # # create a FigureCanvas & add to layout
-        # static_canvas = FigureCanvas(Figure())
+        static_canvas = FigureCanvas(Figure())
     
-        # toolbar = NavigationToolbar(static_canvas, self)
-        # toolbar.setStyleSheet("color: white;"
-        #                     "background-color:#343B48")
+        toolbar = NavigationToolbar(static_canvas, self)
+        toolbar.setStyleSheet("color: white;"
+                            "background-color:#343B48")
             
-        # layout.addWidget(static_canvas)
-        # ax = static_canvas.figure.subplots()
+        layout_buttons.addWidget(toolbar)
+        fig = static_canvas.figure
+      
+        ax = static_canvas.figure.subplots()
+        
+        FileName = widgets.txtWafermapFile.text()
+        file_wafermap = WafermapFile(FileName)
+
+        #data_values_errors
+        wafer = Wafer(file_wafermap.wafer_parameters)
+        
+        xmax_real = wafer.wafer_size_mm*1000/(wafer.xsize)      #Per tenir els tamanys reals
+        ymax_real = wafer.wafer_size_mm*1000/(wafer.ysize)
+        
+        X = [*range(0, int(xmax_real)*-1, -1)]      #Per construir les llistes
+        Y = [*range(0, int(ymax_real)*-1, -1)]      
+        
+        data_values_real = dict()               #fem un nou data_values amb els valors reals
+        data_values_min = 1E99 
+        data_values_max = -1E99
+        for k, v in data_values.items():        #k=key, v=variable
+            new_coord = wafer.calculate_real_coordinate(k)          #retorna la nova coordenada
+            data_values_real[new_coord] = v             #aquest serà el nou valor
+            if (v>data_values_max and v<9E99): data_values_max = v
+            if (v<data_values_min): data_values_min = v
+        # min & max values
+        # print("Vmin: " + str(data_values_min))      
+        # print("Vmax: " + str(data_values_max))
+        
+        values = list()
+        # print(data_values_real)
+        # assign value_1 & value_0
+        num_colors = 15
+        dif = data_values_max - data_values_min
+        value_1 = data_values_min - (dif*10/100)    #in
+        value_0 = data_values_min - (dif*20/100)    #out
+        value_error = data_values_max + (dif*10/100)
+
+        data_values_real['-26 -35'] = value_error #red
+        
+        for y_axis in Y:
+            y_axis_list = list()        #per cada row, creem una llista on anem afegint la columna que hi ha dins de values
+            for x_axis in X:
+                coord = str(x_axis) + " " + str(y_axis)
+                if coord not in data_values_real:
+                    if wafer.is_in(x_axis, y_axis):
+                        y_axis_list.append(value_1)
+                    else:
+                        y_axis_list.append(value_0)
+                else:
+                    y_axis_list.append(data_values_real[coord])
+            values.append(y_axis_list)
+
+        df = pd.DataFrame(np.array(values), index=Y, columns=X)     #Ho convertim en un np array per pasar el dataframe
+
+        background_options = ["white", "black", "mpl_style"]        #definim el background per cada tema
+        background = "black"
+        if background == "white":
+            color_first = background
+        if background == "black":
+            color_first = "#0C1C23"
+            plt.style.use('dark_background')    
+            mpl.rcParams["figure.facecolor"] = "#0C1C23"        #COLORS
+            mpl.rcParams["axes.facecolor"] = "#0C1C23"
+            mpl.rcParams["savefig.facecolor"] = "#0C1C23"
+        if background == "mpl_style":
+            color_first = "#0C1C23"
+            mpl_style(True)
+        
+        cmap_reds = plt.get_cmap('PuBuGn')    
+        colors = [color_first, '#5E6A82'] + [cmap_reds(i / num_colors) for i in range(2, num_colors)]   +   ['Red']
+        #colors = [color_first, '#b8b8b8'] + ['#FFFDD0', '#077F82'] + ['Red']
+        cmap = LinearSegmentedColormap.from_list('', colors, num_colors)    #segmentem la barra de colors
+
+        im = ax.imshow(np.array(values), interpolation='nearest', aspect='auto',cmap=cmap)      #veure que fan els parametres
+
+        # add space for colour bar
+        fig.subplots_adjust(right=0.85)
+        cbar_ax = fig.add_axes([0.88, 0.15, 0.04, 0.7])
+        fig.colorbar(im, cax=cbar_ax)
+
+        dif_value = data_values_min + (dif/2)
+        ticks = [value_0, value_1, data_values_min, dif_value, data_values_max, value_error]
+        cbar = fig.colorbar(im, cax = cbar_ax, ticks=ticks)
+
+        cbar.ax.set_yticklabels(["OUT","IN", str('%.2f' % data_values_min), str('%.2f' %dif_value), str('%.2f' %data_values_max), "ERROR"])
+
+        # Show all ticks and label them with the respective list entries
+        ax.set_xticks(np.arange(len(X)), labels=X)
+        ax.set_yticks(np.arange(len(Y)), labels=Y)
+        
+        ax.locator_params(axis='y', nbins=6)        #Per reduïr el nombre de numeros als eixos
+        ax.locator_params(axis='x', nbins=10)
+        
+        for i in range(len(Y)):
+            for j in range(len(X)):
+                if wafer.is_home(j,i):      #Per mirar en quina posició està Home o Origin
+                    text = ax.text(j, i, "H",ha="center", va="center", color="w", fontsize=8)
+                    #text = ax.text(j, i, "%.2f" % df.iloc[i, j],ha="center", va="center", color="w", fontsize=8)
+                if wafer.is_origin(j,i):
+                    text = ax.text(j, i, "O",ha="center", va="center", color="w", fontsize=8)
     
+        # ax.set_title(self.par)
+        layout.addWidget(static_canvas)
+        static_canvas.draw()
         
-        # data_str = StringIO('''TAG     A   B   C   D   E   F   G   H   I   J
-        # TAG_1   0   0   0   0   2   2   0   0   0   0
-        # TAG_2   0   0   0   3   4   6   5   0   0   0
-        # TAG_3   0   0   4   2   7   4   6   4   0   0
-        # TAG_4   0   5   7   3   2   3   6   5   2   0
-        # TAG_5   2   4   2   8   9   2   2   2   2   2
-        # TAG_6   2   6   8   7   6   6   4   5   2   2
-        # TAG_7   0   2   9   5   6   6   6   3   2   0
-        # TAG_8   0   0   2   2   4   4   2   2   0   0
-        # TAG_9   0   0   0   2   7   5   2   0   0   0
-        # TAG_10  0   0   0   0   2   2   0   0   0   0''')
-
-        # df = pd.read_csv(data_str, delim_whitespace=True)
-        # df.set_index('TAG', inplace=True)
-        # values = df.to_numpy(dtype=float)
-        # ax = sns.heatmap(values, cmap='Reds', vmin=0, vmax=15, linewidth=1, square=True)
-        # sns.heatmap(values, xticklabels=df.columns, yticklabels=df.index,
-        #             cmap=plt.get_cmap('binary'), vmin=0, vmax=2, mask=values > 1, cbar=False, ax=ax)
-        
-        
-        # ax.plot(linewidth=1)
-        # plt.show()
-
-
+    def selection(sel, data_values_real, value_error, param, ax, color_first, selection):
+        x = round(sel.target[0])*-1
+        y = round(sel.target[1])*-1
+        coord = str(x) + " " + str(y)
+        if coord in data_values_real:
+            if data_values_real[coord]!=value_error:
+                sel.annotation.set_text('{} [{} {}] = {}'.format(param, x, y, data_values_real[coord]))
+            else:
+                text_insert = '{} [{} {}] = {}'.format(param, x, y, "ERROR VALUE")
+                sel.annotation.set_text(text_insert)
+                sel.annotation.get_bbox_patch().set(fc=color_first, alpha=0.8)
+        else:
+            sel.annotation.set_text('')
+    
+        crs = mplcursors.cursor(ax,hover=False) 
+        crs.connect("add", selection)
     # ----------------
     # BBDD FUNCTIONS
     # ----------------
@@ -1318,3 +1396,13 @@ if __name__ == "__main__":
     app.setWindowIcon(QIcon("icon.ico"))
     window = MainWindow()
     sys.exit(app.exec())
+
+
+
+#Posar cometaris de les funcions i les clases 
+'''
+Class Wafermap File:...
+...
+'''
+
+#per fer help(main.py)

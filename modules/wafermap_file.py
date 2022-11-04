@@ -112,8 +112,8 @@ class WafermapFile():
 				with open(self.path_to_file,"r") as rnf:
 					try:
 						exec(rnf.read())
-						# self.wafer_parameters = wafer_parameters								#necesari?
-						self.wafer_size_inch = float(self.wafer_parameters["wafer_size"])
+						self.wafer_parameters = wafer_parameters							#Variable global definit al fitxer wafermap.py				
+						self.wafer_size_inch = self.wafer_parameters["wafer_size"]
 						self.set_wafer_size()
 						if not "xmax" in self.wafer_parameters or not "ymax" in self.wafer_parameters:
 							# get xmax & ymax from wafer_positions
@@ -263,7 +263,7 @@ class WafermapFile():
 						# get origin chip
 						chips_x = float(self.movement_x)/float(self.wafer_parameters["xsize"])
 						chips_y = float(self.movement_y)/float(self.wafer_parameters["ysize"])
-						self.wafer_parameters["home_chip"] = str(chips_x*-1) + " " + str(chips_y) # x axis negative on right side
+						self.wafer_parameters["home_chip"] = str(int(chips_x)*-1) + " " + str(int(chips_y)) # x axis negative on right side
 						# real origin chip in this case (ppg) center on wafer (wafer_size => get mm, check xmax & ymax)
 						self.wafer_parameters["real_origin_chip"] = self.get_real_origin_chip()
 						self.wafer_parameters["flat_orientation"] = "0" # always 0 ?

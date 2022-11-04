@@ -20,7 +20,7 @@ class StatisticsEstepa():
 	def __init__(self, param, data_list, config_estepa_file, data_list2 = []):
 		self.param = param
 		self.data_list_origen = data_list
-		self.data_list = data_list # original data list 
+		self.data_list = data_list # original data list
 		self.data_list2_origen = data_list2
 		self.data_list2 = data_list2 # original data list2
 		self.ERROR_VALUE = -9e99
@@ -32,12 +32,12 @@ class StatisticsEstepa():
 		self.points_end = 0
 		self.error = False
 		self.error_message = ""
-		
+
 
 		self.methods = ["none","f-spread","k-sigma"]
 
 		if len(data_list2)>0 and len(data_list)!=len(data_list2):
-			self.error = True	
+			self.error = True
 			self.error_message = "List 1 & List 2 do not have the same length!"
 
 
@@ -45,7 +45,7 @@ class StatisticsEstepa():
 			self.config = config_estepa_file # {"method": "None", lna" : False, "limmin" : 0, "limmax" : 100}
 
 		else:
-			self.error = True	
+			self.error = True
 			self.error_message = "Configuration estepa file not valid!"
 		if isinstance(data_list,list):
 			if len(self.data_list)>0:
@@ -58,9 +58,9 @@ class StatisticsEstepa():
 				# load correlation
 				# self.load_correlation()
 			else:
-				self.error = True	
+				self.error = True
 				self.error_message = "List empty!"
-		else: 
+		else:
 			self.error = True
 			self.error_message = "Is not a list!"
 
@@ -75,24 +75,24 @@ class StatisticsEstepa():
 
 		return print_statistics
 
- 
+
 	def print_correlation(self):
-          
+
 		corr, pvalue = pearsonr(self.data_list, self.data_list2) # Pearson's r, valor p
 		corr2, pvalue2 = spearmanr(self.data_list, self.data_list2) # Spearman's rho, valor p
 		corr3, pvalue3 = kendalltau(self.data_list, self.data_list2) # Kendall's tau, valor p
 		a, b = np.polyfit(self.data_list, self.data_list2, 1)
 		# siga = self.stdev(a)
 		# sigb = self.stdev(b)
-		obs = np.array([[self.data_list],[ self.data_list2]])
-		chi2 = chi2_contingency(obs)
+		# obs = np.array([[self.data_list],[ self.data_list2]])
+		# chi2 = chi2_contingency(obs)
 		# chi22 = chisquare(obs)
 
 		print_correlation =" - Pearsons correlation:   %.3f , %.3f \t" % (corr,pvalue) + "\n"
 		print_correlation +=" - Spearmanr correlation:  %.3f , %.3f \t" % (corr2, pvalue2) + "\n"
 		print_correlation +=" - Kendalltau correlation: %.3f , %.3f  \t" % (corr3, pvalue3) + "\n"
 		# print_correlation +=" - Chisquare:  \t" + str(chi22) + "\n"
-		print_correlation +=" - Chisquare:  \t" + str(chi2) + "\n"	
+		# print_correlation +=" - Chisquare:  \t" + str(chi2) + "\n"
 		print_correlation +=" - a, b: %f , %f \t" %  (a, b) + "\n"
 		# print_correlation +=" - siga: %f \t" % siga + "\n"
 		# print_correlation +=" - sigb: %f \t" % sigb + "\n"
@@ -105,7 +105,7 @@ class StatisticsEstepa():
 		self.mean_estepa()
 		self.median_estepa()
 		self.stdev_estepa()
-	
+
 	def mean_estepa(self):
 		if len(self.data_list)>0:
 			self.mean = statistics.mean(self.data_list)
@@ -116,7 +116,7 @@ class StatisticsEstepa():
 		if len(self.data_list)>0:
 			self.median = statistics.median(self.data_list)
 		else:
-			self.median = self.ERROR_VALUE	
+			self.median = self.ERROR_VALUE
 
 	def stdev_estepa(self):
 		if len(self.data_list)>1:
@@ -142,7 +142,7 @@ class StatisticsEstepa():
 			r50 = x75 - x25
 			xmin = x25 - 1.5*r50
 			xmax = x75 + 1.5*r50
-				
+
 			for data in self.data_list:
 				if data<=xmin or data>=xmax:
 					self.data_list.remove(data)
@@ -166,9 +166,9 @@ class StatisticsEstepa():
 			r50 = x75 - x25
 			xmin = x25 - 1.5*r50
 			xmax = x75 + 1.5*r50
-		
-		return xmin, xmax	
-			
+
+		return xmin, xmax
+
 	def k_sigma(self):
 		# method K-SIGMA
 		prvb=0.2
@@ -199,7 +199,7 @@ class StatisticsEstepa():
 			xmax = self.mean + float(klim) * self.stdev
 
 		return xmin, xmax
-		
+
 
 	def outliers(self):
 		if self.config["method"] in self.methods:
@@ -208,7 +208,7 @@ class StatisticsEstepa():
 			# 2) delete limits not automatic
 			if self.config["lna"]:
 				self.data_list, self.data_list2 = self.elim_lna()
-			
+
 			# get limits  min (xmin) & max (xmax) of the list sended
 			if self.config["method"]!="none":
 				if len(self.data_list)>2:
@@ -240,11 +240,11 @@ class StatisticsEstepa():
 
 				else:
 					self.error = True
-					self.error_message = "Not enough points to extract outliers!"		
+					self.error_message = "Not enough points to extract outliers!"
 		else:
 			self.error = True
 			self.error_message = "Mode not accepted!"
-	
+
 	def outliers_correlation(self, data2):
 		self.data_list = self.data_list_origen
 		if self.config["method"] in self.methods:
@@ -253,7 +253,7 @@ class StatisticsEstepa():
 			# 2) delete limits not automatic
 			if self.config["lna"]:
 				self.data_list = self.elim_lna()
-			
+
 			# get limits  min (xmin) & max (xmax) of the list sended
 			if self.config["method"]!="none":
 				if len(self.data_list)>2:
@@ -281,7 +281,7 @@ class StatisticsEstepa():
 
 				else:
 					self.error = True
-					self.error_message = "Not enough points to extract outliers!"		
+					self.error_message = "Not enough points to extract outliers!"
 		else:
 			self.error = True
 			self.error_message = "Mode not accepted!"
@@ -336,7 +336,7 @@ class StatisticsEstepa():
 		for i in range(0,number_terms):
 			factor_numbers.append(i*2+1)
 		# calc value serie of erf(valor)
-		for terms in range(1,number_terms): 
+		for terms in range(1,number_terms):
 			# get fact_number
 			fact_number = factor_numbers[terms]
 			# get serie value
@@ -362,7 +362,7 @@ class StatisticsEstepa():
 		return format_float
 
 
-	
+
 
 
 

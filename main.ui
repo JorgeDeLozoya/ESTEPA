@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1212</width>
-    <height>852</height>
+    <width>940</width>
+    <height>844</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -53,7 +53,7 @@ QToolTip {
 	background-position: left center;
     background-repeat: no-repeat;
 	border: none;
-	border-left: 2px solid rgb(255, 121, 198);
+	border-left: 2px solid rgb(7, 127, 130);
 	text-align: left;
 	padding-left: 8px;
 	margin: 0px;
@@ -280,7 +280,7 @@ QLineEdit {
 	border: 2px solid rgb(33, 37, 43);
 	padding-left: 10px;
 	selection-color: rgb(255, 255, 255);
-	selection-background-color: rgb(255, 121, 198);
+	selection-background-color: rgb(7, 127, 130);
 }
 QLineEdit:hover {
 	border: 2px solid rgb(64, 71, 88);
@@ -3008,7 +3008,7 @@ border-color: rgb(27, 42, 50);</string>
                                     <item row="2" column="5">
                                      <widget class="QStackedWidget" name="opt_clear">
                                       <property name="currentIndex">
-                                       <number>0</number>
+                                       <number>1</number>
                                       </property>
                                       <widget class="QWidget" name="no"/>
                                       <widget class="QWidget" name="yes">
@@ -3139,7 +3139,7 @@ border-color: rgb(27, 42, 50);</string>
                                    </property>
                                    <property name="styleSheet">
                                     <string notr="true">background-color: rgb(12,28,35);
-border-color: rgb(27, 42, 50);</string>
+border-color: rgb(12,28,35);</string>
                                    </property>
                                    <property name="text">
                                     <string/>
@@ -3190,7 +3190,7 @@ border-color: rgb(27, 42, 50);</string>
                                    </property>
                                    <property name="styleSheet">
                                     <string notr="true">background-color: rgb(12,28,35);
-border-color: rgb(27, 42, 50);</string>
+border-color: rgb(12,28,35);</string>
                                    </property>
                                    <property name="text">
                                     <string/>
@@ -3365,7 +3365,8 @@ border-color: rgb(27, 42, 50);</string>
                                    <bool>false</bool>
                                   </property>
                                   <property name="styleSheet">
-                                   <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                   <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(12,28,35);</string>
                                   </property>
                                   <property name="editable">
                                    <bool>true</bool>
@@ -3492,7 +3493,8 @@ border-color: rgb(27, 42, 50);</string>
                                    <bool>false</bool>
                                   </property>
                                   <property name="styleSheet">
-                                   <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                   <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(12,28,35);</string>
                                   </property>
                                   <property name="editable">
                                    <bool>true</bool>
@@ -3565,7 +3567,8 @@ border-color: rgb(27, 42, 50);</string>
                                    <bool>false</bool>
                                   </property>
                                   <property name="styleSheet">
-                                   <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                   <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(12,28,35);</string>
                                   </property>
                                   <property name="editable">
                                    <bool>true</bool>
@@ -3698,7 +3701,8 @@ border-color: rgb(27, 42, 50);</string>
                                    <bool>false</bool>
                                   </property>
                                   <property name="styleSheet">
-                                   <string notr="true">background-color: rgb(33, 37, 43);</string>
+                                   <string notr="true">background-color: rgb(12,28,35);
+border-color: rgb(12,28,35);</string>
                                   </property>
                                   <property name="editable">
                                    <bool>true</bool>
@@ -4488,7 +4492,7 @@ border-color: rgb(27, 42, 50);</string>
                                   </spacer>
                                  </item>
                                  <item>
-                                  <layout class="QHBoxLayout" name="horizontalLayout_buttons"/>
+                                  <layout class="QHBoxLayout" name="horizontalLayout_btnHistogram"/>
                                  </item>
                                 </layout>
                                </item>
@@ -4567,79 +4571,80 @@ border-color: rgb(27, 42, 50);</string>
                                   <number>0</number>
                                  </property>
                                  <item>
-                                  <layout class="QHBoxLayout" name="horizontalLayout_11">
-                                   <item>
-                                    <widget class="QLabel" name="lbl_wafermap_2">
-                                     <property name="maximumSize">
-                                      <size>
-                                       <width>200</width>
-                                       <height>20</height>
-                                      </size>
-                                     </property>
-                                     <property name="styleSheet">
-                                      <string notr="true">color:rgb(9, 179, 182)</string>
-                                     </property>
-                                     <property name="lineWidth">
-                                      <number>1</number>
-                                     </property>
-                                     <property name="text">
-                                      <string>WAFERMAP</string>
-                                     </property>
-                                     <property name="alignment">
-                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                                     </property>
-                                    </widget>
-                                   </item>
-                                   <item>
-                                    <spacer name="horizontalSpacer_21">
-                                     <property name="orientation">
-                                      <enum>Qt::Horizontal</enum>
-                                     </property>
-                                     <property name="sizeType">
-                                      <enum>QSizePolicy::Expanding</enum>
-                                     </property>
-                                     <property name="sizeHint" stdset="0">
-                                      <size>
-                                       <width>20</width>
-                                       <height>20</height>
-                                      </size>
-                                     </property>
-                                    </spacer>
-                                   </item>
-                                   <item>
-                                    <widget class="QPushButton" name="btnSaveDescription_5">
-                                     <property name="enabled">
-                                      <bool>true</bool>
-                                     </property>
-                                     <property name="minimumSize">
-                                      <size>
-                                       <width>30</width>
-                                       <height>30</height>
-                                      </size>
-                                     </property>
-                                     <property name="maximumSize">
-                                      <size>
-                                       <width>30</width>
-                                       <height>16777215</height>
-                                      </size>
-                                     </property>
-                                     <property name="font">
-                                      <font>
-                                       <family>Segoe UI</family>
-                                       <pointsize>10</pointsize>
-                                       <weight>50</weight>
-                                       <italic>false</italic>
-                                       <bold>false</bold>
-                                      </font>
-                                     </property>
-                                     <property name="cursor">
-                                      <cursorShape>PointingHandCursor</cursorShape>
-                                     </property>
-                                     <property name="toolTip">
-                                      <string>Save</string>
-                                     </property>
-                                     <property name="styleSheet">
-                                      <string notr="true">/*background-color: rgb(52, 59, 72);*/
+                                  <widget class="QLabel" name="lbl_wafermap_2">
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>20</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">color:rgb(9, 179, 182)</string>
+                                   </property>
+                                   <property name="lineWidth">
+                                    <number>1</number>
+                                   </property>
+                                   <property name="text">
+                                    <string>WAFERMAP</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item>
+                                  <spacer name="horizontalSpacer_21">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeType">
+                                    <enum>QSizePolicy::Expanding</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>20</width>
+                                     <height>20</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item>
+                                  <layout class="QHBoxLayout" name="horizontalLayout_btnWafermap"/>
+                                 </item>
+                                 <item>
+                                  <widget class="QPushButton" name="btnSaveDescription_5">
+                                   <property name="enabled">
+                                    <bool>true</bool>
+                                   </property>
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>30</width>
+                                     <height>30</height>
+                                    </size>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>30</width>
+                                     <height>16777215</height>
+                                    </size>
+                                   </property>
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                     <weight>50</weight>
+                                     <italic>false</italic>
+                                     <bold>false</bold>
+                                    </font>
+                                   </property>
+                                   <property name="cursor">
+                                    <cursorShape>PointingHandCursor</cursorShape>
+                                   </property>
+                                   <property name="toolTip">
+                                    <string>Save</string>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">/*background-color: rgb(52, 59, 72);*/
 
 #pagesContainer .QPushButton {
 	
@@ -4662,46 +4667,23 @@ border-color: rgb(27, 42, 50);</string>
 
 	background-color: #333333; border: none;
 }</string>
-                                     </property>
-                                     <property name="text">
-                                      <string/>
-                                     </property>
-                                     <property name="icon">
-                                      <iconset resource="resources.qrc">
-                                       <normaloff>:/icons/images/icons/cil-save.png</normaloff>:/icons/images/icons/cil-save.png</iconset>
-                                     </property>
-                                     <property name="flat">
-                                      <bool>false</bool>
-                                     </property>
-                                    </widget>
-                                   </item>
-                                  </layout>
+                                   </property>
+                                   <property name="text">
+                                    <string/>
+                                   </property>
+                                   <property name="icon">
+                                    <iconset resource="resources.qrc">
+                                     <normaloff>:/icons/images/icons/cil-save.png</normaloff>:/icons/images/icons/cil-save.png</iconset>
+                                   </property>
+                                   <property name="flat">
+                                    <bool>false</bool>
+                                   </property>
+                                  </widget>
                                  </item>
                                 </layout>
                                </item>
                                <item>
-                                <layout class="QHBoxLayout" name="horizontalLayout_wafermap">
-                                 <item>
-                                  <spacer name="horizontalSpacer_wafermap">
-                                   <property name="orientation">
-                                    <enum>Qt::Horizontal</enum>
-                                   </property>
-                                   <property name="sizeHint" stdset="0">
-                                    <size>
-                                     <width>40</width>
-                                     <height>1</height>
-                                    </size>
-                                   </property>
-                                  </spacer>
-                                 </item>
-                                 <item>
-                                  <layout class="QVBoxLayout" name="verticalLayout_wafermap">
-                                   <item>
-                                    <layout class="QGridLayout" name="gridLayout_wafermap"/>
-                                   </item>
-                                  </layout>
-                                 </item>
-                                </layout>
+                                <layout class="QHBoxLayout" name="horizontalLayout_wafermap"/>
                                </item>
                                <item>
                                 <spacer name="verticalSpacer_2">
@@ -6170,7 +6152,7 @@ border: transparent;
                                </property>
                                <property name="styleSheet">
                                 <string notr="true">background-color: rgb(12,28,35);
-border-color: rgb(27, 42, 50);</string>
+border-color:  rgb(12,28,35);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6407,7 +6389,7 @@ border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="styleSheet">
                                 <string notr="true">background-color: rgb(12,28,35);
-border-color: rgb(27, 42, 50);</string>
+border-color:rgb(12,28,35);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6480,7 +6462,7 @@ border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="styleSheet">
                                 <string notr="true">background-color: rgb(12,28,35);
-border-color: rgb(27, 42, 50);</string>
+border-color: rgb(12,28,35);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6531,7 +6513,7 @@ border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="styleSheet">
                                 <string notr="true">background-color: rgb(12,28,35);
-border-color: rgb(27, 42, 50);</string>
+border-color:  rgb(12,28,35);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -6758,7 +6740,7 @@ border-color: rgb(27, 42, 50);</string>
                                </property>
                                <property name="styleSheet">
                                 <string notr="true">background-color: rgb(12,28,35);
-border-color: rgb(27, 42, 50);</string>
+border-color:  rgb(12,28,35);</string>
                                </property>
                                <property name="text">
                                 <string/>
@@ -7289,7 +7271,7 @@ border-color:rgb(12,28,35);</string>
                       <property name="bottomMargin">
                        <number>0</number>
                       </property>
-                      <item alignment="Qt::AlignTop">
+                      <item>
                        <widget class="QFrame" name="topMenus">
                         <property name="frameShape">
                          <enum>QFrame::NoFrame</enum>
@@ -7297,134 +7279,181 @@ border-color:rgb(12,28,35);</string>
                         <property name="frameShadow">
                          <enum>QFrame::Raised</enum>
                         </property>
-                        <layout class="QVBoxLayout" name="verticalLayout_14">
-                         <property name="spacing">
-                          <number>0</number>
+                        <widget class="QPushButton" name="btnDirectory">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>152</y>
+                           <width>119</width>
+                           <height>45</height>
+                          </rect>
                          </property>
-                         <property name="leftMargin">
-                          <number>0</number>
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
                          </property>
-                         <property name="topMargin">
-                          <number>0</number>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>45</height>
+                          </size>
                          </property>
-                         <property name="rightMargin">
-                          <number>0</number>
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                           <weight>50</weight>
+                           <italic>false</italic>
+                           <bold>false</bold>
+                          </font>
                          </property>
-                         <property name="bottomMargin">
-                          <number>0</number>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
                          </property>
-                         <item>
-                          <widget class="QPushButton" name="btnDirectory">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>0</width>
-                             <height>45</height>
-                            </size>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Segoe UI</family>
-                             <pointsize>10</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="cursor">
-                            <cursorShape>PointingHandCursor</cursorShape>
-                           </property>
-                           <property name="layoutDirection">
-                            <enum>Qt::LeftToRight</enum>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-image: url(:/icons/images/icons/cil-envelope-open.png);</string>
-                           </property>
-                           <property name="text">
-                            <string>Directory</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QPushButton" name="btn_print">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>0</width>
-                             <height>45</height>
-                            </size>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Segoe UI</family>
-                             <pointsize>10</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="cursor">
-                            <cursorShape>PointingHandCursor</cursorShape>
-                           </property>
-                           <property name="layoutDirection">
-                            <enum>Qt::LeftToRight</enum>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-image: url(:/icons/images/icons/cil-print.png);</string>
-                           </property>
-                           <property name="text">
-                            <string>Print</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QPushButton" name="btn_logout">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>0</width>
-                             <height>45</height>
-                            </size>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Segoe UI</family>
-                             <pointsize>10</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="cursor">
-                            <cursorShape>PointingHandCursor</cursorShape>
-                           </property>
-                           <property name="layoutDirection">
-                            <enum>Qt::LeftToRight</enum>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-image: url(:/icons/images/icons/cil-account-logout.png);</string>
-                           </property>
-                           <property name="text">
-                            <string>Logout</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
+                         <property name="layoutDirection">
+                          <enum>Qt::LeftToRight</enum>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">background-image: url(:/icons/images/icons/cil-envelope-open.png);</string>
+                         </property>
+                         <property name="text">
+                          <string>Directory</string>
+                         </property>
+                        </widget>
+                        <widget class="QPushButton" name="btn_print">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>349</y>
+                           <width>92</width>
+                           <height>45</height>
+                          </rect>
+                         </property>
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                           <weight>50</weight>
+                           <italic>false</italic>
+                           <bold>false</bold>
+                          </font>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="layoutDirection">
+                          <enum>Qt::LeftToRight</enum>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">background-image: url(:/icons/images/icons/cil-print.png);</string>
+                         </property>
+                         <property name="text">
+                          <string>Print</string>
+                         </property>
+                        </widget>
+                        <widget class="QPushButton" name="btn_logout">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>546</y>
+                           <width>107</width>
+                           <height>45</height>
+                          </rect>
+                         </property>
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>45</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                           <weight>50</weight>
+                           <italic>false</italic>
+                           <bold>false</bold>
+                          </font>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="layoutDirection">
+                          <enum>Qt::LeftToRight</enum>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">background-image: url(:/icons/images/icons/cil-account-logout.png);</string>
+                         </property>
+                         <property name="text">
+                          <string>Logout</string>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="Result_directory">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>0</y>
+                           <width>1192</width>
+                           <height>17</height>
+                          </rect>
+                         </property>
+                         <property name="text">
+                          <string>TextLabel</string>
+                         </property>
+                        </widget>
+                        <widget class="QLineEdit" name="txt_results_directory_2">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>0</y>
+                           <width>1192</width>
+                           <height>23</height>
+                          </rect>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="Working_directory">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>0</y>
+                           <width>1192</width>
+                           <height>17</height>
+                          </rect>
+                         </property>
+                         <property name="text">
+                          <string>TextLabel</string>
+                         </property>
+                        </widget>
+                        <widget class="QLineEdit" name="txt_working_directory_2">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>0</y>
+                           <width>1192</width>
+                           <height>23</height>
+                          </rect>
+                         </property>
+                        </widget>
                        </widget>
                       </item>
                      </layout>
