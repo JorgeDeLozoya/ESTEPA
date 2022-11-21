@@ -9,6 +9,7 @@ import math
 import numpy as np
 
 from scipy.stats import norm, kendalltau, spearmanr, pearsonr, chi2_contingency
+import scipy.stats
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
@@ -18,11 +19,17 @@ from PySide6.QtCore import Qt
 
 class StatisticsEstepa():
 	def __init__(self, param, data_list, config_estepa_file, data_list2 = []):
+     
 		self.param = param
-		self.data_list_origen = data_list
-		self.data_list = data_list # original data list
-		self.data_list2_origen = data_list2
-		self.data_list2 = data_list2 # original data list2
+		self.data_list_origen = data_list.copy()
+		self.data_list = data_list
+		self.data_list2_origen = data_list2.copy()
+		self.data_list2 = data_list2
+		# self.param = param
+		# self.data_list_origen = data_list
+		# self.data_list = data_list # original data list
+		# self.data_list2_origen = data_list2
+		# self.data_list2 = data_list2 # original data list2
 		self.ERROR_VALUE = -9e99
 		self.ERROR_VALUE2 = 1e30
 		self.mean = self.ERROR_VALUE
@@ -32,6 +39,7 @@ class StatisticsEstepa():
 		self.points_end = 0
 		self.error = False
 		self.error_message = ""
+		self.eliminados = 0
 
 
 		self.methods = ["none","f-spread","k-sigma"]
@@ -66,8 +74,8 @@ class StatisticsEstepa():
 
 	def print_statistics(self):
 
-		print_statistics = self.param + " : " + "\n"
-		print_statistics +=" - Mean:   \t" + str(self.mean) + "\n"
+		# print_statistics = self.param + " : " + "\n"
+		print_statistics =" - Mean:   \t" + str(self.mean) + "\n"
 		print_statistics +=" - Median:   \t" + str(self.median) + "\n"
 		print_statistics +=" - Stdev:   \t" + str(self.stdev) + "\n"
 		print_statistics +=" - Points:   \t" + str(self.points_end) + "/" + str(self.points_ini) + "\n"
@@ -76,6 +84,9 @@ class StatisticsEstepa():
 		return print_statistics
 
 
+	def print_data_values(self):
+		pass
+ 
 	def print_correlation(self):
 
 		corr, pvalue = pearsonr(self.data_list, self.data_list2) # Pearson's r, valor p
@@ -86,13 +97,14 @@ class StatisticsEstepa():
 		# sigb = self.stdev(b)
 		# obs = np.array([[self.data_list],[ self.data_list2]])
 		# chi2 = chi2_contingency(obs)
+		# chi2 = scipy.stats.chi2.ppf(self.data_list, self.data_list2)
 		# chi22 = chisquare(obs)
 
 		print_correlation =" - Pearsons correlation:   %.3f , %.3f \t" % (corr,pvalue) + "\n"
 		print_correlation +=" - Spearmanr correlation:  %.3f , %.3f \t" % (corr2, pvalue2) + "\n"
 		print_correlation +=" - Kendalltau correlation: %.3f , %.3f  \t" % (corr3, pvalue3) + "\n"
 		# print_correlation +=" - Chisquare:  \t" + str(chi22) + "\n"
-		# print_correlation +=" - Chisquare:  \t" + str(chi2) + "\n"
+		# print_correlation +=" - Chisquare: %.3f \t" % chi2 + "\n"
 		print_correlation +=" - a, b: %f , %f \t" %  (a, b) + "\n"
 		# print_correlation +=" - siga: %f \t" % siga + "\n"
 		# print_correlation +=" - sigb: %f \t" % sigb + "\n"
@@ -127,7 +139,7 @@ class StatisticsEstepa():
 	def f_spread(self):
 		# method f-spread (get quantiles with statistics library)
 		while True:
-			eliminados = 0
+			self.eliminados = 0
 			n = len(self.data_list)
 			if n==0: break
 			arr = self.data_list
@@ -146,8 +158,8 @@ class StatisticsEstepa():
 			for data in self.data_list:
 				if data<=xmin or data>=xmax:
 					self.data_list.remove(data)
-					eliminados +=1
-			if eliminados == 0: break
+					self.eliminados +=1
+			if self.eliminados == 0: break
 
 	def f_spread2(self):
 		# method f-spread (get quantiles with statistics library)
@@ -173,7 +185,7 @@ class StatisticsEstepa():
 		# method K-SIGMA
 		prvb=0.2
 		while True:
-			eliminados = 0
+			self.eliminados = 0
 			n = len(self.data_list)
 			if n==0: break
 			self.load_statistics() # calc mean, median & stdev
@@ -184,8 +196,8 @@ class StatisticsEstepa():
 			for data in self.data_list:
 				if data<=xmin or data>=xmax:
 					self.data_list.remove(data)
-					eliminados +=1
-			if eliminados == 0: break
+					self.eliminados +=1
+			if self.eliminados == 0: break
 
 	def k_sigma2(self):
 		# method K-SIGMA
@@ -215,7 +227,7 @@ class StatisticsEstepa():
 					data_lista = self.data_list
 					data_lista2 = self.data_list2
 					while True:
-						eliminados = 0
+						self.eliminados = 0
 						if self.config["method"]=="f-spread":
 							# method f-spread (get quantiles with statistics library)
 							xmin, xmax = self.f_spread2()
@@ -232,8 +244,8 @@ class StatisticsEstepa():
 									data_lista.pop(i)
 									if len(data_lista2)>0:
 										data_lista2.pop(i)
-									eliminados +=1
-							if eliminados == 0: break
+									self.eliminados +=1
+							if self.eliminados == 0: break
 
 					self.data_list = data_lista
 					self.data_list2 = data_lista2
@@ -258,7 +270,7 @@ class StatisticsEstepa():
 			if self.config["method"]!="none":
 				if len(self.data_list)>2:
 					while True:
-						eliminados = 0
+						self.eliminados = 0
 						if self.config["method"]=="f-spread":
 							# method f-spread (get quantiles with statistics library)
 							xmin, xmax = self.f_spread2()
@@ -274,10 +286,10 @@ class StatisticsEstepa():
 								if data<=xmin or data>=xmax:
 									if counter_outliers not in self.position_outliers:
 										self.data_list.pop(counter_outliers)
-										eliminados +=1
+										self.eliminados +=1
 										self.position_outliers.append(counter_outliers)
 								counter_outliers +=1
-							if eliminados == 0: break
+							if self.eliminados == 0: break
 
 				else:
 					self.error = True

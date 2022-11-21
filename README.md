@@ -56,7 +56,12 @@ Update v7.7 (4/11/2022)
 
 - Afegida la primera versió del wafermap al analyze
 
+Update v8 (19/11/2022)
 
+- Canviat el layout del programa
+- Nova distribució amb tabwidgets per optimitzar les grafiques
+- Canviada la pagina principal amb els directoris
+- Nou menú lateral dret amb els directoris
 
 
 

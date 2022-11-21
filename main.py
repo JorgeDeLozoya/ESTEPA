@@ -28,10 +28,10 @@ from scipy.stats import norm, kendalltau, spearmanr, pearsonr, chi2_contingency
 from matplotlib.backends.qt_compat import QtWidgets         #No reconeix
 from matplotlib.figure import Figure
 from matplotlib.colors import LinearSegmentedColormap
-import mplcursors
 from io import StringIO, open
 from datetime import datetime
 from qbstyles import mpl_style
+
 
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 #app = QtWidget.QApplication(sys.argv) Per solucionar el error de QApplication
@@ -41,12 +41,32 @@ os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 widgets = None
 import_report_file = "report_import.txt"
 
+# class NavigationToolbarMod():
+#     
+#     static_canvas = FigureCanvas(Figure())
+#     toolbar = NavigationToolbar(static_canvas)
+
+
+# class MyCustomToolbar(NavigationToolbar): 
+#     def __init__(self, plotCanvas):
+#         NavigationToolbar.__init__(self, plotCanvas)
+        
+#     layout_buttons = widgets.horizontalLayout_btnHistogram    
+#     layout_buttons = {
+
+#     "Home": layout_buttons.QIcon("/images/icons/cil-home.png"),
+#     "Pan": layout_buttons.QIcon("/images/icons/pan.png"),
+#     "Zoom": layout_buttons.QIcon("/images/icons/zoom.png"),
+    
+#     }
+
 class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         
         # CONFIG
         self.histogram_mode=True
+        self.wafermap_mode=True
         self.measurements=None
         self.working_directory="D:\\USUARIS\\AKAIYFS\\Desktop\\ESTEPA ACTUAL\\Files\\"  #PER ACABAR "C:"
         # self.results_directory="D:\\USUARIS\\AKAIYFS\\Documents\\ESTEPA\\Results\\" 
@@ -71,7 +91,7 @@ class MainWindow(QMainWindow):
         description = "ESTEPA"
         
         # SET MINIMUN WINDOW SIZE
-        self.setMinimumSize(1360, 1000)
+        self.setMinimumSize(800, 600)
         
         # ///////////////////////////////////////////////////////////////
                 
@@ -142,8 +162,6 @@ class MainWindow(QMainWindow):
         
         widgets.txt_results_directory.textChanged.connect(self.save_config_estepa_file)
 
-        
-        ##btnDirectory
 
         widgets.cmbTechnologyUpload.currentIndexChanged.connect(self.updateTextTechnologyUpload)
         widgets.cmbMaskUpload.currentIndexChanged.connect(self.updateTextMaskUpload)
@@ -155,7 +173,9 @@ class MainWindow(QMainWindow):
         widgets.btnOpenDataFile.clicked.connect(self.open_file_dat)
         widgets.btnOpenWafermapFile.clicked.connect(self.open_file_ppg)
         widgets.btn_results_directory.clicked.connect(self.set_results_directory)
+        widgets.btn_results_directory_2.clicked.connect(self.set_results_directory)
         widgets.btn_working_directory.clicked.connect(self.set_working_directory)
+        widgets.btn_working_directory_2.clicked.connect(self.set_working_directory)
         
         # PAGE INBASE
         widgets.btnOpenDataFileInbase.clicked.connect(self.open_file_dat)
@@ -163,26 +183,23 @@ class MainWindow(QMainWindow):
 
         # configuration pages
         widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_measurements)
+        widgets.optionsESTEPA.setCurrentIndex(0)
         
-        widgets.btnCopyDescription_2.clicked.connect(self.copy_values)
-        widgets.btnCopyDescription_3.clicked.connect(self.copy_results)
-        widgets.btnSaveDescription_2.clicked.connect(self.save_values)
-        widgets.btnSaveDescription_3.clicked.connect(self.save_results)
         
-        widgets.btnNextParam.clicked.connect(self.next_parameter_analyze)
-        widgets.btnNextParamCorr.clicked.connect(self.next_parameter_correlation)     
-        widgets.stk_parameter.setCurrentWidget(widgets.mode_no) 
+        widgets.btnCopyDescription.clicked.connect(self.copy_results)
+        widgets.btnCopyDescription.clicked.connect(self.copy_values)
+        widgets.btnSaveDescription.clicked.connect(self.save_results)
+
+        
+        widgets.btnNextParamFiles.clicked.connect(self.next_parameter_analyze)
+        widgets.btnPreviousParamFiles.clicked.connect(self.previous_parameter_analyze)
+        # widgets.btnNextParamCorr.clicked.connect(self.next_parameter_correlation)     
         
         
         # widgets configuration
         widgets.stk_results.setCurrentWidget(widgets.no_data)
         widgets.stk_graph.setCurrentWidget(widgets.no_graph)
-        widgets.stk_wafermap.setCurrentWidget(widgets.no_wafermap) 
         widgets.stk_loadfiles.setCurrentWidget(widgets.not_loaded) 
-        widgets.stk_results_2.setCurrentWidget(widgets.results_no)
-        
-    
-        widgets.opt_clear.setCurrentWidget(widgets.no)
 
         # HOME MENUS
         widgets.home_analysis.clicked.connect(self.buttonClick)
@@ -198,7 +215,7 @@ class MainWindow(QMainWindow):
         widgets.btn_page_reports.clicked.connect(self.buttonClick)
             
         #RIGHT MENUS
-        widgets.btnDirectory.clicked.connect(self.buttonClick)
+        
 
         widgets.btn_clear_all.clicked.connect(self.buttonClick)
         
@@ -272,6 +289,7 @@ class MainWindow(QMainWindow):
         self.result_directory = QFileDialog.getExistingDirectory(self, "Set Results Directory")
         print(self.result_directory)
         widgets.txt_results_directory.setText(self.result_directory)
+        widgets.txt_results_directory_2.setText(self.result_directory)
         
     def set_working_directory(self):
         btn = self.sender()
@@ -279,37 +297,40 @@ class MainWindow(QMainWindow):
         self.working_directory = QFileDialog.getExistingDirectory(self, "Set Working Directory")
         print(self.working_directory)
         widgets.txt_working_directory.setText(self.working_directory)
+        widgets.txt_working_directory_2.setText(self.working_directory)
         
         
     #LOAD FROM FILES
     def load_from_files(self):
-        widgets.stk_loadfiles.setCurrentWidget(widgets.loaded)
-        widgets.stk_results.setCurrentWidget(widgets.no_data)
-        widgets.stk_graph.setCurrentWidget(widgets.no_graph)
-        widgets.stk_wafermap.setCurrentWidget(widgets.no_wafermap) 
-        widgets.opt_clear.setCurrentWidget(widgets.no)
-        
-        file_dat = widgets.txtDataFile.text()
-        file_ppg = widgets.txtWafermapFile.text()
-        file_result = ResultFile(file_dat)
-        file_wafermap = WafermapFile(file_ppg)
-        parameters_list = file_result.params_list
-        parameters_list.insert(0,"All parameters")
-        widgets.cmbParametersFile.addItems(parameters_list)
-        
+        if not widgets.txtDataFile.text() and widgets.txtWafermapFile.text():
+            error = True
+            retval = messageBox(self,"Error loading files","Select data and wafermap files before loading files","warning")   
+            
+        if widgets.txtDataFile.text() and widgets.txtWafermapFile.text():
+            widgets.stk_loadfiles.setCurrentWidget(widgets.loaded)
+            widgets.stk_results.setCurrentWidget(widgets.no_data)
+            widgets.stk_graph.setCurrentWidget(widgets.no_graph)
+            # widgets.stk_wafermap.setCurrentWidget(widgets.no_wafermap) 
+            
+            file_dat = widgets.txtDataFile.text()
+            file_ppg = widgets.txtWafermapFile.text()
+            file_result = ResultFile(file_dat)
+            file_wafermap = WafermapFile(file_ppg)
+            self.parameters_list = file_result.params_list
+            self.parameters_list.insert(0,"All parameters")
+            widgets.cmbParametersFile.addItems(self.parameters_list)
+            
+        else:
+            error = True
+            retval = messageBox(self,"Error loading files","Select data and wafermap files before loading files","warning")   
+     
     #ANALYZE
     def analyze_files(self):
         self.graph_mode = True
         self.textoParametros={}             #16/8       diccionari
-        widgets.stk_results.setCurrentWidget(widgets.data)
-        widgets.stk_graph.setCurrentWidget(widgets.graph)
-        widgets.stk_wafermap.setCurrentWidget(widgets.wafermap)
-        widgets.opt_clear.setCurrentWidget(widgets.yes)
-        widgets.stk_parameter.setCurrentWidget(widgets.mode_analyze) 
+        widgets.GraphWidget.setCurrentWidget(widgets.tab_histogram)
+        widgets.ResultsWidget.setCurrentWidget(widgets.tab_results)
         
-        widgets.txtLoadedValues.setPlainText("")
-        widgets.txtParametersResult.setPlainText("")
-        widgets.cmbCurrentParameter.setCurrentText("")
         
         parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
         parameters_file_list = parameters_file.split(", ")          # split to create list
@@ -320,18 +341,26 @@ class MainWindow(QMainWindow):
         widgets.cmbCurrentParameter.clear()             #13/9
         widgets.cmbCurrentParameter.addItems(parameters_file_list)                                               #13/9
         
-        
-        # wafermap_file = WafermapFile(FileName)
         if not result_file.error:
             if parameters_file!="":
+                #LOAD STACKED WIDGETS
+                widgets.stk_results.setCurrentWidget(widgets.data)
+                widgets.stk_graph.setCurrentWidget(widgets.graph)
+                # widgets.stk_wafermap.setCurrentWidget(widgets.wafermap)
+                # widgets.stk_parameter.setCurrentWidget(widgets.mode_analyze) 
+                
+                widgets.txtLoadedValues.setPlainText("")
+                widgets.txtParametersResult.setPlainText("")
+                widgets.cmbCurrentParameter.setCurrentText("")
                 # GET parameters result
                 self.measurements = result_file.get_params(parameters_file_list)
-                # wafer = wafermap_file.get_xmax_ymax()
 
                 widgets.txtParametersResult.setPlainText("")
-                for par in parameters_file_list:
-                    estadistica = StatisticsEstepa(par, self.measurements[par]["medida"], (self.config["estepa"]))
-                    widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
+                
+                
+                # for par in parameters_file_list:
+                #     estadistica = StatisticsEstepa(par, self.measurements[par]["medida"], (self.config["estepa"]))
+                #     widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
                 # GET DATA VALUES, HISTOGRAM & WAFERMAP IF PARAM==1
                 
                 # Get data values from result_file
@@ -348,12 +377,16 @@ class MainWindow(QMainWindow):
                 # print(parameters_file_list) #['cmax(pF)', 'cmin(pF)']
                 widgets.cmbCurrentParameter.setCurrentText(par)
                 
+                estadistica = StatisticsEstepa(par, self.measurements[par]["medida"], (self.config["estepa"]))
+                widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
+                
                 self.data_value = self.textoParametros[par].replace(" ", "\t")
                 widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
-                widgets.lbl_graph.setText("HISTOGRAM")
+                # widgets.lbl_graph.setText("HISTOGRAM")
                 self.generate_histogram()
                 # Get wafermap
                 self.generate_wafermap(data_values)   
+                
             else:
                 retval = messageBox(self,"Error getting parameters list","Please, select at least one parameter!","warning")
         else:
@@ -365,11 +398,8 @@ class MainWindow(QMainWindow):
         self.textoParametros={}
         self.parametroMostrando=0
         error = False
-        widgets.stk_results.setCurrentWidget(widgets.data)
-        widgets.stk_graph.setCurrentWidget(widgets.graph)
-        widgets.opt_clear.setCurrentWidget(widgets.yes)
-        widgets.stk_parameter.setCurrentWidget(widgets.mode_correlation) 
-        widgets.stk_wafermap.setCurrentWidget(widgets.no_wafermap)
+        widgets.stk_results.setCurrentWidget(widgets.no_data)
+        widgets.stk_graph.setCurrentWidget(widgets.no_graph)
         widgets.txtLoadedValues.setPlainText("")
         widgets.txtParametersResult.setPlainText("")
         widgets.cmbCurrentParameter.setCurrentText("")
@@ -385,6 +415,8 @@ class MainWindow(QMainWindow):
             result_file = ResultFile(FileName)
             if not result_file.error:
                 if len(parameters_list)==2:
+                    widgets.stk_results.setCurrentWidget(widgets.data)
+                    widgets.stk_graph.setCurrentWidget(widgets.correlation)
                     measurements = result_file.get_params(parameters_list)
                     widgets.cmbCurrentParameter.clear() 
                     widgets.cmbCurrentParameter.addItems(parameters_file_list)    
@@ -423,8 +455,7 @@ class MainWindow(QMainWindow):
             widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+statistics_correlation.print_correlation())
             self.print_correlation(data1, data2, parameters_list[0], parameters_list[1])
     
-            # ACTIVATE DARK MODE
-            mpl_style(dark=True)
+            
             # Get data values from result_file
             for fileName in parameters_file_list:
                 self.textoParametros[fileName]=""
@@ -436,46 +467,81 @@ class MainWindow(QMainWindow):
                         
             self.data_value = self.textoParametros[par].replace(" ", "\t")
             widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
-            widgets.lbl_graph.setText("CORRELATION")
+           
+    # PREVIOUS PARAMETER
+    def previous_parameter_analyze(self, data_values):
+        
+        # if widgets.stk_graph==widgets.graph:
+            widgets.GraphWidget.setCurrentWidget(widgets.tab_histogram)
+            widgets.ResultsWidget.setCurrentWidget(widgets.tab_results)
+            widgets.txtLoadedValues.setPlainText("")
+            widgets.txtParametersResult.setPlainText("")
+            widgets.cmbCurrentParameter.setCurrentText("")
+            FileName = widgets.txtDataFile.text() 
+            result_file = ResultFile(FileName)
+            self.measurements = result_file.get_params(list(self.textoParametros.keys()))
+            self.parametroMostrando=(self.parametroMostrando-1)%len(self.textoParametros)   #per mostrar més d¡un parametre tenint en compte la longitud
+            par=list(self.textoParametros.keys())[self.parametroMostrando]
+            widgets.cmbCurrentParameter.setCurrentText(par)
+            self.data_value = self.textoParametros[par].replace(" ", "\t")
+            widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
+            estadistica = StatisticsEstepa(self.parametroMostrando,self.measurements[par]["medida"],self.config["estepa"])
+            widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
+            self.generate_histogram()                        #ERROR
+            self.generate_wafermap(data_values)     
                                                             
     # NEXT PARAMETER ANALYZE
     def next_parameter_analyze(self, data_values):
-        widgets.stk_parameter.setCurrentWidget(widgets.mode_analyze) 
-        widgets.txtLoadedValues.setPlainText("")
-        widgets.cmbCurrentParameter.setCurrentText("")
-        FileName = widgets.txtDataFile.text() 
-        result_file = ResultFile(FileName)
-        self.measurements = result_file.get_params(list(self.textoParametros.keys()))
-        self.parametroMostrando=(self.parametroMostrando+1)%len(self.textoParametros)   #per mostrar més d¡un parametre tenint en compte la longitud
-        par=list(self.textoParametros.keys())[self.parametroMostrando]
-        widgets.cmbCurrentParameter.setCurrentText(par)
-        self.data_value = self.textoParametros[par].replace(" ", "\t")
-        widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
-        self.generate_histogram()                        #ERROR
-        self.generate_wafermap(data_values) 
+        
+        # if widgets.stk_graph==widgets.graph:
+            widgets.GraphWidget.setCurrentWidget(widgets.tab_histogram)
+            widgets.ResultsWidget.setCurrentWidget(widgets.tab_results)
+            widgets.txtLoadedValues.setPlainText("")
+            widgets.txtParametersResult.setPlainText("")
+            widgets.cmbCurrentParameter.setCurrentText("")
+            FileName = widgets.txtDataFile.text() 
+            result_file = ResultFile(FileName)
+            self.measurements = result_file.get_params(list(self.textoParametros.keys()))
+            self.parametroMostrando=(self.parametroMostrando+1)%len(self.textoParametros)   #per mostrar més d¡un parametre tenint en compte la longitud
+            par=list(self.textoParametros.keys())[self.parametroMostrando]
+            widgets.cmbCurrentParameter.setCurrentText(par)
+            self.data_value = self.textoParametros[par].replace(" ", "\t")
+            widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
+            estadistica = StatisticsEstepa(self.parametroMostrando,self.measurements[par]["medida"],self.config["estepa"])
+            widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
+            self.generate_histogram()                        #ERROR
+            self.generate_wafermap(data_values) 
+        
+        # if widgets.stk_graph==widgets.correlation:
+        #     widgets.stk_graph.setCurrentWidget(widgets.correlation)
+        #     widgets.txtLoadedValues.setPlainText("")
+        #     widgets.cmbCurrentParameter.setCurrentText("")
+        #     widgets.txtParametersResult.setPlainText("")
+        #     FileName = widgets.txtDataFile.text() 
+        #     result_file = ResultFile(FileName)
+        #     self.measurements = result_file.get_params(list(self.textoParametros.keys()))
+        #     self.parametroMostrando=(self.parametroMostrando+1)%len(self.textoParametros)   #per mostrar més d¡un parametre tenint en compte la longitud
+        #     par=list(self.textoParametros.keys())[self.parametroMostrando]
+        #     widgets.cmbCurrentParameter.setCurrentText(par)
+        #     self.data_value = self.textoParametros[par].replace(" ", "\t")
+        #     widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
+        
+        # else:
+        #     pass
         
     # NEXT PARAMETER CORRELATION
-    def next_parameter_correlation(self):
-        widgets.stk_parameter.setCurrentWidget(widgets.mode_correlation) 
-        widgets.txtLoadedValues.setPlainText("")
-        widgets.cmbCurrentParameter.setCurrentText("")
-        FileName = widgets.txtDataFile.text() 
-        result_file = ResultFile(FileName)
-        self.measurements = result_file.get_params(list(self.textoParametros.keys()))
-        self.parametroMostrando=(self.parametroMostrando+1)%len(self.textoParametros)   #per mostrar més d¡un parametre tenint en compte la longitud
-        par=list(self.textoParametros.keys())[self.parametroMostrando]
-        widgets.cmbCurrentParameter.setCurrentText(par)
-        self.data_value = self.textoParametros[par].replace(" ", "\t")
-        widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
+    # def next_parameter_correlation(self):
+
         
     def print_correlation(self,data1,data2,param1_name,param2_name):
         # Delete all widgets in layout
-        layout = widgets.verticalLayout_histogram
-        layout_buttons = widgets.horizontalLayout_buttons
-        for i in reversed(range(widgets.verticalLayout_histogram.count())):
-            widgets.verticalLayout_histogram.itemAt(i).widget().deleteLater()
-        for i in reversed(range(widgets.horizontalLayout_buttons.count())):
-            widgets.horizontalLayout_buttons.itemAt(i).widget().deleteLater()
+        layout = widgets.verticalLayout_correlation
+        layout_buttons = widgets.horizontalLayout_btnCorrelation
+        for i in reversed(range(widgets.verticalLayout_correlation.count())):
+            widgets.verticalLayout_correlation.itemAt(i).widget().deleteLater()
+        for i in reversed(range(widgets.horizontalLayout_btnCorrelation.count())):
+            widgets.horizontalLayout_btnCorrelation.itemAt(i).widget().deleteLater()
+
 
         # create a FigureCanvas & add to layout
         static_canvas = FigureCanvas(Figure())
@@ -487,13 +553,31 @@ class MainWindow(QMainWindow):
         toolbar = NavigationToolbar(static_canvas, self)
         toolbar.setStyleSheet("color: white;"
                             "background-color:#343B48")
+
+        #PER CANVIAR ELS ICONS
+        # toolbar_with_removed_icons = self.static_canvas.toolbar
+        # # unwanted_buttons = ["Back", "Forward", "Customize", "Subplots", "Save"]
+        
+        # icons_buttons = {
+        # "Home": toolbar.QIcon("/images/icons/cil-home.png"),
+        # "Pan": toolbar.QIcon("/images/icons/pan.png"),
+        # "Zoom": toolbar.QIcon("/images/icons/zoom.png"),
+        # }
+        # for action in toolbar_with_removed_icons.actions():
+        #     # if action.text() in unwanted_buttons:
+        #     #     toolbar_with_removed_icons.removeAction(action)
+        #     if action.text() in icons_buttons:
+        #         action.setIcon(icons_buttons.get(action.text(), toolbar.QIcon()))
+        
+        # layout_buttons.addWidget(toolbar_with_removed_icons)
+        #######
         
         layout_buttons.addWidget(toolbar)
         layout.addWidget(static_canvas)
         _static_ax = static_canvas.figure.subplots()
         _static_ax.grid(True, color='gray', linewidth=1.0)
-        _static_ax.set_xlabel(param1_name)
-        _static_ax.set_ylabel(param2_name)
+        # _static_ax.set_xlabel(param1_name)
+        # _static_ax.set_ylabel(param2_name)
         _static_ax.scatter(data1, data2, color='white', linewidth=0.01)        #Punts
 
         # linear regression
@@ -501,7 +585,7 @@ class MainWindow(QMainWindow):
         data22 = [float(x)* m +b  for x in data1]
         _static_ax.plot(data1, data22, color='#077f82', linewidth=1.0)  #Color de fons
 
-        # _static_ax.set_title(param1_name + " vs " + param2_name)
+        _static_ax.set_title(param1_name + " vs " + param2_name)
         
     #DATA FILE
     def open_file_dat(self):
@@ -560,13 +644,14 @@ class MainWindow(QMainWindow):
     def generate_graph_correlation(self):
         par=list(self.textoParametros.keys())[self.parametroMostrando]
         data=self.measurements[par]["medida"]
-        mpl_style(dark=True)
-        layout = widgets.verticalLayout_histogram
-        for i in reversed(range(widgets.verticalLayout_histogram.count())):
-            widgets.verticalLayout_histogram.itemAt(i).widget().deleteLater()
-        layout_buttons = widgets.horizontalLayout_buttons        
-        for i in reversed(range(widgets.horizontalLayout_buttons.count())):
-            widgets.horizontalLayout_buttons.itemAt(i).widget().deleteLater()
+        mpl_style(dark=self.histogram_mode)
+        layout = widgets.verticalLayout_correlation
+        for i in reversed(range(widgets.verticalLayout_correlation.count())):
+            widgets.verticalLayout_correlation.itemAt(i).widget().deleteLater()
+        layout_buttons = widgets.horizontalLayout_btnCorrelation    
+        for i in reversed(range(widgets.horizontalLayout_btnCorrelation.count())):
+            widgets.horizontalLayout_btnCorrelation.itemAt(i).widget().deleteLater()
+        
 
         # create a FigureCanvas & add to layout
         static_canvas = FigureCanvas(Figure())
@@ -593,27 +678,7 @@ class MainWindow(QMainWindow):
         x = np.linspace(xmin, xmax, 100)
         p = norm.pdf(x, mu, std)
 
-        if self.histogram_mode :
-            _static_ax.plot(x, mu, std, 'w', linewidth=1)
-            # Put title in histogram
-            title = widgets.cmbParametersFile.currentText()
-            _static_ax.set_title(title)
-            
-            _static_ax.plot(x, p, 'w', linewidth=1)
-            # Put title in histogram
-            title = widgets.cmbParametersFile.currentText()
-            _static_ax.set_title(title)
-        else:
-            _static_ax.plot(x, mu, std, 'k', linewidth=1)
-            # Put title in histogram
-            title = widgets.cmbParametersFile.currentText()
-            _static_ax.set_title(title)
-            
-            _static_ax.plot(x, p, 'k', linewidth=1)
-            # Put title in histogram
-            title = widgets.cmbParametersFile.currentText()
-            _static_ax.set_title(title)      
-        
+
     def generate_histogram(self):
         par=list(self.textoParametros.keys())[self.parametroMostrando]
         data=self.measurements[par]["medida"]
@@ -652,144 +717,215 @@ class MainWindow(QMainWindow):
             color_linea="k"
 
         _static_ax.plot(x, p, color_linea, linewidth=1)
+        _static_ax.set_title(par)
     
     def generate_wafermap(self, data_values):
-        # Delete all widgets in layout
+        
+        parameters = widgets.cmbParametersFile.currentText()
+        parameters_list = parameters.split(", ")
+        
         layout = widgets.horizontalLayout_wafermap
         layout_buttons = widgets.horizontalLayout_btnWafermap
-        for i in reversed(range(widgets.horizontalLayout_wafermap.count())):
+        for i in reversed(range(widgets.horizontalLayout_wafermap.count())): 
             widgets.horizontalLayout_wafermap.itemAt(i).widget().deleteLater()
-        for i in reversed(range(widgets.horizontalLayout_btnWafermap.count())):
+        for i in reversed(range(widgets.horizontalLayout_btnWafermap.count())): 
             widgets.horizontalLayout_btnWafermap.itemAt(i).widget().deleteLater()
-            
-        static_canvas = FigureCanvas(Figure())
-    
-        toolbar = NavigationToolbar(static_canvas, self)
-        toolbar.setStyleSheet("color: white;"
-                            "background-color:#343B48")
-            
-        layout_buttons.addWidget(toolbar)
-        fig = static_canvas.figure
-      
-        ax = static_canvas.figure.subplots()
-        
-        FileName = widgets.txtWafermapFile.text()
-        file_wafermap = WafermapFile(FileName)
 
-        #data_values_errors
+
+        btn = self.sender()
+        btnName = btn.objectName()
+        
+       
+        
+        # if btnName=="btnAnalyzeFiles" or btnName=="btnNextParamFiles":
+        fileName = widgets.txtWafermapFile.text()
+        file_wafermap = WafermapFile(fileName)
         wafer = Wafer(file_wafermap.wafer_parameters)
+        # else:
+        #     pass
+            # BBDD
+            # wafer = widgets.cmbWafers.currentText()
+            # wafer_parameters = self.estepa.get_wafer_parameters(widgets.cmbWafers.currentText())        #falta el get_wafer_parameters
+            # wafer = Wafer(wafer_parameters)
         
-        xmax_real = wafer.wafer_size_mm*1000/(wafer.xsize)      #Per tenir els tamanys reals
+
+        #data_values_errors=add_errors(data_values)
+
+        # get real xmax & ymax
+        xmax_real = wafer.wafer_size_mm*1000/(wafer.xsize)
         ymax_real = wafer.wafer_size_mm*1000/(wafer.ysize)
-        
-        X = [*range(0, int(xmax_real)*-1, -1)]      #Per construir les llistes
-        Y = [*range(0, int(ymax_real)*-1, -1)]      
-        
-        data_values_real = dict()               #fem un nou data_values amb els valors reals
+        # Prepare 3 lists: X, Y, Values real
+        data_values_real = dict()
         data_values_min = 1E99 
         data_values_max = -1E99
-        for k, v in data_values.items():        #k=key, v=variable
-            new_coord = wafer.calculate_real_coordinate(k)          #retorna la nova coordenada
-            data_values_real[new_coord] = v             #aquest serà el nou valor
-            if (v>data_values_max and v<9E99): data_values_max = v
+        error_value = 1E30
+        errors_found = False
+        outliers_found = False
+        X = [*range(0, int(xmax_real)*-1, -1)]
+        Y = [*range(0, int(ymax_real)*-1, -1)]
+        # get min & max values in data values
+        for k, v in data_values.items():
+            new_coord = wafer.calculate_real_coordinate(k)
+            data_values_real[new_coord] = v
+            if (v>data_values_max and v<error_value): data_values_max = v
             if (v<data_values_min): data_values_min = v
-        # min & max values
-        # print("Vmin: " + str(data_values_min))      
-        # print("Vmax: " + str(data_values_max))
-        
+            if (v==error_value): errors_found = True
+        # fill values, assign value_in & value_out & value_errors & value_outliers
         values = list()
-        # print(data_values_real)
-        # assign value_1 & value_0
         num_colors = 15
-        dif = data_values_max - data_values_min
-        value_1 = data_values_min - (dif*10/100)    #in
-        value_0 = data_values_min - (dif*20/100)    #out
-        value_error = data_values_max + (dif*10/100)
-
-        data_values_real['-26 -35'] = value_error #red
         
+        param = parameters_list[self.parametroMostrando]
+        statistics_estepa = StatisticsEstepa(param, list(data_values.values()), self.config["estepa"])
+        data_list_without_outliers = statistics_estepa.data_list
+        
+        if len( list(data_values.values()) ) != len(data_list_without_outliers):
+            outliers_found = True
+            # redifinir valors
+            data_values_max = max(data_list_without_outliers)
+            data_values_min = min(data_list_without_outliers)
+
+        dif = data_values_max - data_values_min
+        value_in = data_values_min - (dif*10/100) # in 
+        value_out = data_values_min - (dif*20/100) # out
+        
+        value_outliers = data_values_max + (dif*10/100)
+        value_errors = data_values_max + (dif*20/100)
+
+
         for y_axis in Y:
-            y_axis_list = list()        #per cada row, creem una llista on anem afegint la columna que hi ha dins de values
+            y_axis_list = list()
             for x_axis in X:
                 coord = str(x_axis) + " " + str(y_axis)
                 if coord not in data_values_real:
                     if wafer.is_in(x_axis, y_axis):
-                        y_axis_list.append(value_1)
+                        value_add = value_in
                     else:
-                        y_axis_list.append(value_0)
+                        value_add = value_out
                 else:
-                    y_axis_list.append(data_values_real[coord])
+                    if data_values_real[coord]==error_value:
+                        value_add = value_errors
+                    elif data_values_real[coord] not in data_list_without_outliers:
+                        value_add = value_outliers
+                    else:
+                        value_add = data_values_real[coord]
+
+                y_axis_list.append(value_add)
             values.append(y_axis_list)
 
-        df = pd.DataFrame(np.array(values), index=Y, columns=X)     #Ho convertim en un np array per pasar el dataframe
 
-        background_options = ["white", "black", "mpl_style"]        #definim el background per cada tema
+        # construct dataframe
+        # df = pd.DataFrame(np.array(values), index=Y, columns=X)
+
+        # canviar error_value per value_errors al dataframe
+
+
+        # set colors
+        background_options = ["white", "black", "mpl_style"]               #definim el background per cada tema
         background = "black"
         if background == "white":
-            color_first = background
+            color_out = background
         if background == "black":
-            color_first = "#0C1C23"
-            plt.style.use('dark_background')    
-            mpl.rcParams["figure.facecolor"] = "#0C1C23"        #COLORS
+            color_out = "#0C1C23"  #Color fosc
+            plt.style.use('dark_background')
+            mpl.rcParams["figure.facecolor"] = "#0C1C23"
             mpl.rcParams["axes.facecolor"] = "#0C1C23"
             mpl.rcParams["savefig.facecolor"] = "#0C1C23"
         if background == "mpl_style":
-            color_first = "#0C1C23"
-            mpl_style(True)
-        
-        cmap_reds = plt.get_cmap('PuBuGn')    
-        colors = [color_first, '#5E6A82'] + [cmap_reds(i / num_colors) for i in range(2, num_colors)]   +   ['Red']
-        #colors = [color_first, '#b8b8b8'] + ['#FFFDD0', '#077F82'] + ['Red']
-        cmap = LinearSegmentedColormap.from_list('', colors, num_colors)    #segmentem la barra de colors
+            color_out = "#0C1C23"
+            
 
-        im = ax.imshow(np.array(values), interpolation='nearest', aspect='auto',cmap=cmap)      #veure que fan els parametres
+        color_in = '#5E6A82'#gris
+        color_outliers = 'Blue'
+        color_error = 'Red'
+        cmap_reds = plt.get_cmap('PuBuGn')
+        
+            # cmap_reds = plt.get_cmap('PuBuGn')    
+
+    
+        colors = [color_out, color_in] + [cmap_reds(i / num_colors) for i in range(2, num_colors)]
+        if outliers_found: colors = colors + [color_outliers]
+        if errors_found: colors = colors + [color_error]
+
+        cmap = LinearSegmentedColormap.from_list('', colors, num_colors)
+
+
+        # create a FigureCanvas & add to layout
+        static_canvas = FigureCanvas(Figure())
+
+        static_canvas_buttons = FigureCanvas(Figure())
+        static_canvas.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        static_canvas.updateGeometry()
+
+        toolbar = NavigationToolbar(static_canvas, self, "wafermap")
+        
+        layout_buttons.addWidget(toolbar)
+        fig = static_canvas.figure
+        ax = static_canvas.figure.subplots()
+        # construct figure, axis
+        # fig, ax = plt.subplots()
+        im = ax.imshow(np.array(values), interpolation='nearest', aspect='auto',cmap=cmap)
 
         # add space for colour bar
         fig.subplots_adjust(right=0.85)
         cbar_ax = fig.add_axes([0.88, 0.15, 0.04, 0.7])
-        fig.colorbar(im, cax=cbar_ax)
+        cbar_ax.grid(False) # warning  message in console
 
+        # get ticks: value_0 + value_ 1 + 12 colors from data_values_min to data_values_max + ERROR
         dif_value = data_values_min + (dif/2)
-        ticks = [value_0, value_1, data_values_min, dif_value, data_values_max, value_error]
-        cbar = fig.colorbar(im, cax = cbar_ax, ticks=ticks)
-
-        cbar.ax.set_yticklabels(["OUT","IN", str('%.2f' % data_values_min), str('%.2f' %dif_value), str('%.2f' %data_values_max), "ERROR"])
+        ticks = [value_out, value_in, data_values_min, dif_value , data_values_max]
+        yticks_list = ["OUT", "IN", str('%.2f' % data_values_min), str('%.2f' %dif_value), str('%.2f' %data_values_max)]
+        if outliers_found:
+            ticks.append(value_outliers)
+            yticks_list.append("OUTLIER")
+        if errors_found: 
+            ticks.append(value_errors)
+            yticks_list.append("ERROR")
+        cbar = fig.colorbar(im, cax=cbar_ax, ticks=ticks)
+        cbar.ax.set_yticklabels(yticks_list)
 
         # Show all ticks and label them with the respective list entries
         ax.set_xticks(np.arange(len(X)), labels=X)
         ax.set_yticks(np.arange(len(Y)), labels=Y)
-        
-        ax.locator_params(axis='y', nbins=6)        #Per reduïr el nombre de numeros als eixos
+
+        ax.locator_params(axis='y', nbins=6)
         ax.locator_params(axis='x', nbins=10)
-        
+
+        # Rotate the tick labels and set their alignment.
+        #plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+
+        # Loop over data dimensions and create text annotations.
         for i in range(len(Y)):
             for j in range(len(X)):
-                if wafer.is_home(j,i):      #Per mirar en quina posició està Home o Origin
-                    text = ax.text(j, i, "H",ha="center", va="center", color="w", fontsize=8)
+                if wafer.is_home(j,i):
+                    text = ax.text(j, i, "H",ha="center", va="center", color="w", fontsize=10)
                     #text = ax.text(j, i, "%.2f" % df.iloc[i, j],ha="center", va="center", color="w", fontsize=8)
                 if wafer.is_origin(j,i):
-                    text = ax.text(j, i, "O",ha="center", va="center", color="w", fontsize=8)
-    
-        # ax.set_title(self.par)
-        layout.addWidget(static_canvas)
-        static_canvas.draw()
-        
-    def selection(sel, data_values_real, value_error, param, ax, color_first, selection):
-        x = round(sel.target[0])*-1
-        y = round(sel.target[1])*-1
-        coord = str(x) + " " + str(y)
-        if coord in data_values_real:
-            if data_values_real[coord]!=value_error:
-                sel.annotation.set_text('{} [{} {}] = {}'.format(param, x, y, data_values_real[coord]))
-            else:
-                text_insert = '{} [{} {}] = {}'.format(param, x, y, "ERROR VALUE")
+                    text = ax.text(j, i, "O",ha="center", va="center", color="w", fontsize=10)
+        title = param
+        ax.set_title(title)                 #CANVIAR
+
+        def selection(sel):
+            x = round(sel.target[0])*-1
+            y = round(sel.target[1])*-1
+            coord = str(x) + " " + str(y)
+            if coord in data_values_real:
+                if data_values_real[coord]==error_value:
+                    text_insert = '{} [{} {}] = {}'.format(title, x, y, " ERROR value")
+                else:
+                    text_insert = '{} [{} {}] = {}'.format(title, x, y, '%.2f' % data_values_real[coord])
                 sel.annotation.set_text(text_insert)
-                sel.annotation.get_bbox_patch().set(fc=color_first, alpha=0.8)
-        else:
-            sel.annotation.set_text('')
-    
-        crs = mplcursors.cursor(ax,hover=False) 
+                sel.annotation.get_bbox_patch().set(fc=color_out, alpha=0.8)
+                
+                # ax.annotate(text_insert, xy=(x,y),bbox=dict(boxstyle="square", fc="w"))
+            else:
+                sel.annotation.set_text('')
+        # set cursors
+        crs = mplcursors.cursor(ax,hover=False)
         crs.connect("add", selection)
+        # insert in layout
+        layout.addWidget(static_canvas)
+        static_canvas.draw()    
+    
     # ----------------
     # BBDD FUNCTIONS
     # ----------------
@@ -946,15 +1082,6 @@ class MainWindow(QMainWindow):
             print(error)
             self.updateTextImportReport("Some error occurs!", "ERROR")
 
-    # COPIAR ELS VALORS
-    def copy_values(self):
-        widgets.txtLoadedValues.selectAll()
-        widgets.txtLoadedValues.copy()
-
-    # COPIAR ELS RESULTATS
-    def copy_results(self):
-        widgets.txtParametersResult.selectAll()
-        widgets.txtParametersResult.copy()
 
     #UPDATE TEXT TECHNOLOGY UPLOAD
     #Change text by selecting technology from combobox
@@ -1124,7 +1251,7 @@ class MainWindow(QMainWindow):
         
         widgets.stk_results.setCurrentWidget(widgets.data)
         widgets.stk_graph.setCurrentWidget(widgets.graph)
-        widgets.stk_wafermap.setCurrentWidget(widgets.wafermap)
+        # widgets.stk_wafermap.setCurrentWidget(widgets.wafermap)
         
         parametersBBDD = widgets.cmbParametersBBDD.currentText()
         parametersBBDD_list = parametersBBDD.split(', ')
@@ -1238,16 +1365,11 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
         
-        if btnName == "btnDirectory":
-            # show directories page
-            widgets.stackedWidget.setCurrentWidget(widgets.directories_window)
-            UIFunctions.resetStyle(self, btnName)
-            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
             
         if btnName == "btn_clear_all":
             widgets.stk_results.setCurrentWidget(widgets.no_data)
             widgets.stk_graph.setCurrentWidget(widgets.no_graph)
-            widgets.stk_wafermap.setCurrentWidget(widgets.no_wafermap) 
+            # widgets.stk_wafermap.setCurrentWidget(widgets.no_wafermap) 
             widgets.stk_loadfiles.setCurrentWidget(widgets.not_loaded) 
 
     # COPIAR VALORES
@@ -1259,17 +1381,6 @@ class MainWindow(QMainWindow):
     def copy_results(self):
         widgets.txtParametersResult.selectAll()
         widgets.txtParametersResult.copy()
-    
-    # GUARDAR VALORES
-    def save_values(self):
-        FileName = widgets.txtDataFile.text()
-        result_file = ResultFile(FileName)         
-        self.lot = result_file.process.split("-")[0] # run
-        self.wafer = result_file.process.split("-")[1] # wafer
-        par=list(self.textoParametros.keys())[self.parametroMostrando]
-        print(widgets.txt_results_directory)        
-        fileName, _ = QFileDialog.getSaveFileName(self,
-            "Save result file", str(widgets.txt_results_directory) + self.lot + "-" + self.wafer + "_" + par + "_values", "TXT Files (*.txt);; DOC Files (*.doc);; All files (*.*)")
 
 
     # GUARDAR RESULTADOS
@@ -1406,3 +1517,14 @@ Class Wafermap File:...
 '''
 
 #per fer help(main.py)
+
+
+
+
+'''
+Ajustar el matplotlib al layout
+Solucionar el problema amb el next_parameter
+Solucionar el problema amb el wafermap, no es printa
+
+
+'''

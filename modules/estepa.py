@@ -139,6 +139,9 @@ class Estepa():
 
 		return get_parameters
 
+	def get_wafer_parameters(self):
+		pass
+
 	def get_medidas(self,oblea_virtual,parameters_list):
 
 		get_medidas = dict()
