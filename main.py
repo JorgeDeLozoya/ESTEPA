@@ -34,31 +34,11 @@ from qbstyles import mpl_style
 
 
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
-#app = QtWidget.QApplication(sys.argv) Per solucionar el error de QApplication
 
 # SET AS GLOBAL WIDGETS
 # ///////////////////////////////////////////////////////////////
 widgets = None
 import_report_file = "report_import.txt"
-
-# class NavigationToolbarMod():
-#     
-#     static_canvas = FigureCanvas(Figure())
-#     toolbar = NavigationToolbar(static_canvas)
-
-
-# class MyCustomToolbar(NavigationToolbar): 
-#     def __init__(self, plotCanvas):
-#         NavigationToolbar.__init__(self, plotCanvas)
-        
-#     layout_buttons = widgets.horizontalLayout_btnHistogram    
-#     layout_buttons = {
-
-#     "Home": layout_buttons.QIcon("/images/icons/cil-home.png"),
-#     "Pan": layout_buttons.QIcon("/images/icons/pan.png"),
-#     "Zoom": layout_buttons.QIcon("/images/icons/zoom.png"),
-    
-#     }
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -76,7 +56,7 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)   
-        global widgets  #var global per tots els widgets
+        global widgets  
         widgets = self.ui
         
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
@@ -386,19 +366,14 @@ class MainWindow(QMainWindow):
         widgets.stk_graph.setCurrentWidget(widgets.no_graph)
         widgets.txtLoadedValues.setPlainText("")
         widgets.txtParametersResult.setPlainText("")
-        # widgets.cmbCurrentParameter.setCurrentText("")
-        
-        
+     
         if widgets.optLoadFiles.isChecked():
             txt_param_selected = widgets.cmbParametersFile.currentText().split(', ')[0]
             parameters = widgets.cmbParametersFile.currentText()
             parameters_list = parameters.split(", ")
             parameters_file = widgets.cmbParametersFile.currentText()
             parameters_file_list = parameters_file.split(", ")
-            
-            # widgets.cmbCurrentParameter.clear()
-            # widgets.cmbCurrentParameter.addItems(parameters_file_list)   
-            # widgets.cmbCurrentParameter.setCurrentText(parameters_file_list[parametroMostrando])
+
             
             FileName = widgets.txtDataFile.text()
             result_file = ResultFile(FileName)
@@ -406,8 +381,6 @@ class MainWindow(QMainWindow):
                 if len(parameters_list)==2:
                     widgets.stk_graph.setCurrentWidget(widgets.correlation)
                     measurements = result_file.get_params(parameters_list)
-                    # widgets.cmbCurrentParameter.clear() 
-                    # widgets.cmbCurrentParameter.addItems(parameters_file_list)    
                     data1 = measurements[parameters_list[0]]["medida"]
                     data2 = measurements[parameters_list[1]]["medida"]
         
@@ -577,8 +550,6 @@ class MainWindow(QMainWindow):
         layout.addWidget(static_canvas)
         _static_ax = static_canvas.figure.subplots()
         _static_ax.grid(True, color='gray', linewidth=1.0)
-        # _static_ax.set_xlabel(param1_name)
-        # _static_ax.set_ylabel(param2_name)
         _static_ax.scatter(data1, data2, color='white', linewidth=0.01)        #Punts
 
         # linear regression
@@ -635,8 +606,7 @@ class MainWindow(QMainWindow):
                     widgets.txtWafermapFileInbase.setText(fileName)
                 if btnName == "btnOpenWafermapFile":
                     widgets.txtWafermapFile.setText(fileName)
-                
-                # print(file_wafermap.info())
+
             else:
                 # show error
                 retval = messageBox(self,"Error loading PPG File",file_wafermap.error_message,"error")
@@ -736,20 +706,10 @@ class MainWindow(QMainWindow):
 
         btn = self.sender()
         btnName = btn.objectName()
-        
-        # if btnName=="btnAnalyzeFiles" or btnName=="btnNextParamFiles":
+
         fileName = widgets.txtWafermapFile.text()
         file_wafermap = WafermapFile(fileName)
         wafer = Wafer(file_wafermap.wafer_parameters)
-        # else:image.png
-        #     pass
-            # BBDD
-            # wafer = widgets.cmbWafers.currentText()
-            # wafer_parameters = self.estepa.get_wafer_parameters(widgets.cmbWafers.currentText())        #falta el get_wafer_parameters
-            # wafer = Wafer(wafer_parameters)
-        
-
-        #data_values_errors=add_errors(data_values)
 
         # get real xmax & ymax
         xmax_real = wafer.wafer_size_mm*1000/(wafer.xsize)
@@ -811,13 +771,6 @@ class MainWindow(QMainWindow):
                 y_axis_list.append(value_add)
             values.append(y_axis_list)
 
-
-        # construct dataframe
-        # df = pd.DataFrame(np.array(values), index=Y, columns=X)
-
-        # canviar error_value per value_errors al dataframe
-
-
         # set colors
         background_options = ["white", "black", "mpl_style"]               #definim el background per cada tema
         background = "black"
@@ -837,9 +790,6 @@ class MainWindow(QMainWindow):
         color_outliers = 'Blue'
         color_error = 'Red'
         cmap_reds = plt.get_cmap('PuBuGn')
-        
-            # cmap_reds = plt.get_cmap('PuBuGn')    
-
     
         colors = [color_out, color_in] + [cmap_reds(i / num_colors) for i in range(2, num_colors)]
         if outliers_found: colors = colors + [color_outliers]
@@ -862,7 +812,6 @@ class MainWindow(QMainWindow):
         fig = static_canvas.figure
         ax = static_canvas.figure.subplots()
         # construct figure, axis
-        # fig, ax = plt.subplots()
         im = ax.imshow(np.array(values), interpolation='nearest', aspect='auto',cmap=cmap)
 
         # add space for colour bar
@@ -889,9 +838,6 @@ class MainWindow(QMainWindow):
 
         ax.locator_params(axis='y', nbins=6)
         ax.locator_params(axis='x', nbins=10)
-
-        # Rotate the tick labels and set their alignment.
-        #plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
 
         # Loop over data dimensions and create text annotations.
         for i in range(len(Y)):
@@ -1173,14 +1119,7 @@ class MainWindow(QMainWindow):
         widgets.txtTechnologyUpload.setText("")
 
     #LOAD COMBOS
-    
-    # def load_cmbParameters(self):
-        
-    #     widgets.cmbCurrentParameter.clear()
-    #     parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
-    #     parameters_file_list = parameters_file.split(", ")          # split to create list
-    #     widgets.cmbCurrentParameter.addItems(parameters_file_list)   
-     
+ 
     def load_cmbRuns(self):
         widgets.cmbRuns.clear()
         widgets.cmbRuns.addItem("Select run")
