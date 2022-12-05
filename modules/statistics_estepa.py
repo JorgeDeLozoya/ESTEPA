@@ -25,11 +25,6 @@ class StatisticsEstepa():
 		self.data_list = data_list
 		self.data_list2_origen = data_list2.copy()
 		self.data_list2 = data_list2
-		# self.param = param
-		# self.data_list_origen = data_list
-		# self.data_list = data_list # original data list
-		# self.data_list2_origen = data_list2
-		# self.data_list2 = data_list2 # original data list2
 		self.ERROR_VALUE = -9e99
 		self.ERROR_VALUE2 = 1e30
 		self.mean = self.ERROR_VALUE
@@ -63,8 +58,6 @@ class StatisticsEstepa():
 				# load statistics
 				self.load_statistics()
 				self.points_end = len(data_list)
-				# load correlation
-				# self.load_correlation()
 			else:
 				self.error = True
 				self.error_message = "List empty!"
@@ -74,7 +67,6 @@ class StatisticsEstepa():
 
 	def print_statistics(self):
 
-		# print_statistics = self.param + " : " + "\n"
 		print_statistics =" - Mean:   \t" + str(self.mean) + "\n"
 		print_statistics +=" - Median:   \t" + str(self.median) + "\n"
 		print_statistics +=" - Stdev:   \t" + str(self.stdev) + "\n"

@@ -92,3 +92,10 @@ class CheckableComboBox(QComboBox):
 
         text_string = ', '.join(text_container)
         self.lineEdit().setText(text_string)
+
+    def itemsChecked(self):
+        itemsChecked = 0
+        for i in range(self.model().rowCount()):
+            if self.model().item(i).checkState() == Qt.Checked:
+                itemsChecked += 1
+        return itemsChecked

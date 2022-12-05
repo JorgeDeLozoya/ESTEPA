@@ -9,7 +9,7 @@ password = ""
 autocommit = false
 
 [estepa]
-method = "f-spread"
+method = "k-sigma"
 lna = false
 autolimits = false
 limmin = 590
@@ -17,5 +17,5 @@ limmax = 600
 chunks = 2
 
 [directory]
-res_directory = "D:/USUARIS/AKAIYFS/Documents/ESTEPA/Results"
-work_directory = "D:/USUARIS/AKAIYFS/Desktop/ESTEPA ACTUAL/Files/"
+res_directory = "D:/USUARIS/AKAIYFS/Desktop/ESTEPA v8/Results"
+work_directory = "D:/USUARIS/AKAIYFS/Desktop/ESTEPA v8/Files"

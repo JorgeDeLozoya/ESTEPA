@@ -68,11 +68,9 @@ class MainWindow(QMainWindow):
         self.histogram_mode=True
         self.wafermap_mode=True
         self.measurements=None
-        self.working_directory="D:\\USUARIS\\AKAIYFS\\Desktop\\ESTEPA ACTUAL\\Files\\"  #PER ACABAR "C:"
-        # self.results_directory="D:\\USUARIS\\AKAIYFS\\Documents\\ESTEPA\\Results\\" 
         self.graph_mode=True    #True = Analisis 
                                 #False = Correlación
-        # self.path_config_file = os.getcwd() + '/config/config.toml'
+        self.path_config_file = os.getcwd() + '/config/config.toml'
 
         # SET AS GLOBAL WIDGETS
         # ///////////////////////////////////////////////////////////////
@@ -131,6 +129,8 @@ class MainWindow(QMainWindow):
         widgets.cmbParametersBBDD.editTextChanged.connect(self.update_cmbParametersBBDD)
         widgets.btnAnalyzeBBDD.clicked.connect(self.analyze_BBDD)
         widgets.btnConsult.clicked.connect(self.consult_BBDD)
+        widgets.cmbCurrentParameter.currentIndexChanged.connect(self.search_parameter)                                               
+        widgets.cmbParametersFile.editTextChanged.connect(self.update_cmbParametersFile)
 
         # configuration estepa
         widgets.scrollHistogramChunks.valueChanged.connect(lambda: widgets.txtHistogramChunks.setText(str(widgets.scrollHistogramChunks.value())))
@@ -149,7 +149,12 @@ class MainWindow(QMainWindow):
 
         widgets.txtLimitMin.setText(str(self.config["estepa"]["limmin"]))
         widgets.txtLimitMax.setText(str(self.config["estepa"]["limmax"]))
+        
         widgets.txt_results_directory.setText(str(self.config["directory"]["res_directory"]))
+        widgets.txt_results_directory_2.setText(str(self.config["directory"]["res_directory"]))
+        widgets.txt_working_directory.setText(str(self.config["directory"]["work_directory"]))
+        widgets.txt_working_directory_2.setText(str(self.config["directory"]["work_directory"]))
+        
 
 
         widgets.cmbOutlinerMethod.currentIndexChanged.connect(self.save_config_estepa_file)
@@ -161,7 +166,9 @@ class MainWindow(QMainWindow):
         widgets.historicalcheck.stateChanged.connect(self.historical_check)
         
         widgets.txt_results_directory.textChanged.connect(self.save_config_estepa_file)
-
+        widgets.txt_results_directory_2.textChanged.connect(self.save_config_estepa_file)
+        widgets.txt_working_directory.textChanged.connect(self.save_config_estepa_file)
+        widgets.txt_working_directory_2.textChanged.connect(self.save_config_estepa_file)
 
         widgets.cmbTechnologyUpload.currentIndexChanged.connect(self.updateTextTechnologyUpload)
         widgets.cmbMaskUpload.currentIndexChanged.connect(self.updateTextMaskUpload)
@@ -187,17 +194,15 @@ class MainWindow(QMainWindow):
         
         
         widgets.btnCopyDescription.clicked.connect(self.copy_results)
-        widgets.btnCopyDescription.clicked.connect(self.copy_values)
         widgets.btnSaveDescription.clicked.connect(self.save_results)
 
         
-        widgets.btnNextParamFiles.clicked.connect(self.next_parameter_analyze)
-        widgets.btnPreviousParamFiles.clicked.connect(self.previous_parameter_analyze)
-        # widgets.btnNextParamCorr.clicked.connect(self.next_parameter_correlation)     
+        widgets.btnNextParamFiles.clicked.connect(self.next_parameter)
+        widgets.btnPreviousParamFiles.clicked.connect(self.previous_parameter)
         
         
         # widgets configuration
-        widgets.stk_results.setCurrentWidget(widgets.no_data)
+        widgets.estepa_page.setCurrentWidget(widgets.load)
         widgets.stk_graph.setCurrentWidget(widgets.no_graph)
         widgets.stk_loadfiles.setCurrentWidget(widgets.not_loaded) 
 
@@ -225,7 +230,7 @@ class MainWindow(QMainWindow):
         widgets.toggleLeftBox.clicked.connect(openCloseLeftBox)
 
         # EXTRA RIGHT BOX
-        def openCloseRightBox():
+        def openCloseRightBox():                                                    #PENDENT
             UIFunctions.toggleRightBox(self, True)
         widgets.settingsTopBtn.clicked.connect(openCloseRightBox)
 
@@ -248,7 +253,10 @@ class MainWindow(QMainWindow):
 
         # SET HOME PAGE AND SELECT MENU
         # ///////////////////////////////////////////////////////////////
+        
         widgets.stackedWidget.setCurrentWidget(widgets.Home_Window)
+        widgets.settings.setCurrentWidget(widgets.no)
+        widgets.options.setCurrentWidget(widgets.not_able)
         widgets.btn_page_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_page_home.styleSheet()))
         
         # LOAD ESTEPA 
@@ -258,13 +266,17 @@ class MainWindow(QMainWindow):
             "user" : "joaquin",
             "database" : "mecao",
             "password" : "",
-            "autocommit" : False
+            "autocommit" : False,
+            # "res_directory"
+            # "work_directory"
         }
         # if configuration json file exists load configurationñ from file
         get_json = get_json_file('estepa',config_estepa)
         if get_json!="":
             config_estepa = get_json
-        self.estepa = Estepa(self.config["connection"])         #Descomentar error inicial
+        self.estepa = Estepa(self.config["connection"])         #Descomentar error inicial                                                          ###
+        self.estepa = Estepa(self.config["estepa"])
+        self.estepa = Estepa(self.config["directory"])
         if not self.estepa.error:
             self.load_cmbTechnology()
             self.load_cmbMask()
@@ -281,36 +293,19 @@ class MainWindow(QMainWindow):
     # ----------------
     # ESTEPA FUNCTIONS
     # ----------------
-
-    #DIRECTORIES
-    def set_results_directory(self):
-        btn = self.sender()
-        btnName = btn.objectName()
-        self.result_directory = QFileDialog.getExistingDirectory(self, "Set Results Directory")
-        print(self.result_directory)
-        widgets.txt_results_directory.setText(self.result_directory)
-        widgets.txt_results_directory_2.setText(self.result_directory)
-        
-    def set_working_directory(self):
-        btn = self.sender()
-        btnName = btn.objectName()
-        self.working_directory = QFileDialog.getExistingDirectory(self, "Set Working Directory")
-        print(self.working_directory)
-        widgets.txt_working_directory.setText(self.working_directory)
-        widgets.txt_working_directory_2.setText(self.working_directory)
-        
         
     #LOAD FROM FILES
     def load_from_files(self):
+        '''
+        Used to load both files from qlineedits (.dat and wafermap.py or .ppg)
+        '''
         if not widgets.txtDataFile.text() and widgets.txtWafermapFile.text():
             error = True
             retval = messageBox(self,"Error loading files","Select data and wafermap files before loading files","warning")   
             
         if widgets.txtDataFile.text() and widgets.txtWafermapFile.text():
             widgets.stk_loadfiles.setCurrentWidget(widgets.loaded)
-            widgets.stk_results.setCurrentWidget(widgets.no_data)
             widgets.stk_graph.setCurrentWidget(widgets.no_graph)
-            # widgets.stk_wafermap.setCurrentWidget(widgets.no_wafermap) 
             
             file_dat = widgets.txtDataFile.text()
             file_ppg = widgets.txtWafermapFile.text()
@@ -325,84 +320,73 @@ class MainWindow(QMainWindow):
             retval = messageBox(self,"Error loading files","Select data and wafermap files before loading files","warning")   
      
     #ANALYZE
-    def analyze_files(self):
-        self.graph_mode = True
-        self.textoParametros={}             #16/8       diccionari
-        widgets.GraphWidget.setCurrentWidget(widgets.tab_histogram)
-        widgets.ResultsWidget.setCurrentWidget(widgets.tab_results)
-        
-        
-        parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
-        parameters_file_list = parameters_file.split(", ")          # split to create list
-        FileName = widgets.txtDataFile.text() 
-        result_file = ResultFile(FileName)
+    def analyze_files(self, parametroMostrando=0):
+        try: 
+            self.graph_mode = True
+            self.textoParametros={} 
+            
+            
+            widgets.estepa_page.setCurrentWidget(widgets.result)
+            # widgets.GraphWidget.setCurrentWidget(widgets.tab_histogram)
+            # widgets.ResultsWidget.setCurrentWidget(widgets.tab_results)
+                
+            parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
+            parameters_file_list = parameters_file.split(", ")          # split to create list
+            
+            # widgets.cmbCurrentParameter.clear()
+            # widgets.cmbCurrentParameter.addItems(parameters_file_list)   
+            # widgets.cmbCurrentParameter.setCurrentText(parameters_file_list[parametroMostrando])
+            
+            FileName = widgets.txtDataFile.text() 
+            result_file = ResultFile(FileName)
 
-        self.parametroMostrando=0           #16/8
-        widgets.cmbCurrentParameter.clear()             #13/9
-        widgets.cmbCurrentParameter.addItems(parameters_file_list)                                               #13/9
-        
-        if not result_file.error:
-            if parameters_file!="":
-                #LOAD STACKED WIDGETS
-                widgets.stk_results.setCurrentWidget(widgets.data)
-                widgets.stk_graph.setCurrentWidget(widgets.graph)
-                # widgets.stk_wafermap.setCurrentWidget(widgets.wafermap)
-                # widgets.stk_parameter.setCurrentWidget(widgets.mode_analyze) 
-                
-                widgets.txtLoadedValues.setPlainText("")
-                widgets.txtParametersResult.setPlainText("")
-                widgets.cmbCurrentParameter.setCurrentText("")
-                # GET parameters result
-                self.measurements = result_file.get_params(parameters_file_list)
+            if not result_file.error:
+                if parameters_file!="":
+                    #LOAD STACKED WIDGETS
+                    widgets.stk_graph.setCurrentWidget(widgets.graph)                
+                    widgets.txtLoadedValues.setPlainText("")
+                    widgets.txtParametersResult.setPlainText("")
+                    
+                    # GET parameters result
+                    measurements = result_file.get_params(parameters_file_list)
+                    parameter = parameters_file_list[parametroMostrando]
+                    widgets.cmbCurrentParameter.setCurrentText(parameter)
+                    # Get data values from result_file
+                    # for parameter in parameters_file_list:
+                    estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.config["estepa"]))
+                    widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())               
 
-                widgets.txtParametersResult.setPlainText("")
-                
-                
-                # for par in parameters_file_list:
-                #     estadistica = StatisticsEstepa(par, self.measurements[par]["medida"], (self.config["estepa"]))
-                #     widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
-                # GET DATA VALUES, HISTOGRAM & WAFERMAP IF PARAM==1
-                
-                # Get data values from result_file
-                for fileName in parameters_file_list:
-                    self.textoParametros[fileName]=""
-                    data_values = result_file.get_data_values(fileName)
+                    data_values = result_file.get_data_values(parameter)                 
+                    
                     for chip in data_values:
-                        self.textoParametros[fileName]+=str(chip)+"\t"+str(data_values[chip])+"\n"
-                
-                par=list(self.textoParametros.keys())[self.parametroMostrando]
-                self.par =par
-                # print(par)                  #cmax(pF)
-                # print(parameters_file)      #cmax(pF), cmin(pF)
-                # print(parameters_file_list) #['cmax(pF)', 'cmin(pF)']
-                widgets.cmbCurrentParameter.setCurrentText(par)
-                
-                estadistica = StatisticsEstepa(par, self.measurements[par]["medida"], (self.config["estepa"]))
-                widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
-                
-                self.data_value = self.textoParametros[par].replace(" ", "\t")
-                widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
-                # widgets.lbl_graph.setText("HISTOGRAM")
-                self.generate_histogram()
-                # Get wafermap
-                self.generate_wafermap(data_values)   
-                
+                        # widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + data_values)
+                        widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+"\t".join(str(chip).split(" "))+"\t"+str(data_values[chip]))
+                    
+                    # Get histogram
+                    self.generate_histogram(measurements[parameter]["medida"], parameters_file_list, parametroMostrando)
+                    # Get wafermap
+                    self.generate_wafermap(data_values, parameter)   
+                    
+                else:
+                    retval = messageBox(self,"Error getting parameters list","Please, select at least one parameter!","warning")
             else:
-                retval = messageBox(self,"Error getting parameters list","Please, select at least one parameter!","warning")
-        else:
-            retval = messageBox(self,"Error getting Result File",self.result_file.error_message,"warning")
-    
+                retval = messageBox(self,"Error getting Result File",self.result_file.error_message,"warning")
+                
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(exc_type, fname, exc_tb.tb_lineno)    
+            
     # CORRELATION
-    def correlation_files(self):
+    def correlation_files(self, parametroMostrando=0):
         self.graph_mode=False
-        self.textoParametros={}
-        self.parametroMostrando=0
+        textoParametros={}
         error = False
-        widgets.stk_results.setCurrentWidget(widgets.no_data)
+        widgets.estepa_page.setCurrentWidget(widgets.result)
         widgets.stk_graph.setCurrentWidget(widgets.no_graph)
         widgets.txtLoadedValues.setPlainText("")
         widgets.txtParametersResult.setPlainText("")
-        widgets.cmbCurrentParameter.setCurrentText("")
+        # widgets.cmbCurrentParameter.setCurrentText("")
         
         
         if widgets.optLoadFiles.isChecked():
@@ -411,15 +395,19 @@ class MainWindow(QMainWindow):
             parameters_list = parameters.split(", ")
             parameters_file = widgets.cmbParametersFile.currentText()
             parameters_file_list = parameters_file.split(", ")
+            
+            # widgets.cmbCurrentParameter.clear()
+            # widgets.cmbCurrentParameter.addItems(parameters_file_list)   
+            # widgets.cmbCurrentParameter.setCurrentText(parameters_file_list[parametroMostrando])
+            
             FileName = widgets.txtDataFile.text()
             result_file = ResultFile(FileName)
             if not result_file.error:
                 if len(parameters_list)==2:
-                    widgets.stk_results.setCurrentWidget(widgets.data)
                     widgets.stk_graph.setCurrentWidget(widgets.correlation)
                     measurements = result_file.get_params(parameters_list)
-                    widgets.cmbCurrentParameter.clear() 
-                    widgets.cmbCurrentParameter.addItems(parameters_file_list)    
+                    # widgets.cmbCurrentParameter.clear() 
+                    # widgets.cmbCurrentParameter.addItems(parameters_file_list)    
                     data1 = measurements[parameters_list[0]]["medida"]
                     data2 = measurements[parameters_list[1]]["medida"]
         
@@ -434,6 +422,7 @@ class MainWindow(QMainWindow):
             txt_param_selected = widgets.cmbParametersFile.currentText().split(', ')[0]
             parameters = widgets.cmbParametersFile.currentText()
             parameters_list = parameters.split(", ")
+            
             wafer = widgets.cmbWafers.currentText()
             measurements = self.estepa.get_medidas(wafer,parameters_list)
             if not self.estepa.error:
@@ -457,82 +446,111 @@ class MainWindow(QMainWindow):
     
             
             # Get data values from result_file
-            for fileName in parameters_file_list:
-                self.textoParametros[fileName]=""
-                data_values = result_file.get_data_values(fileName)
+            for parameter in parameters_file_list:       #CANVIAR FILENAME PER PARAMETER
+                textoParametros[parameter]=""
+                data_values = result_file.get_data_values(parameter)
                 for chip in data_values:
-                    self.textoParametros[fileName]+=str(chip)+"\t"+str(data_values[chip])+"\n"
-            par=list(self.textoParametros.keys())[self.parametroMostrando]
+                    textoParametros[parameter]+=str(chip)+"\t"+str(data_values[chip])+"\n"
+            par=list(textoParametros.keys())[parametroMostrando]
             widgets.cmbCurrentParameter.setCurrentText(par)
                         
-            self.data_value = self.textoParametros[par].replace(" ", "\t")
-            widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
+            data_value = textoParametros[par].replace(" ", "\t")
+            widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + data_value)
            
     # PREVIOUS PARAMETER
-    def previous_parameter_analyze(self, data_values):
+    def previous_parameter(self):
+    
+        currentWidget = widgets.stk_graph.currentWidget()
+        widgets.txtLoadedValues.setPlainText("")
+        widgets.txtParametersResult.setPlainText("")
+        btn = self.sender()
+        btnName = btn.objectName()
         
-        # if widgets.stk_graph==widgets.graph:
-            widgets.GraphWidget.setCurrentWidget(widgets.tab_histogram)
-            widgets.ResultsWidget.setCurrentWidget(widgets.tab_results)
-            widgets.txtLoadedValues.setPlainText("")
-            widgets.txtParametersResult.setPlainText("")
-            widgets.cmbCurrentParameter.setCurrentText("")
-            FileName = widgets.txtDataFile.text() 
-            result_file = ResultFile(FileName)
-            self.measurements = result_file.get_params(list(self.textoParametros.keys()))
-            self.parametroMostrando=(self.parametroMostrando-1)%len(self.textoParametros)   #per mostrar més d¡un parametre tenint en compte la longitud
-            par=list(self.textoParametros.keys())[self.parametroMostrando]
-            widgets.cmbCurrentParameter.setCurrentText(par)
-            self.data_value = self.textoParametros[par].replace(" ", "\t")
-            widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
-            estadistica = StatisticsEstepa(self.parametroMostrando,self.measurements[par]["medida"],self.config["estepa"])
-            widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
-            self.generate_histogram()                        #ERROR
-            self.generate_wafermap(data_values)     
-                                                            
-    # NEXT PARAMETER ANALYZE
-    def next_parameter_analyze(self, data_values):
+        txt_param_selected = widgets.cmbCurrentParameter.currentText()
         
-        # if widgets.stk_graph==widgets.graph:
-            widgets.GraphWidget.setCurrentWidget(widgets.tab_histogram)
-            widgets.ResultsWidget.setCurrentWidget(widgets.tab_results)
-            widgets.txtLoadedValues.setPlainText("")
-            widgets.txtParametersResult.setPlainText("")
-            widgets.cmbCurrentParameter.setCurrentText("")
-            FileName = widgets.txtDataFile.text() 
-            result_file = ResultFile(FileName)
-            self.measurements = result_file.get_params(list(self.textoParametros.keys()))
-            self.parametroMostrando=(self.parametroMostrando+1)%len(self.textoParametros)   #per mostrar més d¡un parametre tenint en compte la longitud
-            par=list(self.textoParametros.keys())[self.parametroMostrando]
-            widgets.cmbCurrentParameter.setCurrentText(par)
-            self.data_value = self.textoParametros[par].replace(" ", "\t")
-            widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
-            estadistica = StatisticsEstepa(self.parametroMostrando,self.measurements[par]["medida"],self.config["estepa"])
-            widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
-            self.generate_histogram()                        #ERROR
-            self.generate_wafermap(data_values) 
+        parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
+        parameters_file_list = parameters_file.split(", ")
+        position = parameters_file_list.index(txt_param_selected)
+        elements = widgets.cmbParametersFile.itemsChecked()
         
-        # if widgets.stk_graph==widgets.correlation:
-        #     widgets.stk_graph.setCurrentWidget(widgets.correlation)
-        #     widgets.txtLoadedValues.setPlainText("")
-        #     widgets.cmbCurrentParameter.setCurrentText("")
-        #     widgets.txtParametersResult.setPlainText("")
-        #     FileName = widgets.txtDataFile.text() 
-        #     result_file = ResultFile(FileName)
-        #     self.measurements = result_file.get_params(list(self.textoParametros.keys()))
-        #     self.parametroMostrando=(self.parametroMostrando+1)%len(self.textoParametros)   #per mostrar més d¡un parametre tenint en compte la longitud
-        #     par=list(self.textoParametros.keys())[self.parametroMostrando]
-        #     widgets.cmbCurrentParameter.setCurrentText(par)
-        #     self.data_value = self.textoParametros[par].replace(" ", "\t")
-        #     widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + self.data_value)
-        
-        # else:
-        #     pass
-        
-    # NEXT PARAMETER CORRELATION
-    # def next_parameter_correlation(self):
+        if btnName == "btnPreviousParamFiles":
+            if position - 1 < elements:
+                next_position = position-1
+            else:
+                next_position = 0
+        else:
+            if position > 0:
+                next_position = position+1
+            else:
+                next_position = elements+1
+                
+        if currentWidget == widgets.graph:
+            
+            self.analyze_files(next_position) 
 
+          
+        if currentWidget == widgets.correlation:
+            
+            self.correlation_files(next_position)
+                                                         
+    # NEXT PARAMETER
+    def next_parameter(self):
         
+        currentWidget = widgets.stk_graph.currentWidget()
+        widgets.txtLoadedValues.setPlainText("")
+        widgets.txtParametersResult.setPlainText("")
+        btn = self.sender()
+        btnName = btn.objectName()
+        
+        txt_param_selected = widgets.cmbCurrentParameter.currentText()
+        parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
+        parameters_file_list = parameters_file.split(", ")
+        position = parameters_file_list.index(txt_param_selected)
+        elements = widgets.cmbParametersFile.itemsChecked()
+        
+        if btnName == "btnNextParamFiles":
+            if position + 1 < elements:
+                next_position = position+1      #Parameter
+            else:
+                next_position = 0
+            
+        else:
+            if position > 0:
+                next_position = position-1
+            else:
+                next_position = elements-1
+        
+        if currentWidget == widgets.graph:
+            self.analyze_files(next_position)  
+              
+        if currentWidget == widgets.correlation:
+            
+            self.correlation_files(next_position)         #Només cal carregar els data values un altre cop
+      
+    def update_cmbParametersFile(self):
+        parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
+        parameters_file_list = parameters_file.split(", ")
+        
+        widgets.cmbCurrentParameter.clear()
+        widgets.cmbCurrentParameter.addItems(parameters_file_list)   
+                         
+    def search_parameter(self):
+        
+        currentWidget = widgets.stk_graph.currentWidget()
+        
+        txt_param_selected = widgets.cmbCurrentParameter.currentText()
+        parameters_file = widgets.cmbParametersFile.currentText()
+        parameters_file_list = parameters_file.split(", ") 
+        
+        if txt_param_selected != "":
+            parametroMostrando = parameters_file_list.index(txt_param_selected)
+            
+            if currentWidget == widgets.graph:
+                self.analyze_files(parametroMostrando)  
+                
+            if currentWidget == widgets.correlation:
+                self.correlation_files(parametroMostrando)  
+    
     def print_correlation(self,data1,data2,param1_name,param2_name):
         # Delete all widgets in layout
         layout = widgets.verticalLayout_correlation
@@ -554,23 +572,6 @@ class MainWindow(QMainWindow):
         toolbar.setStyleSheet("color: white;"
                             "background-color:#343B48")
 
-        #PER CANVIAR ELS ICONS
-        # toolbar_with_removed_icons = self.static_canvas.toolbar
-        # # unwanted_buttons = ["Back", "Forward", "Customize", "Subplots", "Save"]
-        
-        # icons_buttons = {
-        # "Home": toolbar.QIcon("/images/icons/cil-home.png"),
-        # "Pan": toolbar.QIcon("/images/icons/pan.png"),
-        # "Zoom": toolbar.QIcon("/images/icons/zoom.png"),
-        # }
-        # for action in toolbar_with_removed_icons.actions():
-        #     # if action.text() in unwanted_buttons:
-        #     #     toolbar_with_removed_icons.removeAction(action)
-        #     if action.text() in icons_buttons:
-        #         action.setIcon(icons_buttons.get(action.text(), toolbar.QIcon()))
-        
-        # layout_buttons.addWidget(toolbar_with_removed_icons)
-        #######
         
         layout_buttons.addWidget(toolbar)
         layout.addWidget(static_canvas)
@@ -592,11 +593,13 @@ class MainWindow(QMainWindow):
         # GET BUTTON CLICKED
         btn = self.sender()
         btnName = btn.objectName()
-        fileName, _ = QFileDialog.getOpenFileName(self,
-            "Open .dat file", self.working_directory, "Dat Files (*.dat);; All files (*.*)")
+        working_directory = str(self.config["directory"]["work_directory"])
+        print(working_directory)
+        fileName, _ = QFileDialog.getOpenFileName(self,         
+            "Open .dat file", working_directory, "Dat Files (*.dat);; All files (*.*)")
 
         if fileName:
-            self.working_directory=os.path.dirname(fileName)
+            working_directory=os.path.dirname(fileName)
             file_result = ResultFile(fileName)
             if not file_result.error:
                 if btnName == "btnOpenDataFileInbase":
@@ -620,11 +623,12 @@ class MainWindow(QMainWindow):
         # GET BUTTON CLICKED
         btn = self.sender()
         btnName = btn.objectName()
-        fileName, _ = QFileDialog.getOpenFileName(self,
-            "Open wafermap file", self.working_directory, "PPG py Files (*_wafermap.py);; PPG Files (*.ppg);; All files (*.*)")
+        working_directory = str(self.config["directory"]["work_directory"])
+        fileName, _ = QFileDialog.getOpenFileName(self,'Open wafermap file', working_directory, 'PPG and PY Files (*_wafermap.py; *.ppg);; All files (*.*)')
+            # "Open wafermap file", self.working_directory, "PPG py Files (*_wafermap.py);; PPG Files (*.ppg);; All files (*.*)")
 
         if fileName:
-            self.working_directory=os.path.dirname(fileName)
+            working_directory=os.path.dirname(fileName)
             file_wafermap = WafermapFile(fileName)
             if not file_wafermap.error:
                 if btnName == "btnOpenWafermapFileInbase":
@@ -641,8 +645,8 @@ class MainWindow(QMainWindow):
                 if btnName == "btnOpenDataFile":
                     widgets.txtDataFile.setText("")
 
-    def generate_graph_correlation(self):
-        par=list(self.textoParametros.keys())[self.parametroMostrando]
+    def generate_graph_correlation(self, parametroMostrando=0):               ###
+        par=list(self.textoParametros.keys())[parametroMostrando]
         data=self.measurements[par]["medida"]
         mpl_style(dark=self.histogram_mode)
         layout = widgets.verticalLayout_correlation
@@ -678,11 +682,10 @@ class MainWindow(QMainWindow):
         x = np.linspace(xmin, xmax, 100)
         p = norm.pdf(x, mu, std)
 
-
-    def generate_histogram(self):
-        par=list(self.textoParametros.keys())[self.parametroMostrando]
-        data=self.measurements[par]["medida"]
+    def generate_histogram(self, data, parameters_file_list, parametroMostrando):
+        
         mpl_style(dark=self.histogram_mode)
+        
         # get data
         mu, std = norm.fit(data)
         # Delete all widgets in layout
@@ -717,9 +720,9 @@ class MainWindow(QMainWindow):
             color_linea="k"
 
         _static_ax.plot(x, p, color_linea, linewidth=1)
-        _static_ax.set_title(par)
+        _static_ax.set_title(parameters_file_list[parametroMostrando])
     
-    def generate_wafermap(self, data_values):
+    def generate_wafermap(self, data_values, parameter):
         
         parameters = widgets.cmbParametersFile.currentText()
         parameters_list = parameters.split(", ")
@@ -731,17 +734,14 @@ class MainWindow(QMainWindow):
         for i in reversed(range(widgets.horizontalLayout_btnWafermap.count())): 
             widgets.horizontalLayout_btnWafermap.itemAt(i).widget().deleteLater()
 
-
         btn = self.sender()
         btnName = btn.objectName()
-        
-       
         
         # if btnName=="btnAnalyzeFiles" or btnName=="btnNextParamFiles":
         fileName = widgets.txtWafermapFile.text()
         file_wafermap = WafermapFile(fileName)
         wafer = Wafer(file_wafermap.wafer_parameters)
-        # else:
+        # else:image.png
         #     pass
             # BBDD
             # wafer = widgets.cmbWafers.currentText()
@@ -774,8 +774,7 @@ class MainWindow(QMainWindow):
         values = list()
         num_colors = 15
         
-        param = parameters_list[self.parametroMostrando]
-        statistics_estepa = StatisticsEstepa(param, list(data_values.values()), self.config["estepa"])
+        statistics_estepa = StatisticsEstepa(parameter, list(data_values.values()), self.config["estepa"])
         data_list_without_outliers = statistics_estepa.data_list
         
         if len( list(data_values.values()) ) != len(data_list_without_outliers):
@@ -857,6 +856,7 @@ class MainWindow(QMainWindow):
         static_canvas.updateGeometry()
 
         toolbar = NavigationToolbar(static_canvas, self, "wafermap")
+        toolbar.setStyleSheet("background-color:#343B48")
         
         layout_buttons.addWidget(toolbar)
         fig = static_canvas.figure
@@ -901,8 +901,8 @@ class MainWindow(QMainWindow):
                     #text = ax.text(j, i, "%.2f" % df.iloc[i, j],ha="center", va="center", color="w", fontsize=8)
                 if wafer.is_origin(j,i):
                     text = ax.text(j, i, "O",ha="center", va="center", color="w", fontsize=10)
-        title = param
-        ax.set_title(title)                 #CANVIAR
+        title = parameter
+        ax.set_title(title)                 
 
         def selection(sel):
             x = round(sel.target[0])*-1
@@ -1082,7 +1082,6 @@ class MainWindow(QMainWindow):
             print(error)
             self.updateTextImportReport("Some error occurs!", "ERROR")
 
-
     #UPDATE TEXT TECHNOLOGY UPLOAD
     #Change text by selecting technology from combobox
     def updateTextTechnologyUpload(self):
@@ -1133,6 +1132,7 @@ class MainWindow(QMainWindow):
         txtLimitMin = int(widgets.txtLimitMin.text())
         txtHistogramChunks = int(widgets.txtHistogramChunks.text())
         txt_results_directory = widgets.txt_results_directory.text()
+        txt_working_directory = widgets.txt_working_directory.text()
         try:
             if str(txtLimitMin)!="" and str(txtLimitMax)!="" and isinstance(int(txtLimitMin),int) and isinstance(int(txtLimitMax),int):
                 self.config["estepa"]["method"] = cmbOutlinerMethod
@@ -1141,7 +1141,8 @@ class MainWindow(QMainWindow):
                 self.config["estepa"]["limmin"] = txtLimitMin
                 self.config["estepa"]["limmax"] = txtLimitMax
                 self.config["estepa"]["chunks"] = txtHistogramChunks
-                self.config["directory"]["res_directory"] = txt_results_directory               #Directori resultats
+                self.config["directory"]["res_directory"] = txt_results_directory             
+                self.config["directory"]["work_directory"] = txt_working_directory
                 toml_file = open(self.path_config_file,"w")
                 toml.dump(self.config, toml_file)
                 toml_file.close()
@@ -1172,6 +1173,14 @@ class MainWindow(QMainWindow):
         widgets.txtTechnologyUpload.setText("")
 
     #LOAD COMBOS
+    
+    # def load_cmbParameters(self):
+        
+    #     widgets.cmbCurrentParameter.clear()
+    #     parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
+    #     parameters_file_list = parameters_file.split(", ")          # split to create list
+    #     widgets.cmbCurrentParameter.addItems(parameters_file_list)   
+     
     def load_cmbRuns(self):
         widgets.cmbRuns.clear()
         widgets.cmbRuns.addItem("Select run")
@@ -1245,13 +1254,12 @@ class MainWindow(QMainWindow):
         if widgets.optLoadFiles.isChecked():
             widgets.optionsESTEPA.setCurrentIndex(0)
         if widgets.optLoadBBDD.isChecked():
+            widgets.stk_loadfiles.setCurrentWidget(widgets.not_loaded)
             widgets.optionsESTEPA.setCurrentIndex(1)
 
     def analyze_BBDD(self):
         
-        widgets.stk_results.setCurrentWidget(widgets.data)
         widgets.stk_graph.setCurrentWidget(widgets.graph)
-        # widgets.stk_wafermap.setCurrentWidget(widgets.wafermap)
         
         parametersBBDD = widgets.cmbParametersBBDD.currentText()
         parametersBBDD_list = parametersBBDD.split(', ')
@@ -1285,7 +1293,26 @@ class MainWindow(QMainWindow):
     # ----------------
     # USER SETTINGS
     # ----------------
-
+    
+    #DIRECTORIES
+    def set_results_directory(self):
+        
+        btn = self.sender()
+        btnName = btn.objectName()
+        result_directory = QFileDialog.getExistingDirectory(self, "Set Results Directory")
+        print(result_directory)
+        
+        if widgets.txt_results_directory_2 != "":
+            widgets.txt_results_directory.setText(result_directory)
+            widgets.txt_results_directory_2.setText(result_directory)
+        
+    def set_working_directory(self):
+        btn = self.sender()
+        btnName = btn.objectName()
+        working_directory = QFileDialog.getExistingDirectory(self, "Set Working Directory")
+        print(working_directory)
+        widgets.txt_working_directory.setText(working_directory)
+        widgets.txt_working_directory_2.setText(working_directory)
 
 
     # BUTTONS CLICK
@@ -1300,17 +1327,23 @@ class MainWindow(QMainWindow):
         # PAGINA PRINCIPAL
         if btnName == "btn_page_home":
             widgets.stackedWidget.setCurrentWidget(widgets.Home_Window)
+            widgets.settings.setCurrentWidget(widgets.no)
+            widgets.options.setCurrentWidget(widgets.not_able)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         # PAGINA REPORTS
         if btnName == "btn_page_reports":
             widgets.stackedWidget.setCurrentWidget(widgets.Reports_Window)
+            widgets.settings.setCurrentWidget(widgets.no)
+            widgets.options.setCurrentWidget(widgets.not_able)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
             
         if btnName == "home_reports":
             widgets.stackedWidget.setCurrentWidget(widgets.Reports_Window)
+            widgets.settings.setCurrentWidget(widgets.no)
+            widgets.options.setCurrentWidget(widgets.not_able)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
@@ -1320,6 +1353,8 @@ class MainWindow(QMainWindow):
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
             # show estepa page
             widgets.stackedWidget.setCurrentWidget(widgets.estepa)
+            widgets.settings.setCurrentWidget(widgets.no)                   #CANVIAR QUAN TINGUI FUNCIONALITAT
+            widgets.options.setCurrentWidget(widgets.able)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
@@ -1328,6 +1363,8 @@ class MainWindow(QMainWindow):
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
             # show estepa page
             widgets.stackedWidget.setCurrentWidget(widgets.estepa)
+            widgets.settings.setCurrentWidget(widgets.no)                   #CANVIAR QUAN TINGUI FUNCIONALITAT
+            widgets.options.setCurrentWidget(widgets.able)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
@@ -1336,6 +1373,8 @@ class MainWindow(QMainWindow):
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
             # show estepa page
             widgets.stackedWidget.setCurrentWidget(widgets.consult_estepa)
+            widgets.settings.setCurrentWidget(widgets.no)
+            widgets.options.setCurrentWidget(widgets.not_able)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
@@ -1344,6 +1383,8 @@ class MainWindow(QMainWindow):
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
             # show estepa page
             widgets.stackedWidget.setCurrentWidget(widgets.consult_estepa)
+            widgets.settings.setCurrentWidget(widgets.no)
+            widgets.options.setCurrentWidget(widgets.not_able)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
@@ -1353,6 +1394,8 @@ class MainWindow(QMainWindow):
             
             # show estepa page
             widgets.stackedWidget.setCurrentWidget(widgets.inbase)
+            widgets.settings.setCurrentWidget(widgets.no)
+            widgets.options.setCurrentWidget(widgets.not_able)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
@@ -1362,39 +1405,59 @@ class MainWindow(QMainWindow):
             
             # show estepa page
             widgets.stackedWidget.setCurrentWidget(widgets.inbase)
+            widgets.settings.setCurrentWidget(widgets.no)
+            widgets.options.setCurrentWidget(widgets.not_able)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
         
             
         if btnName == "btn_clear_all":
-            widgets.stk_results.setCurrentWidget(widgets.no_data)
+            widgets.estepa_page.setCurrentWidget(widgets.load)
             widgets.stk_graph.setCurrentWidget(widgets.no_graph)
-            # widgets.stk_wafermap.setCurrentWidget(widgets.no_wafermap) 
-            widgets.stk_loadfiles.setCurrentWidget(widgets.not_loaded) 
-
-    # COPIAR VALORES
-    def copy_values(self):
-        widgets.txtLoadedValues.selectAll()
-        widgets.txtLoadedValues.copy()
+            # widgets.stk_loadfiles.setCurrentWidget(widgets.not_loaded) 
 
     # COPIAR RESULTADOS
     def copy_results(self):
-        widgets.txtParametersResult.selectAll()
-        widgets.txtParametersResult.copy()
+        
+        currentWidget = widgets.ResultsWidget.currentWidget()
+        
+        if currentWidget == widgets.tab_results:
+            widgets.txtParametersResult.selectAll()
+            widgets.txtParametersResult.copy()
 
+        if currentWidget == widgets.tab_values:
+            widgets.txtLoadedValues.selectAll()
+            widgets.txtLoadedValues.copy()
 
     # GUARDAR RESULTADOS
-    def save_results(self):
+    def save_results(self, parametroMostrando):
+        
         FileName = widgets.txtDataFile.text()    
+        result_file = ResultFile(FileName)
+        results_directory = str(self.config["directory"]["res_directory"])   
+        currentWidget = widgets.ResultsWidget.currentWidget()  
+        
         self.lot = result_file.process.split("-")[0] # run
         self.wafer = result_file.process.split("-")[1] # wafer
-        par=list(self.textoParametros.keys())[self.parametroMostrando]
+        # parameter=list(self.textoParametros.keys())[parametroMostrando]
         
-        fileName, _ = QFileDialog.getSaveFileName(self,
-            "Save result file", str(widgets.txt_results_directory) + self.lot + "-" + self.wafer + "_" + par + "_results", "TXT Files (*.txt);; DOC Files (*.doc);; All files (*.*)")
+        parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
+        parameters_file_list = parameters_file.split(", ")
+        parameter = parameters_file_list[parametroMostrando]
+        
+        print(parametroMostrando)
+   
+        if currentWidget == widgets.tab_results:
+            fileName, _ = QFileDialog.getSaveFileName(self,
+                "Save result file", results_directory + "/" + self.lot + "-" + self.wafer + "_" + parameter + "_results", "TXT Files (*.txt);; DOC Files (*.doc);; All files (*.*)")
+        
+        if currentWidget == widgets.tab_values:
+            fileName, _ = QFileDialog.getSaveFileName(self,
+                "Save result file", results_directory + "/" + self.lot + "-" + self.wafer + "_" + parameter + "_values", "TXT Files (*.txt);; DOC Files (*.doc);; All files (*.*)")
                                                                     
         #Format RUN-WAFER_PARAMETER_histogram      Modificar botó guardar imatge
         #Format RUN-WAFER_PARAMETER_wafermap
+
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -1433,7 +1496,8 @@ class MainWindow(QMainWindow):
         chunks = 16
         
         [directory]
-        res_directory = ["Documentos/Results/"]
+        res_directory = "D:/USUARIS/AKAIYFS/Documents/ESTEPA/Results/"
+        work_directory = "D:/USUARIS/AKAIYFS/Desktop/ESTEPA ACTUAL/Files/"
         """
 
         if os.path.exists(self.path_config_file):
@@ -1521,10 +1585,3 @@ Class Wafermap File:...
 
 
 
-'''
-Ajustar el matplotlib al layout
-Solucionar el problema amb el next_parameter
-Solucionar el problema amb el wafermap, no es printa
-
-
-'''

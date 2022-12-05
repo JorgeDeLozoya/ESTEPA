@@ -64,6 +64,13 @@ Update v8 (19/11/2022)
 - Nou menú lateral dret amb els directoris
 
 
+Update v8.0.1 (5/12/2022)
+
+- Canviat el layout del programa
+- Configurats els directoris
+- Optimització de distribució del programa
+- ComboBox per canviar entre parametres més facilment al analitzar o fer correlació
+
 
 
 
