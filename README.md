@@ -72,7 +72,13 @@ Update v8.0.1 (5/12/2022)
 - ComboBox per canviar entre parametres més facilment al analitzar o fer correlació
 
 
+Update v8.1 (11/01/2023)
 
+- Canvis a la pantalla de Consulta
+- Inici de configuració de la BBDD
+- Optimització general del programa
+
+*He deixat parts comentades en el programa en aquesta versió*
 
 *Idees
 

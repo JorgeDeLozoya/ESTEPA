@@ -30,6 +30,7 @@ class Estepa():
 				else:
 					self.timeout = 5 # 1 sec
 
+				print(self.get_connect_string())
 				self.conn = psycopg2.connect(self.get_connect_string())
 				
 
@@ -46,7 +47,7 @@ class Estepa():
 
 				# display the PostgreSQL database server version
 				self.db_version = self.cur.fetchone()		#s'assigna a la db version
-				
+				print(self.db_version)
 
 			else:
 				self.error = True
@@ -72,7 +73,11 @@ class Estepa():
 
 
 	def get_connect_string(self):
-		return "host=" + self.host + " dbname=" + str(self.database) + " port=" + str(self.port) + " user=" + str(self.user) + " connect_timeout = " + str(self.timeout)		#afegir passsword
+		pass_string = ""
+		if self.password!="":
+			pass_string = " password=" + str(self.password)
+		return "host=" + self.host + " dbname=" + str(self.database) + " port=" + str(self.port) + " user=" + str(self.user) + pass_string + " connect_timeout = " + str(self.timeout)
+		# return "host=" + self.host + " dbname=" + str(self.database) + " port=" + str(self.port) + " user=" + str(self.user) + " password = " + str(self.password) + " connect_timeout = " + str(self.timeout)		#afegir passsword
 
 	def get_technologies(self,run=""):
 		get_technologies = list()		#per obtenir totes les tecnologies dels runs

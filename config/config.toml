@@ -1,17 +1,17 @@
 title = "PROGRAM config file"
 
 [connection]
-host = "opter6.cnm.es"
+host = "127.0.0.1"
 port = "5432"
-user = "joaquin"
+user = "postgres"
 database = "mecao"
-password = ""
+password = "Delo31898"
 autocommit = false
 
 [estepa]
-method = "k-sigma"
-lna = false
-autolimits = false
+method = "none"
+lna = true
+autolimits = true
 limmin = 590
 limmax = 600
 chunks = 2

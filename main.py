@@ -22,7 +22,7 @@ from modules import *
 
 # GENERAL FUNCTIONS
 # ///////////////////////////////////////////////////////////////
-import sys, platform, os, toml, mplcursors, json, matplotlib.pyplot as plt, numpy as np, pandas as pd, seaborn as sns, matplotlib as mpl
+import sys, platform, os, toml, mplcursors, logging, json, matplotlib.pyplot as plt, numpy as np, pandas as pd, seaborn as sns, matplotlib as mpl
 from matplotlib.backends.backend_qt5agg import (FigureCanvas, NavigationToolbar2QT as NavigationToolbar)        #Si no és qt5agg no agafa el NavigationToolbar
 from scipy.stats import norm, kendalltau, spearmanr, pearsonr, chi2_contingency
 from matplotlib.backends.qt_compat import QtWidgets         #No reconeix
@@ -34,11 +34,31 @@ from qbstyles import mpl_style
 
 
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
+#app = QtWidget.QApplication(sys.argv) Per solucionar el error de QApplication
 
 # SET AS GLOBAL WIDGETS
 # ///////////////////////////////////////////////////////////////
 widgets = None
 import_report_file = "report_import.txt"
+
+# class NavigationToolbarMod():
+#     
+#     static_canvas = FigureCanvas(Figure())
+#     toolbar = NavigationToolbar(static_canvas)
+
+
+# class MyCustomToolbar(NavigationToolbar): 
+#     def __init__(self, plotCanvas):
+#         NavigationToolbar.__init__(self, plotCanvas)
+        
+#     layout_buttons = widgets.horizontalLayout_btnHistogram    
+#     layout_buttons = {
+
+#     "Home": layout_buttons.QIcon("/images/icons/cil-home.png"),
+#     "Pan": layout_buttons.QIcon("/images/icons/pan.png"),
+#     "Zoom": layout_buttons.QIcon("/images/icons/zoom.png"),
+    
+#     }
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -84,6 +104,9 @@ class MainWindow(QMainWindow):
         # SET UI DEFINITIONS
         # ///////////////////////////////////////////////////////////////
         UIFunctions.uiDefinitions(self)
+
+        # LOGGING
+        logging.basicConfig(filename='register.log', encoding='utf-8', level=logging.INFO)
         
         # LOAD configuration TOML
         self.path_config_file = os.getcwd() + '/config/config.toml'
@@ -108,6 +131,7 @@ class MainWindow(QMainWindow):
         widgets.cmbWafersConsult.currentIndexChanged.connect(self.load_cmbParametersBBDD_consult)
         widgets.cmbParametersBBDD.editTextChanged.connect(self.update_cmbParametersBBDD)
         widgets.btnAnalyzeBBDD.clicked.connect(self.analyze_BBDD)
+        widgets.btnCorrelationBBDD.clicked.connect(self.correlation_BBDD)
         widgets.btnConsult.clicked.connect(self.consult_BBDD)
         widgets.cmbCurrentParameter.currentIndexChanged.connect(self.search_parameter)                                               
         widgets.cmbParametersFile.editTextChanged.connect(self.update_cmbParametersFile)
@@ -182,9 +206,12 @@ class MainWindow(QMainWindow):
         
         
         # widgets configuration
-        widgets.estepa_page.setCurrentWidget(widgets.load)
         widgets.stk_graph.setCurrentWidget(widgets.no_graph)
         widgets.stk_loadfiles.setCurrentWidget(widgets.not_loaded) 
+        widgets.wgt_estepa.setCurrentWidget(widgets.pg_load)
+        widgets.load_clear.setCurrentWidget(widgets.clear)
+        widgets.optionsHistorical.setCurrentWidget(widgets.NoHistorical) 
+        widgets.consultWidget.setCurrentWidget(widgets.ConsultData)
 
         # HOME MENUS
         widgets.home_analysis.clicked.connect(self.buttonClick)
@@ -203,9 +230,14 @@ class MainWindow(QMainWindow):
         
 
         widgets.btn_clear_all.clicked.connect(self.buttonClick)
+        widgets.btn_clear.clicked.connect(self.buttonClick)
+        widgets.btn_clear_allConsult.clicked.connect(self.buttonClick)
         
+        widgets.btn_add_wafers.clicked.connect(self.add_wafers)
+        
+
         # EXTRA LEFT BOX
-        def openCloseLeftBox():
+        def openCloseLeftBox(self):
             UIFunctions.toggleLeftBox(self, True)
         widgets.toggleLeftBox.clicked.connect(openCloseLeftBox)
 
@@ -240,29 +272,40 @@ class MainWindow(QMainWindow):
         widgets.btn_page_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_page_home.styleSheet()))
         
         # LOAD ESTEPA 
+        # config_estepa = {
+        #     "host" : "opter6.cnm.es",
+        #     "port" : "5432",
+        #     "user" : "joaquin",
+        #     "database" : "mecao",
+        #     "password" : "",
+        #     "autocommit" : False,
+        #     # "res_directory"
+        #     # "work_directory"
+        # }
+
         config_estepa = {
-            "host" : "opter6.cnm.es",
+            "host" : "localhost",
             "port" : "5432",
-            "user" : "joaquin",
+            "user" : "postgres",
             "database" : "mecao",
-            "password" : "",
+            "password" : "Delo31898",
             "autocommit" : False,
-            # "res_directory"
-            # "work_directory"
+
+
+
         }
         # if configuration json file exists load configurationñ from file
         get_json = get_json_file('estepa',config_estepa)
         if get_json!="":
             config_estepa = get_json
         self.estepa = Estepa(self.config["connection"])         #Descomentar error inicial                                                          ###
-        self.estepa = Estepa(self.config["estepa"])
-        self.estepa = Estepa(self.config["directory"])
+        # self.estepa = Estepa(self.config["estepa"])
+        # self.estepa = Estepa(self.config["directory"])
         if not self.estepa.error:
             self.load_cmbTechnology()
             self.load_cmbMask()
         else:
-            pass
-                # retval = messageBox(self,"Error loading ESTEPA class",self.estepa.error_message,"error")
+            retval = messageBox(self,"Error loading ESTEPA class",self.estepa.error_message,"error")
         widgets.cmbParametersFile.clear()
         widgets.cmbParametersBBDD.clear()
 
@@ -279,6 +322,7 @@ class MainWindow(QMainWindow):
         '''
         Used to load both files from qlineedits (.dat and wafermap.py or .ppg)
         '''
+        logging.info('Loading Started')
         if not widgets.txtDataFile.text() and widgets.txtWafermapFile.text():
             error = True
             retval = messageBox(self,"Error loading files","Select data and wafermap files before loading files","warning")   
@@ -298,17 +342,19 @@ class MainWindow(QMainWindow):
         else:
             error = True
             retval = messageBox(self,"Error loading files","Select data and wafermap files before loading files","warning")   
-     
+        logging.info('Loading Finished')
+
     #ANALYZE
     def analyze_files(self, parametroMostrando=0):
+        logging.warning('Analyze debug')
         try: 
             self.graph_mode = True
             self.textoParametros={} 
             
-            
-            widgets.estepa_page.setCurrentWidget(widgets.result)
-            # widgets.GraphWidget.setCurrentWidget(widgets.tab_histogram)
-            # widgets.ResultsWidget.setCurrentWidget(widgets.tab_results)
+            widgets.wgt_estepa.setCurrentWidget(widgets.pg_analyze)            
+            # widgets.estepa_page.setCurrentWidget(widgets.result)
+            # # widgets.GraphWidget.setCurrentWidget(widgets.tab_histogram)
+            # # widgets.ResultsWidget.setCurrentWidget(widgets.tab_results)
                 
             parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
             parameters_file_list = parameters_file.split(", ")          # split to create list
@@ -334,7 +380,7 @@ class MainWindow(QMainWindow):
                     # Get data values from result_file
                     # for parameter in parameters_file_list:
                     estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.config["estepa"]))
-                    widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())               
+                    widgets.txtParametersResult.setPlainText(estadistica.print_statistics())               
 
                     data_values = result_file.get_data_values(parameter)                 
                     
@@ -362,7 +408,8 @@ class MainWindow(QMainWindow):
         self.graph_mode=False
         textoParametros={}
         error = False
-        widgets.estepa_page.setCurrentWidget(widgets.result)
+        widgets.wgt_estepa.setCurrentWidget(widgets.pg_analyze)
+        # widgets.estepa_page.setCurrentWidget(widgets.result)
         widgets.stk_graph.setCurrentWidget(widgets.no_graph)
         widgets.txtLoadedValues.setPlainText("")
         widgets.txtParametersResult.setPlainText("")
@@ -458,12 +505,13 @@ class MainWindow(QMainWindow):
                 next_position = elements+1
                 
         if currentWidget == widgets.graph:
+            print("Graph")
             
             self.analyze_files(next_position) 
 
           
         if currentWidget == widgets.correlation:
-            
+            print("Correlation")
             self.correlation_files(next_position)
                                                          
     # NEXT PARAMETER
@@ -471,7 +519,7 @@ class MainWindow(QMainWindow):
         
         currentWidget = widgets.stk_graph.currentWidget()
         widgets.txtLoadedValues.setPlainText("")
-        widgets.txtParametersResult.setPlainText("")
+        
         btn = self.sender()
         btnName = btn.objectName()
         
@@ -494,10 +542,11 @@ class MainWindow(QMainWindow):
                 next_position = elements-1
         
         if currentWidget == widgets.graph:
+            widgets.txtParametersResult.setPlainText("")
             self.analyze_files(next_position)  
               
         if currentWidget == widgets.correlation:
-            
+            widgets.txtParametersResult.setPlainText("")
             self.correlation_files(next_position)         #Només cal carregar els data values un altre cop
       
     def update_cmbParametersFile(self):
@@ -525,6 +574,7 @@ class MainWindow(QMainWindow):
                 self.correlation_files(parametroMostrando)  
     
     def print_correlation(self,data1,data2,param1_name,param2_name):
+
         # Delete all widgets in layout
         layout = widgets.verticalLayout_correlation
         layout_buttons = widgets.horizontalLayout_btnCorrelation
@@ -550,10 +600,13 @@ class MainWindow(QMainWindow):
         layout.addWidget(static_canvas)
         _static_ax = static_canvas.figure.subplots()
         _static_ax.grid(True, color='gray', linewidth=1.0)
+        # _static_ax.set_xlabel(param1_name)
+        # _static_ax.set_ylabel(param2_name)
         _static_ax.scatter(data1, data2, color='white', linewidth=0.01)        #Punts
 
         # linear regression
         m, b = np.polyfit(data1, data2, 1)
+
         data22 = [float(x)* m +b  for x in data1]
         _static_ax.plot(data1, data22, color='#077f82', linewidth=1.0)  #Color de fons
 
@@ -876,6 +929,22 @@ class MainWindow(QMainWindow):
     # BBDD FUNCTIONS
     # ----------------
 
+    def add_wafers(self):                                           #No funciona
+        wafer = widgets.cmbWafersConsult.currentText()
+        print(wafer)
+        wafers_list = wafer.split(", ")
+        list_model = widgets.ListWafers.model()
+        for wafer in wafers_list:
+            # item_text = widgets.cmbWafersConsult.itemText(wafer)
+            list_model.appendRow(QStandardItem(wafer))    
+        # checked_items = widgets.cmbWafersConsult.addItems(wafer)
+        # print(checked_items)
+        # list_model = widgets.ListWafers.model()
+        # for index in checked_items:
+        #     item_text = widgets.cmbWafersConsult.itemText(index)
+        #     list_model.append(QStandardItem(item_text))
+        # afegir update pels paràmetres
+
     #SAVE IMPORT REPORT
     def save_import_report(self):
         global widgets
@@ -1109,14 +1178,18 @@ class MainWindow(QMainWindow):
     def load_cmbTechnology(self):
         # load estepa combo technology
         widgets.cmbTechnology.clear()
+        widgets.cmbTechnologyConsult.clear()
         widgets.cmbTechnologyUpload.clear()
         widgets.cmbTechnology.addItem("Select technology")
+        widgets.cmbTechnologyConsult.addItem("Select technology")
         widgets.cmbTechnologyUpload.addItem("Select technology")
         lista_technologies = self.estepa.get_technologies()
         widgets.cmbTechnology.addItems(lista_technologies)
+        widgets.cmbTechnologyConsult.addItems(lista_technologies)
         widgets.cmbTechnologyUpload.addItems(lista_technologies)
         widgets.cmbParametersBBDD.clear()
         widgets.txtTechnologyUpload.setText("")
+
 
     #LOAD COMBOS
  
@@ -1172,6 +1245,8 @@ class MainWindow(QMainWindow):
             widgets.cmbParametersBBDDConsult.clear()    
 
     def consult_BBDD(self):
+        widgets.txtParametersResultConsult.setPlainText("")
+        widgets.consultWidget.setCurrentWidget(widgets.ConsultResults)
         parametersBBDD = widgets.cmbParametersBBDDConsult.currentText()
         parametersBBDD_list = parametersBBDD.split(', ')
         counter = widgets.cmbParametersBBDDConsult.count()
@@ -1197,7 +1272,10 @@ class MainWindow(QMainWindow):
             widgets.optionsESTEPA.setCurrentIndex(1)
 
     def analyze_BBDD(self):
-        
+        widgets.txtParametersResult.setPlainText("")
+        self.graph_mode = True
+        self.textoParametros={}
+        widgets.wgt_estepa.setCurrentWidget(widgets.pg_analyze)
         widgets.stk_graph.setCurrentWidget(widgets.graph)
         
         parametersBBDD = widgets.cmbParametersBBDD.currentText()
@@ -1209,13 +1287,52 @@ class MainWindow(QMainWindow):
             if parametersBBDD=="All parameters":
                 parametersBBDD_list = [widgets.cmbParametersBBDD.itemText(i) for i in range(1,widgets.cmbParametersBBDD.count())]
             measurements = self.estepa.get_medidas(wafer,parametersBBDD_list)
-            print(measurements)
+            # print(measurements)
             
             for par in parametersBBDD_list:
                 estadistica = StatisticsEstepa(par,measurements[par]["medida"],self.config["estepa"])
                 widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+estadistica.print_statistics())
         else:
             widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+"No parameters selected!")
+
+    def correlation_BBDD(self):
+        widgets.txtParametersResult.setPlainText("")
+        self.graph_mode=False
+        textoParametros={}
+        
+        widgets.wgt_estepa.setCurrentWidget(widgets.pg_analyze)
+        widgets.stk_graph.setCurrentWidget(widgets.no_graph)
+        
+        parametersBBDD = widgets.cmbParametersBBDD.currentText()
+        parametersBBDD_list = parametersBBDD.split(', ')
+        counter = widgets.cmbParametersBBDD.count()
+        if parametersBBDD!="" and parametersBBDD!="Select parameters":
+            run = widgets.cmbRuns.currentText()
+            wafer = widgets.cmbWafers.currentText()
+            if len(parametersBBDD)==2:
+                    widgets.stk_graph.setCurrentWidget(widgets.correlation)
+                    parametersBBDD_list = [widgets.cmbParametersBBDD.itemText(i) for i in range(1,widgets.cmbParametersBBDD.count())]
+                    measurements = self.estepa.get_medidas(wafer,parametersBBDD_list)
+                    print(measurements)
+                    data1 = measurements[parametersBBDD[0]]["medida"]
+                    data2 = measurements[parametersBBDD[1]]["medida"]
+            else:
+                error = True
+                retval = messageBox(self,"Error selecting variables","Select 2 parameters for correlation","warning")    
+            
+            statistics_correlation = StatisticsEstepa(parametersBBDD[0],data1,self.config["estepa"],data2)
+            data1 = statistics_correlation.data_list
+            data2 = statistics_correlation.data_list2
+            statistics_correlation = StatisticsEstepa(parametersBBDD[1],data2,self.config["estepa"],data1)
+            data2 = statistics_correlation.data_list
+            data1 = statistics_correlation.data_list2
+            widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+statistics_correlation.print_correlation())
+            
+            
+        else:
+            widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+"No parameters selected!")
+
+                      
 
     #CAMBIAR DE TEMA A CLARO                                                                                                                    #NUEVO 18/8
     def change_theme(self):
@@ -1311,6 +1428,7 @@ class MainWindow(QMainWindow):
             # show estepa configuration
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
             # show estepa page
+            
             widgets.stackedWidget.setCurrentWidget(widgets.consult_estepa)
             widgets.settings.setCurrentWidget(widgets.no)
             widgets.options.setCurrentWidget(widgets.not_able)
@@ -1351,9 +1469,20 @@ class MainWindow(QMainWindow):
         
             
         if btnName == "btn_clear_all":
-            widgets.estepa_page.setCurrentWidget(widgets.load)
+            widgets.wgt_estepa.setCurrentWidget(widgets.pg_load)
             widgets.stk_graph.setCurrentWidget(widgets.no_graph)
             # widgets.stk_loadfiles.setCurrentWidget(widgets.not_loaded) 
+
+        if btnName == "btn_clear":
+            widgets.stk_loadfiles.setCurrentWidget(widgets.not_loaded)
+            widgets.txtDataFile.setText("")
+            widgets.txtWafermapFile.setText("")
+
+        if btnName == "btn_clear_allConsult":
+            widgets.consultWidget.setCurrentWidget(widgets.ConsultData)
+
+
+        
 
     # COPIAR RESULTADOS
     def copy_results(self):
@@ -1513,6 +1642,21 @@ if __name__ == "__main__":
 
 
 
+#PENDENT
+'''
+Pantalla Consultes
+Pantalla Reports
+Canviar imatge pantalla principal
+
+'''
+
+#PROBLEMES
+'''
+Printa dos cops els resultats
+
+'''
+
+
 #Posar cometaris de les funcions i les clases 
 '''
 Class Wafermap File:...
@@ -1520,7 +1664,4 @@ Class Wafermap File:...
 '''
 
 #per fer help(main.py)
-
-
-
 
