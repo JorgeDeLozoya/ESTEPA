@@ -79,45 +79,6 @@ class StatisticsEstepa():
 	def print_data_values(self):
 		pass
  
-	def print_correlation(self):
-
-		corr, pvalue = pearsonr(self.data_list, self.data_list2) # Pearson's r, valor p
-		corr2, pvalue2 = spearmanr(self.data_list, self.data_list2) # Spearman's rho, valor p
-		corr3, pvalue3 = kendalltau(self.data_list, self.data_list2) # Kendall's tau, valor p
-
-		# m, b = np.polyfit(data1, data2, 1)
-		# a, b, _, _, siga, sigb = linregress(data1, data2)
-		# a, b = np.polyfit(self.data_list, self.data_list2, 1)
-		# print(a, b)
-		
-		# if len(self.data_list) != len(self.data_list2):
-		# 	print("Las listas deben tener la misma longitud")
-
-		# obs = self.data_list + self.data_list2
-		# # obs = np.concatenate((self.data_list, self.data_list2))
-		# exp = [len(self.data_list) / len(obs), len(self.data_list2) / len(obs)]
-
-		# chi2, _, _, _ = chisquare(obs, exp)
-
-		# siga = self.stdev(a)
-		# sigb = self.stdev(b)
-		# obs = np.array([[self.data_list],[ self.data_list2]])
-		# chi2 = chi2_contingency(obs)
-		# chi2 = scipy.stats.chi2.ppf(self.data_list, self.data_list2)
-		# chi22 = chisquare(obs)
-
-		print_correlation =" - Pearsons correlation:   %.3f , %.3f \t" % (corr,pvalue) + "\n"
-		print_correlation +=" - Spearmanr correlation:  %.3f , %.3f \t" % (corr2, pvalue2) + "\n"
-		print_correlation +=" - Kendalltau correlation: %.3f , %.3f  \t" % (corr3, pvalue3) + "\n"
-		# print_correlation +=" - Chisquare:  \t" + str(chi22) + "\n"
-		# print_correlation +=" - Chisquare: %.3f \t" % chi2 + "\n"
-		# print_correlation +=" - a, b: %f , %f \t" %  (a, b) + "\n"
-		# print_correlation +=" - siga: %f \t" % siga + "\n"
-		# print_correlation +=" - sigb: %f \t" % sigb + "\n"
-		print_correlation +=" - Points:   \t" + str(self.points_end) + "/" + str(self.points_ini) + "\n"
-
-		return print_correlation
-
 
 	def load_statistics(self):
 		self.mean_estepa()
@@ -336,6 +297,8 @@ class StatisticsEstepa():
 		# sorted array
 		return arr_copy[k-1]
 
+	def get_parameters(self):
+		return [self.mean, self.stdev, self.median, self.points_end, self.points_ini, self.config["method"]]
 	# FUNCTIONS TO RESOLVE K-SIGMA METHOD
 	# K is the value to resolve the ecuation (see integral_k-sigma.png)
 	# (1/sqrt(2*PI)) * INTEGRAL{[-inf k](pow(e,x^2 / 2)) dx}  = (1/2) + (pow((1-p),(1/N))/2)

@@ -16,7 +16,14 @@
 
 # MAIN FILE
 # ///////////////////////////////////////////////////////////////
-from main import *
+from main import MainWindow
+from PySide6.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
+from modules import Settings
+from widgets import *
+
+
 
 # GLOBALS
 # ///////////////////////////////////////////////////////////////
@@ -67,6 +74,8 @@ class UIFunctions(MainWindow):
     # TOGGLE MENU
     # ///////////////////////////////////////////////////////////////
     def toggleMenu(self, enable):
+        # if self.left_box_open == True:
+        #         self.closeLeftBox()
         if enable:
             # GET WIDTH
             width = self.ui.leftMenuBg.width()
@@ -90,17 +99,17 @@ class UIFunctions(MainWindow):
     # TOGGLE LEFT BOX
     # ///////////////////////////////////////////////////////////////
     def toggleLeftBox(self, enable):
+        # GET WIDTH
+        width = self.ui.extraLeftBox.width()
+        widthRightBox = self.ui.extraRightBox.width()
+        maxExtend = Settings.LEFT_BOX_WIDTH
+        color = Settings.BTN_LEFT_BOX_COLOR
+        standard = 0
+
+        # GET BTN STYLE
+        style = self.ui.toggleLeftBox.styleSheet()
+
         if enable:
-            # GET WIDTH
-            width = self.ui.extraLeftBox.width()
-            widthRightBox = self.ui.extraRightBox.width()
-            maxExtend = Settings.LEFT_BOX_WIDTH
-            color = Settings.BTN_LEFT_BOX_COLOR
-            standard = 0
-
-            # GET BTN STYLE
-            style = self.ui.toggleLeftBox.styleSheet()
-
             # SET MAX WIDTH
             if width == 0:
                 widthExtended = maxExtend
@@ -113,8 +122,36 @@ class UIFunctions(MainWindow):
                 widthExtended = standard
                 # RESET BTN
                 self.ui.toggleLeftBox.setStyleSheet(style.replace(color, ''))
-                
+                    
         UIFunctions.start_box_animation(self, width, widthRightBox, "left")
+
+
+    # def toggleLeftBox(self, enable):
+    #     if enable:
+    #         # GET WIDTH
+    #         width = self.ui.extraLeftBox.width()
+    #         widthRightBox = self.ui.extraRightBox.width()
+    #         maxExtend = Settings.LEFT_BOX_WIDTH
+    #         color = Settings.BTN_LEFT_BOX_COLOR
+    #         standard = 0
+
+    #         # GET BTN STYLE
+    #         style = self.ui.toggleLeftBox.styleSheet()
+
+    #         # SET MAX WIDTH
+    #         if width == 0:
+    #             widthExtended = maxExtend
+    #             # SELECT BTN
+    #             self.ui.toggleLeftBox.setStyleSheet(style + color)
+    #             if widthRightBox != 0:
+    #                 style = self.ui.settingsTopBtn.styleSheet()
+    #                 self.ui.settingsTopBtn.setStyleSheet(style.replace(Settings.BTN_RIGHT_BOX_COLOR, ''))
+    #         else:
+    #             widthExtended = standard
+    #             # RESET BTN
+    #             self.ui.toggleLeftBox.setStyleSheet(style.replace(color, ''))
+                
+    #     UIFunctions.start_box_animation(self, width, widthRightBox, "left")
 
     # TOGGLE RIGHT BOX
     # ///////////////////////////////////////////////////////////////

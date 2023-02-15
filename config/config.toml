@@ -9,13 +9,13 @@ password = "Delo31898"
 autocommit = false
 
 [estepa]
-method = "none"
-lna = true
-autolimits = true
+method = "f-spread"
+lna = false
+autolimits = false
 limmin = 590
 limmax = 600
-chunks = 2
+chunks = 10
 
 [directory]
-res_directory = "D:/USUARIS/AKAIYFS/Desktop/ESTEPA v8/Results"
-work_directory = "D:/USUARIS/AKAIYFS/Desktop/ESTEPA v8/Files"
+res_directory = "D:/Documentos/Resultados"
+work_directory = "D:/Escritorio/ESTEPA/Files"

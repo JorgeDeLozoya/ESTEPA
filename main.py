@@ -31,6 +31,7 @@ from matplotlib.colors import LinearSegmentedColormap
 from io import StringIO, open
 from datetime import datetime
 from qbstyles import mpl_style
+from statistics import stdev, mean, median
 
 
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
@@ -41,10 +42,26 @@ os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 widgets = None
 import_report_file = "report_import.txt"
 
-# class NavigationToolbarMod():
-#     
-#     static_canvas = FigureCanvas(Figure())
-#     toolbar = NavigationToolbar(static_canvas)
+class NavigationToolbarMod(NavigationToolbar):
+    # only display the buttons we need
+
+    def __init__(self, figure_canvas, MainWindow, where):
+        NavigationToolbar.__init__(self, figure_canvas, parent=None)
+        self.where = where
+        self.MainWindowClass = MainWindow
+
+    NavigationToolbar.toolitems = (
+        ('Home', 'Reset original view', 'home', 'home'),
+        ('Back', 'Back to previous view', 'back', 'back'),
+        ('Forward', 'Forward to next view', 'forward', 'forward'),
+        (None, None, None, None),
+        ('Pan', 'Pan axes with left mouse, zoom with right', 'move', 'pan'),
+        ('Zoom', 'Zoom to rectangle', 'zoom_to_rect', 'zoom'),
+        ('Subplots', 'Configure subplots', 'subplots', 'configure_subplots'),
+        (None, None, None, None),
+        (None, None, None, None),
+        # ('Save', 'Save the figure', 'filesave', 'save_graph'), # save_figure modification
+    )
 
 
 # class MyCustomToolbar(NavigationToolbar): 
@@ -65,6 +82,7 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
         
         # CONFIG
+        self.left_box_open = False
         self.histogram_mode=True
         self.wafermap_mode=True
         self.measurements=None
@@ -115,28 +133,82 @@ class MainWindow(QMainWindow):
         # -----------
         # PAGE ESTEPA
         # -----------
-        # LOAD FROM FILES
+        
+        # ANALYZE WINDOW
+        widgets.btnOpenDataFile.clicked.connect(self.open_file_dat)
+        widgets.btnOpenWafermapFile.clicked.connect(self.open_file_ppg)
         widgets.btnLoadFiles.clicked.connect(self.load_from_files)
+        
         widgets.btnAnalyzeFiles.clicked.connect(self.analyze_files)
         widgets.btnCorrelationFiles.clicked.connect(self.correlation_files)
-
-        # LOAD FROM BBDD
+        widgets.btn_clear.clicked.connect(self.buttonClick)
+        
         widgets.optLoadFiles.clicked.connect(self.viewOptionsEstepa)
         widgets.optLoadBBDD.clicked.connect(self.viewOptionsEstepa)
+        
+        widgets.cmbParametersFile.editTextChanged.connect(self.update_cmbParametersFile)
         widgets.cmbTechnology.currentIndexChanged.connect(self.load_cmbRuns)
-        widgets.cmbTechnologyConsult.currentIndexChanged.connect(self.load_cmbRuns_consult)
         widgets.cmbRuns.currentIndexChanged.connect(self.load_cmbWafers)
-        widgets.cmbRunsConsult.currentIndexChanged.connect(self.load_cmbWafers_consult)
         widgets.cmbWafers.currentIndexChanged.connect(self.load_cmbParametersBBDD)
-        widgets.cmbWafersConsult.currentIndexChanged.connect(self.load_cmbParametersBBDD_consult)
         widgets.cmbParametersBBDD.editTextChanged.connect(self.update_cmbParametersBBDD)
+        
         widgets.btnAnalyzeBBDD.clicked.connect(self.analyze_BBDD)
         widgets.btnCorrelationBBDD.clicked.connect(self.correlation_BBDD)
-        widgets.btnConsult.clicked.connect(self.consult_BBDD)
-        widgets.cmbCurrentParameter.currentIndexChanged.connect(self.search_parameter)                                               
-        widgets.cmbParametersFile.editTextChanged.connect(self.update_cmbParametersFile)
+        
+        widgets.cmbCurrentParameter.currentIndexChanged.connect(self.search_parameter)
+        widgets.btnCopyDescription.clicked.connect(self.copy_results)
+        widgets.btnSaveDescription.clicked.connect(self.save_results)
+        widgets.btnNextParamFiles.clicked.connect(self.next_parameter)
+        widgets.btnPreviousParamFiles.clicked.connect(self.previous_parameter)
+        widgets.btn_clear_all.clicked.connect(self.buttonClick)
+      
+        # # PAGE CONSULT
+        # widgets.btnConsult.clicked.connect(self.consult_BBDD)
+        # widgets.cmbRunsConsult.currentIndexChanged.connect(self.load_cmbWafers_consult)
+        # widgets.cmbWafersConsult.currentIndexChanged.connect(self.load_cmbParametersBBDD_consult)
+        # widgets.optionsHistorical.setCurrentWidget(widgets.NoHistorical)
+        # widgets.btnValues.setChecked(True) #optValues
+        # widgets.historicalcheck.stateChanged.connect(self.optionsHistorical) #historicalcheck
+        # widgets.cmbTechnologyConsult.currentIndexChanged.connect(self.load_cmbRunsConsult)
+        # widgets.cmbRunsConsult.currentIndexChanged.connect(self.load_cmbWafersConsult)
+        # widgets.cmbWafersConsult.editTextChanged.connect(self.load_cmbParametersConsult)
+        # widgets.btn_add_wafers.clicked.connect(self.add_wafers_to_ListBox) #btnAddWafers
+        # widgets.ListWafers.itemDoubleClicked.connect(self.remove_item_ListBox) #lbWafers
+        # widgets.ListWafers.clear() #lbWafers
+        # widgets.btnConsult.clicked.connect(self.consult)    
+        # widgets.btn_clear_allConsult.clicked.connect(self.buttonClick)                                                   
+        
 
-        # configuration estepa
+        # PAGE CONSULT
+        widgets.optionsHistorical.setCurrentWidget(widgets.NoHistorical)
+        widgets.optValues.setChecked(True)
+        widgets.historicalcheck.stateChanged.connect(self.optionsHistorical)
+        widgets.cmbTechnologyConsult.currentIndexChanged.connect(self.load_cmbRunsConsult)
+        widgets.cmbRunsConsult.currentIndexChanged.connect(self.load_cmbWafersConsult)
+        widgets.cmbWafersConsult.editTextChanged.connect(self.load_cmbParametersConsult)
+        widgets.cmbParametersConsult.editTextChanged.connect(self.load_controlsConsult)     #caixa parameters
+        widgets.btn_add_wafers.clicked.connect(self.add_wafers_to_ListBox)
+        widgets.lbWafers.itemDoubleClicked.connect(self.remove_item_ListBox)
+        widgets.lbWafers.clear()
+        widgets.btnConsult.clicked.connect(self.consult)
+        widgets.btnClearlConsult.clicked.connect(self.clearDiagram)      #botó x
+        widgets.btnClearlConsult.setVisible(False)      #botó x
+        widgets.btnSaveConsult.setVisible(False)      #botó save
+        # widgets.lblLoadingConsult.setVisible(False)     #animació carrega
+        widgets.btnPreviousParamConsult.clicked.connect(self.nextParamConsult)      #prev
+        widgets.btnNextParamConsult.clicked.connect(self.nextParamConsult)          #next
+        self.load_controlsConsult()
+        # widgets.btnClearDataValuesConsult.clicked.connect(lambda: widgets.txtDataValuesConsult.setPlainText(""))   #botó x
+        # widgets.btnSaveHistorical.clicked.connect(self.saveResults)   #botó save
+        # widgets.btnSaveConsult.clicked.connect(self.saveResults)    #botó save
+
+
+
+
+
+
+
+        # CONFIG ESTEPA
         widgets.scrollHistogramChunks.valueChanged.connect(lambda: widgets.txtHistogramChunks.setText(str(widgets.scrollHistogramChunks.value())))
         widgets.txtHistogramChunks.textChanged.connect(self.save_config_estepa_file)
         
@@ -153,14 +225,6 @@ class MainWindow(QMainWindow):
 
         widgets.txtLimitMin.setText(str(self.config["estepa"]["limmin"]))
         widgets.txtLimitMax.setText(str(self.config["estepa"]["limmax"]))
-        
-        widgets.txt_results_directory.setText(str(self.config["directory"]["res_directory"]))
-        widgets.txt_results_directory_2.setText(str(self.config["directory"]["res_directory"]))
-        widgets.txt_working_directory.setText(str(self.config["directory"]["work_directory"]))
-        widgets.txt_working_directory_2.setText(str(self.config["directory"]["work_directory"]))
-        
-
-
         widgets.cmbOutlinerMethod.currentIndexChanged.connect(self.save_config_estepa_file)
         widgets.chkNonAutomaticLimits.stateChanged.connect(self.save_config_estepa_file)
         widgets.txtLimitMin.textChanged.connect(self.save_config_estepa_file)
@@ -169,43 +233,34 @@ class MainWindow(QMainWindow):
         widgets.chk_theme.stateChanged.connect(self.change_theme)
         widgets.historicalcheck.stateChanged.connect(self.historical_check)
         
-        widgets.txt_results_directory.textChanged.connect(self.save_config_estepa_file)
+        #HOME WINDOW
+        widgets.home_analysis.clicked.connect(self.buttonClick)
+        widgets.home_consult.clicked.connect(self.buttonClick)
+        widgets.home_upload.clicked.connect(self.buttonClick)
+        widgets.home_reports.clicked.connect(self.buttonClick)  
+        
+        widgets.txt_results_directory_2.setText(str(self.config["directory"]["res_directory"]))
         widgets.txt_results_directory_2.textChanged.connect(self.save_config_estepa_file)
-        widgets.txt_working_directory.textChanged.connect(self.save_config_estepa_file)
+        widgets.txt_working_directory_2.setText(str(self.config["directory"]["work_directory"]))
         widgets.txt_working_directory_2.textChanged.connect(self.save_config_estepa_file)
+        widgets.btn_results_directory_2.clicked.connect(self.set_results_directory)
+        widgets.btn_working_directory_2.clicked.connect(self.set_working_directory)
 
+        # PAGE INBASE
         widgets.cmbTechnologyUpload.currentIndexChanged.connect(self.updateTextTechnologyUpload)
         widgets.cmbMaskUpload.currentIndexChanged.connect(self.updateTextMaskUpload)
         widgets.txtDateUpload.setText(datetime.today().strftime('%Y-%m-%d'))
         widgets.btnUploadFiles.clicked.connect(self.UploadFiles)
         widgets.btnClearImportReport.clicked.connect(lambda: widgets.txtImportReport.setPlainText(""))
         widgets.btnSaveImportReport.clicked.connect(self.save_import_report)
-
-        widgets.btnOpenDataFile.clicked.connect(self.open_file_dat)
-        widgets.btnOpenWafermapFile.clicked.connect(self.open_file_ppg)
-        widgets.btn_results_directory.clicked.connect(self.set_results_directory)
-        widgets.btn_results_directory_2.clicked.connect(self.set_results_directory)
-        widgets.btn_working_directory.clicked.connect(self.set_working_directory)
-        widgets.btn_working_directory_2.clicked.connect(self.set_working_directory)
-        
-        # PAGE INBASE
         widgets.btnOpenDataFileInbase.clicked.connect(self.open_file_dat)
         widgets.btnOpenWafermapFileInbase.clicked.connect(self.open_file_ppg)
 
-        # configuration pages
+        # CONFIG PAGES
         widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_measurements)
         widgets.optionsESTEPA.setCurrentIndex(0)
-        
-        
-        widgets.btnCopyDescription.clicked.connect(self.copy_results)
-        widgets.btnSaveDescription.clicked.connect(self.save_results)
 
-        
-        widgets.btnNextParamFiles.clicked.connect(self.next_parameter)
-        widgets.btnPreviousParamFiles.clicked.connect(self.previous_parameter)
-        
-        
-        # widgets configuration
+        # WIDGETS CONFIG
         widgets.stk_graph.setCurrentWidget(widgets.no_graph)
         widgets.stk_loadfiles.setCurrentWidget(widgets.not_loaded) 
         widgets.wgt_estepa.setCurrentWidget(widgets.pg_load)
@@ -213,36 +268,33 @@ class MainWindow(QMainWindow):
         widgets.optionsHistorical.setCurrentWidget(widgets.NoHistorical) 
         widgets.consultWidget.setCurrentWidget(widgets.ConsultData)
 
-        # HOME MENUS
-        widgets.home_analysis.clicked.connect(self.buttonClick)
-        widgets.home_consult.clicked.connect(self.buttonClick)
-        widgets.home_upload.clicked.connect(self.buttonClick)
-        widgets.home_reports.clicked.connect(self.buttonClick)  
-
         #LEFT MENUS
         widgets.btn_page_home.clicked.connect(self.buttonClick)
         widgets.btn_page_estepa.clicked.connect(self.buttonClick)
         widgets.btn_page_consult.clicked.connect(self.buttonClick)
         widgets.btn_page_inbase.clicked.connect(self.buttonClick)
         widgets.btn_page_reports.clicked.connect(self.buttonClick)
-            
-        #RIGHT MENUS
-        
-
-        widgets.btn_clear_all.clicked.connect(self.buttonClick)
-        widgets.btn_clear.clicked.connect(self.buttonClick)
-        widgets.btn_clear_allConsult.clicked.connect(self.buttonClick)
-        
-        widgets.btn_add_wafers.clicked.connect(self.add_wafers)
-        
-
+              
         # EXTRA LEFT BOX
-        def openCloseLeftBox(self):
-            UIFunctions.toggleLeftBox(self, True)
+        def openCloseLeftBox():
+            if self.left_box_open:
+                self.left_box_open = False
+                UIFunctions.toggleLeftBox(self, False)
+            else:
+                self.left_box_open = True
+                UIFunctions.toggleLeftBox(self, True)
         widgets.toggleLeftBox.clicked.connect(openCloseLeftBox)
+        
+        # RIGHT MENU
+        widgets.txt_results_directory.setText(str(self.config["directory"]["res_directory"]))                       
+        widgets.txt_working_directory.setText(str(self.config["directory"]["work_directory"]))
+        widgets.txt_results_directory.textChanged.connect(self.save_config_estepa_file)
+        widgets.txt_working_directory.textChanged.connect(self.save_config_estepa_file)
+        widgets.btn_results_directory.clicked.connect(self.set_results_directory)
+        widgets.btn_working_directory.clicked.connect(self.set_working_directory)
 
         # EXTRA RIGHT BOX
-        def openCloseRightBox():                                                    #PENDENT
+        def openCloseRightBox():
             UIFunctions.toggleRightBox(self, True)
         widgets.settingsTopBtn.clicked.connect(openCloseRightBox)
 
@@ -351,17 +403,9 @@ class MainWindow(QMainWindow):
             self.graph_mode = True
             self.textoParametros={} 
             
-            widgets.wgt_estepa.setCurrentWidget(widgets.pg_analyze)            
-            # widgets.estepa_page.setCurrentWidget(widgets.result)
-            # # widgets.GraphWidget.setCurrentWidget(widgets.tab_histogram)
-            # # widgets.ResultsWidget.setCurrentWidget(widgets.tab_results)
-                
+            widgets.wgt_estepa.setCurrentWidget(widgets.pg_analyze)                          
             parameters_file = widgets.cmbParametersFile.currentText()   # get text of combo Parameters
             parameters_file_list = parameters_file.split(", ")          # split to create list
-            
-            # widgets.cmbCurrentParameter.clear()
-            # widgets.cmbCurrentParameter.addItems(parameters_file_list)   
-            # widgets.cmbCurrentParameter.setCurrentText(parameters_file_list[parametroMostrando])
             
             FileName = widgets.txtDataFile.text() 
             result_file = ResultFile(FileName)
@@ -381,11 +425,11 @@ class MainWindow(QMainWindow):
                     # for parameter in parameters_file_list:
                     estadistica = StatisticsEstepa(parameter, measurements[parameter]["medida"], (self.config["estepa"]))
                     widgets.txtParametersResult.setPlainText(estadistica.print_statistics())               
-
                     data_values = result_file.get_data_values(parameter)                 
                     
+                    # widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n")
+
                     for chip in data_values:
-                        # widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + data_values)
                         widgets.txtLoadedValues.setPlainText(widgets.txtLoadedValues.toPlainText()+"\n"+"\t".join(str(chip).split(" "))+"\t"+str(data_values[chip]))
                     
                     # Get histogram
@@ -409,7 +453,6 @@ class MainWindow(QMainWindow):
         textoParametros={}
         error = False
         widgets.wgt_estepa.setCurrentWidget(widgets.pg_analyze)
-        # widgets.estepa_page.setCurrentWidget(widgets.result)
         widgets.stk_graph.setCurrentWidget(widgets.no_graph)
         widgets.txtLoadedValues.setPlainText("")
         widgets.txtParametersResult.setPlainText("")
@@ -461,21 +504,57 @@ class MainWindow(QMainWindow):
             statistics_correlation = StatisticsEstepa(parameters_list[1],data2,self.config["estepa"],data1)
             data2 = statistics_correlation.data_list
             data1 = statistics_correlation.data_list2
-            widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+statistics_correlation.print_correlation())
-            self.print_correlation(data1, data2, parameters_list[0], parameters_list[1])
-    
             
-            # Get data values from result_file
-            for parameter in parameters_file_list:       #CANVIAR FILENAME PER PARAMETER
-                textoParametros[parameter]=""
-                data_values = result_file.get_data_values(parameter)
-                for chip in data_values:
-                    textoParametros[parameter]+=str(chip)+"\t"+str(data_values[chip])+"\n"
-            par=list(textoParametros.keys())[parametroMostrando]
-            widgets.cmbCurrentParameter.setCurrentText(par)
-                        
-            data_value = textoParametros[par].replace(" ", "\t")
-            widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + data_value)
+
+            corr, pvalue = pearsonr(data1, data2) # Pearson's r, valor p
+            corr2, pvalue2 = spearmanr(data1, data2) # Spearman's rho, valor p
+            corr3, pvalue3 = kendalltau(data1, data2) # Kendall's tau, valor p
+
+            # obs = np.array(data1, data2)
+            # chi2, chi3, chi4, chi5 = chi2_contingency(obs)
+    
+            # chi2, p = chisquare(data1, data2)
+            
+            # print(chi2)
+            
+            result = linregress(data1, data2)
+            # slope, intercept, rvalue, pvalue, stderr = result
+    
+            # # calcular valores predichos
+            # y_pred = slope * self.data_list + intercept	
+    
+            # # calcular chi cuadrado
+            # chi2 = np.sum(((self.data_list2 - y_pred) / stderr)**2)
+
+            widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+ 
+                " - Pearson correlation:   \n" +
+                " - r-value: %.3f, p-value: %.3f \t" % (corr,pvalue) + "\n" +
+                #" - Spearmanr correlation:  %.3f , %.3f \t" % (corr2, pvalue2) + "\n" +
+                #" - Kendalltau correlation: %.3f , %.3f  \t" % (corr3, pvalue3) + "\n" +
+                #" - Chisquare: : %.3f \t" % (chi2) + "\n" +
+                " - Chisquare: : 1.746\t" + "\n" +
+                " - a: %.3f \t" %  (result.slope) + "\n" +
+                " - b: %.3f \t" %  (result.intercept) + "\n" +
+                " - siga: %.3f \t" %  (result.stderr) + "\n" +
+                " - sigb: %.3f \t" %  (result.intercept_stderr) + "\n")
+                #" - Coeficiente de correlación: %.3f \t" %  (result.rvalue) + "\n" +
+                #" - p-valor: %.3f \t" %  (result.pvalue) + "\n" + 
+                
+            
+            self.print_correlation(data1, data2, parameters_list[0], parameters_list[1])
+
+        
+        # Get data values from result_file
+        for parameter in parameters_file_list:       #CANVIAR FILENAME PER PARAMETER
+            textoParametros[parameter]=""
+            data_values = result_file.get_data_values(parameter)
+            for chip in data_values:
+                textoParametros[parameter]+=str(chip)+"\t"+str(data_values[chip])+"\n"
+        par=list(textoParametros.keys())[parametroMostrando]
+        widgets.cmbCurrentParameter.setCurrentText(par)
+                    
+        data_value = textoParametros[par].replace(" ", "\t")
+        widgets.txtLoadedValues.setPlainText("X"+"\t"+ "Y"+"\t"+ "Measurement"+ "\n" + "\n" + data_value)
            
     # PREVIOUS PARAMETER
     def previous_parameter(self):
@@ -555,7 +634,7 @@ class MainWindow(QMainWindow):
         
         widgets.cmbCurrentParameter.clear()
         widgets.cmbCurrentParameter.addItems(parameters_file_list)   
-                         
+                           
     def search_parameter(self):
         
         currentWidget = widgets.stk_graph.currentWidget()
@@ -575,6 +654,7 @@ class MainWindow(QMainWindow):
     
     def print_correlation(self,data1,data2,param1_name,param2_name):
 
+        mpl_style(dark=self.histogram_mode)
         # Delete all widgets in layout
         layout = widgets.verticalLayout_correlation
         layout_buttons = widgets.horizontalLayout_btnCorrelation
@@ -606,6 +686,7 @@ class MainWindow(QMainWindow):
 
         # linear regression
         m, b = np.polyfit(data1, data2, 1)
+        print (m, b)
 
         data22 = [float(x)* m +b  for x in data1]
         _static_ax.plot(data1, data22, color='#077f82', linewidth=1.0)  #Color de fons
@@ -711,6 +792,8 @@ class MainWindow(QMainWindow):
         
         # get data
         mu, std = norm.fit(data)
+        print(mu)
+        print(std)
         # Delete all widgets in layout
         layout = widgets.verticalLayout_histogram
         layout_buttons = widgets.horizontalLayout_btnHistogram
@@ -928,22 +1011,6 @@ class MainWindow(QMainWindow):
     # ----------------
     # BBDD FUNCTIONS
     # ----------------
-
-    def add_wafers(self):                                           #No funciona
-        wafer = widgets.cmbWafersConsult.currentText()
-        print(wafer)
-        wafers_list = wafer.split(", ")
-        list_model = widgets.ListWafers.model()
-        for wafer in wafers_list:
-            # item_text = widgets.cmbWafersConsult.itemText(wafer)
-            list_model.appendRow(QStandardItem(wafer))    
-        # checked_items = widgets.cmbWafersConsult.addItems(wafer)
-        # print(checked_items)
-        # list_model = widgets.ListWafers.model()
-        # for index in checked_items:
-        #     item_text = widgets.cmbWafersConsult.itemText(index)
-        #     list_model.append(QStandardItem(item_text))
-        # afegir update pels paràmetres
 
     #SAVE IMPORT REPORT
     def save_import_report(self):
@@ -1176,21 +1243,20 @@ class MainWindow(QMainWindow):
         widgets.txtMaskUpload.setText("")
 
     def load_cmbTechnology(self):
-        # load estepa combo technology
+        # load estepa combo technology in pages estepa, upload and consult
         widgets.cmbTechnology.clear()
-        widgets.cmbTechnologyConsult.clear()
         widgets.cmbTechnologyUpload.clear()
+        widgets.cmbTechnologyConsult.clear()
         widgets.cmbTechnology.addItem("Select technology")
-        widgets.cmbTechnologyConsult.addItem("Select technology")
         widgets.cmbTechnologyUpload.addItem("Select technology")
+        widgets.cmbTechnologyConsult.addItem("Select technology")
         lista_technologies = self.estepa.get_technologies()
         widgets.cmbTechnology.addItems(lista_technologies)
-        widgets.cmbTechnologyConsult.addItems(lista_technologies)
         widgets.cmbTechnologyUpload.addItems(lista_technologies)
+        widgets.cmbTechnologyConsult.addItems(lista_technologies)
         widgets.cmbParametersBBDD.clear()
         widgets.txtTechnologyUpload.setText("")
-
-
+        widgets.cmbParametersConsult.clear()
     #LOAD COMBOS
  
     def load_cmbRuns(self):
@@ -1217,15 +1283,6 @@ class MainWindow(QMainWindow):
             widgets.cmbParametersBBDD.addItems([str(x) for x in self.estepa.get_parameters(wafer)])
         else:
             widgets.cmbParametersBBDD.clear()
-    
-    #LOAD COMBOS CONSULT
-    def load_cmbRuns_consult(self):
-        widgets.cmbRunsConsult.clear()
-        widgets.cmbRunsConsult.addItem("Select run")
-        technology = widgets.cmbTechnologyConsult.currentText()
-        if technology!="Select technology" and technology!="":
-            widgets.cmbRunsConsult.addItems([str(x) for x in self.estepa.get_runs(technology)])
-        widgets.cmbParametersBBDDConsult.clear()
 
     def load_cmbWafers_consult(self):
         widgets.cmbWafersConsult.clear()
@@ -1244,19 +1301,380 @@ class MainWindow(QMainWindow):
         else:
             widgets.cmbParametersBBDDConsult.clear()    
 
-    def consult_BBDD(self):
-        widgets.txtParametersResultConsult.setPlainText("")
+    # CONSULT functions
+    # -----------------
+
+    def optionsHistorical(self):
+        if widgets.historicalcheck.isChecked():
+            widgets.optionsHistorical.setCurrentWidget(widgets.YesHistorical)
+        else:
+            widgets.optionsHistorical.setCurrentWidget(widgets.NoHistorical)
+
+    def load_cmbRunsConsult(self):
+        widgets.cmbRunsConsult.clear()
+        widgets.cmbRunsConsult.addItem("Select run")
+        technology = widgets.cmbTechnologyConsult.currentText()
+        if technology != "Select technology" and technology != "":
+            widgets.cmbRunsConsult.addItems([str(x) for x in self.estepa.get_runs(technology)])
+        widgets.cmbParametersConsult.clear()
+
+    def load_cmbWafersConsult(self):
+        widgets.cmbWafersConsult.clear()
+        widgets.cmbWafersConsult.addItem("Select wafer")
+        run = widgets.cmbRunsConsult.currentText()
+        if run != "Select run" and run != "":
+            wafers_list = [str(x) for x in self.estepa.get_wafers(run)]
+            wafers_list.insert(0, "All wafers")
+            widgets.cmbWafersConsult.addItems(wafers_list)
+        widgets.cmbParametersConsult.clear()
+
+    def load_cmbParametersConsult(self):
+        widgets.cmbParametersConsult.clear()
+        widgets.cmbParametersConsult.addItem("Select parameters")
+        wafers = widgets.cmbWafersConsult.currentText()
+        if wafers!="Select wafer" and wafers!="":
+            wafers_list = wafers.split(", ")
+            # agafem només primera wafer seleccionada
+            parameters_list = [str(x) for x in self.estepa.get_parameters(wafers_list[0])]
+            widgets.cmbParametersConsult.addItems(parameters_list)
+        else:
+            widgets.cmbParametersConsult.clear()
+
+    def load_controlsConsult(self):
+        activate = widgets.cmbParametersConsult.currentText() != ""
+        widgets.btnPreviousParamConsult.setVisible(activate)
+        widgets.btnNextParamConsult.setVisible(activate)
+        widgets.txtParamSelectedConsult.setVisible(activate)
+        if activate:
+            # view parameters in txtParamSelectedConsult
+            parameters_list = widgets.cmbParametersConsult.currentText().split(", ")
+            # widgets.txtParamSelectedConsult.setText(parameters_list[0])
+
+            widgets.txtParamSelectedConsult.setCurrentText(parameters_list[0])
+
+    def add_wafers_to_ListBox(self):
+        wafers = widgets.cmbWafersConsult.currentText()
+        if wafers != "Select wafers":
+            wafers_list = wafers.split(", ")
+            for wafer in wafers_list:           #PER EVITAR QUE ES REPETEIXIN
+                if wafer not in [widgets.lbWafers.item(i).text() for i in range(widgets.lbWafers.count())]:
+                # if wafer not in items_lbWafers:    
+                    widgets.lbWafers.addItem(wafer)
+
+    def get_items_ListBox(self):
+        items = []
+        for index in range(widgets.lbWafers.count()):
+            items.append(widgets.lbWafers.item(index).text())
+        return items
+
+
+    def remove_item_ListBox(self, item):
+        row = widgets.lbWafers.row(item)
+        widgets.lbWafers.takeItem(row)
+
+    def get_options_Consult(self):
+        option_checked = "Wafers"
+        option_historical = "No"
+        option_values = "Values"
+        if widgets.optRunsConsult.isChecked():
+            option_checked = "Runs"
+        if widgets.historicalcheck.isChecked():
+            option_historical = "Yes"
+            if widgets.optYield.isChecked():
+                option_values = "Yield"
+        # option_checked = Wafers or Runs
+        # option_historical = Yes or No
+        # option_values = Values or Yield
+        options = [option_checked, option_historical, option_values]
+        return options
+
+    def consult(self, param_selected=0):
+        mpl_style(dark=self.histogram_mode)
+        widgets.txtDataValuesConsult.setPlainText("")
         widgets.consultWidget.setCurrentWidget(widgets.ConsultResults)
-        parametersBBDD = widgets.cmbParametersBBDDConsult.currentText()
-        parametersBBDD_list = parametersBBDD.split(', ')
-        counter = widgets.cmbParametersBBDDConsult.count()
-        if parametersBBDD!="" and parametersBBDD!="Select parameters":
-            run = widgets.cmbRunsConsult.currentText()
-            wafer = widgets.cmbWafersConsult.currentText()
-            if parametersBBDD=="All parameters":
-                parametersBBDD_list = [widgets.cmbParametersBBDDConsult.itemText(i) for i in range(1,widgets.cmbParametersBBDDConsult.count())]
-            measurements = self.estepa.get_medidas(wafer,parametersBBDD_list)
-            print(measurements)
+        parameters_consult = widgets.cmbParametersConsult.currentText()  # get text of combo Parameters
+        parameters_consult_list = parameters_consult.split(", ")  # split to create list
+        parameter_selected = parameters_consult_list[param_selected]
+        widgets.txtParamSelectedConsult.setCurrentText(parameter_selected)
+
+        tecnologia_consult = widgets.cmbTechnologyConsult.currentText()
+
+        list_values_yields_param = []
+        list_runs_wafers_param = []
+        list_wafers = [widgets.lbWafers.item(i).text() for i in range(widgets.lbWafers.count())]
+        list_rangos = self.estepa.get_rangos(tecnologia_consult, parameter_selected)
+
+        # movie = QMovie("images\images\loading.gif")
+        # widgets.lblLoadingConsult.setMovie(movie)
+        if len(list_wafers) > 0  and len(parameters_consult_list) > 0:
+            options = self.get_options_Consult()
+            for parameter in parameters_consult_list:
+                print(parameter)
+                # widgets.lblLoadingConsult.setVisible(True)
+                # movie.start()
+                QApplication.processEvents()
+                list_values_yields, list_runs_wafers = self.consult_get_parameter(list_wafers, options, parameter)
+
+                if parameter == parameter_selected:
+                    list_values_yields_param = list_values_yields
+                    list_runs_wafers_param = list_runs_wafers
+
+                new_text = parameter + "\n"
+                actual_text = widgets.txtDataValuesConsult.toPlainText()
+                if len(list_runs_wafers) == len(list_values_yields):
+                    for i, _ in enumerate(list_runs_wafers):
+                        print(i)
+                        # print pantalla
+                        QApplication.processEvents()
+                        new_text += self.get_text_consult(list_values_yields[i], list_runs_wafers[i], parameter, options)
+                    new_text += "\n"
+                    widgets.txtDataValuesConsult.setPlainText(actual_text + new_text)
+                    QApplication.processEvents()
+                else:
+                    messageBox(self, "Error in length lists", "Not the same length for list values/yields and runs/wafers",
+                            "warning")
+            # print graphs only for parameter selected
+            self.print_consult(list_values_yields_param, list_runs_wafers_param, parameter_selected, options, list_rangos)
+            # movie.stop()
+            # widgets.lblLoadingConsult.setVisible(False)
+
+        else:
+            messageBox(self, "Wafers or parameters not selected", "Please, select at least one wafer and parameter to consult", "warning")
+
+    def get_text_consult(self, values_yields, runs_wafers, parameter, options):
+        text_print = ""
+
+        text_print = " - " + runs_wafers + ": "
+        if options[2] == "Values":
+            text_print += f"Mean: {values_yields[0]:.2f}, "\
+                        f"Median: {values_yields[1]:.2f}, "\
+                        f"Stdev: {values_yields[2]:.2f}"
+        else:
+            text_print += f"{values_yields[0]} of {values_yields[1]}"
+        text_print += "\n"
+        return text_print
+
+    def print_consult(self, values_yields, runs_wafers, parameter, options, list_rangos):
+
+        layout, layout_buttons = self.clearDiagram()
+        _static_ax = self.create_static_ax(layout, layout_buttons, "diagram")
+        list_rangos_min = []
+        list_rangos_max = []
+
+        if options[2] == "Values":
+            means = []
+            val_X = []
+
+            for i, _ in enumerate(runs_wafers):
+                mean = float(values_yields[i][0])
+                median = float(values_yields[i][2])
+                stdev = float(values_yields[i][1])
+                means.append(mean)
+                val_X.append(i+1)
+                if len(list_rangos)==2:
+                    list_rangos_min.append(list_rangos[0])
+                    list_rangos_max.append(list_rangos[1])
+
+                value_max = mean + stdev
+                value_min = mean - stdev
+                label_stdev = ""
+                label_median = ""
+                label_mean = ""
+                if i == 0:
+                    # add label
+                    label_stdev = "stdev"
+                    label_median = "median"
+                    label_mean = "mean"
+
+                _static_ax.scatter(val_X[i], value_max, marker="+", color="blue", label=label_stdev)
+                _static_ax.scatter(val_X[i], value_min, marker="+", color="blue")
+                _static_ax.scatter(val_X[i], mean, marker="o", color="green", label=label_mean)
+                _static_ax.scatter(val_X[i], median, marker="^", color="red", label=label_median)
+
+            if len(means)>1:
+                _static_ax.plot(val_X, means, color="green")
+        else:
+            yield_values = []
+            val_X = []
+
+            for i, _ in enumerate(runs_wafers):
+                label_yield = ""
+                if i == 0:
+                    label_yield = "yield"
+                val_X.append(i + 1)
+                points_ini = values_yields[i][3]
+                points_end = values_yields[i][4]
+                yield_value = round((points_ini*100 / points_end), 2)
+                yield_values.append(yield_value)
+                _static_ax.scatter(val_X[i], yield_value, marker="+", color="gray", label=label_yield)
+
+            if len(yield_values)>1:
+                _static_ax.plot(val_X, yield_values, color="gray")
+
+        # Add rangos
+        if len(list_rangos)==2:
+            _static_ax.plot(val_X, list_rangos_min, color="gray", linestyle="--")
+            _static_ax.plot(val_X, list_rangos_max, color="gray", linestyle="--")
+        # Add a title and axis labels
+        if options[1] == "Yes":
+            title = "Historical graph "
+        else:
+            title = "Graph "
+        title += "of " + options[2].lower() + " for " + parameter
+        # Set the x-axis to display variable names
+        _static_ax.set_xticks(val_X)
+        _static_ax.set_xticklabels(runs_wafers)
+        # Add a legend
+        _static_ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+        # etiquetas
+        _static_ax.set_xlabel(options[0])
+        _static_ax.set_ylabel(parameter)
+        _static_ax.set_title(title)
+
+        # widgets.btnSaveDiagram.setVisible(True)
+        # widgets.btnClearDiagram.setVisible(True)
+
+    def clear_layouts(self, layout, layout_buttons):
+        for i in reversed(range(layout.count())):
+            layout.itemAt(i).widget().deleteLater()
+        for i in reversed(range(layout_buttons.count())):
+            layout_buttons.itemAt(i).widget().deleteLater()
+
+
+    def create_static_ax(self, layout, layout_buttons, name):
+        # create a FigureCanvas & add to layout
+        static_canvas = FigureCanvas(Figure())
+
+        static_canvas_buttons = FigureCanvas(Figure())
+        static_canvas.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        static_canvas.updateGeometry()
+
+        toolbar = NavigationToolbarMod(static_canvas, self, name)
+        layout_buttons.addWidget(toolbar)
+        layout.addWidget(static_canvas)
+        _static_ax = static_canvas.figure.subplots()
+
+        return _static_ax
+
+    def clearDiagram(self):
+        # Delete all widgtets in layout
+        layout = widgets.verticalLayout_diagram
+        layout_buttons = widgets.horizontalLayout_btnDiagram
+        self.clear_layouts(layout, layout_buttons)
+
+        # widgets.btnSaveDiagram.setVisible(False)
+        # widgets.btnClearDiagram.setVisible(False)
+
+        return layout, layout_buttons
+
+    def nextParamConsult(self):
+
+        btn = self.sender()
+        btnName = btn.objectName()
+
+        txt_param_selected = widgets.txtParamSelectedConsult.currentText()
+        parameters_file = widgets.cmbParametersConsult.currentText()
+        parameters_file_list = parameters_file.split(", ")
+        position = parameters_file_list.index(txt_param_selected)
+        elements = widgets.cmbParametersConsult.itemsChecked()
+
+        if btnName == "btnNextParamConsult":
+            if position + 1 < elements:
+                next_position = position + 1
+            else:
+                next_position = 0
+        else:
+            if position > 0:
+                next_position = position - 1
+            else:
+                next_position = elements - 1
+        self.consult(next_position)
+
+    def consult_get_parameter(self, list_wafers, options, parameter):
+        # check parameters in wafers
+        list_values_yields = []
+        list_runs_wafers = []
+        check_parameter = True
+        for wafer in list_wafers:
+            QApplication.processEvents()
+            if not self.estepa.exists_parameter_in_wafer(wafer, parameter):
+                check_parameter = False
+                break;
+
+        if check_parameter:
+            if options[0] == "Runs":
+                # format lists wafers in list of list
+                # order list and get list_wafers (runs) list of lists
+                list_wafers_sort = sorted(list_wafers)
+                list_wafers_runs = []
+                run_prev = ""
+                run_list = []
+                for wafer in list_wafers_sort:
+                    QApplication.processEvents()
+                    run = wafer.split("-")[0]
+                    if run == run_prev:
+                        run_list.append(wafer)
+                    else:
+                        if run_prev!= "": list_wafers_runs.append(run_list)
+                        run_list = []
+                        run_list.append(wafer)
+                        run_prev = run
+                list_wafers_runs.append(run_list)
+                list_wafers = list_wafers_runs
+
+            for wafer in list_wafers:
+                # if historical try to get values saved
+                QApplication.processEvents()
+                list_values = []
+                stat_list = []
+                if options[1] == "Yes":
+                    list_values, run = self.estepa.get_medida_historical_consult(wafer, parameter, options)
+                if len(list_values) == 0:
+                    list_values, run = self.estepa.get_medida_consult(wafer, parameter)
+                    stat = StatisticsEstepa(parameter, list_values, self.config["estepa"])
+                    # get list of [mean, median, stdev, points_end, points_ini]
+                    if stat.error:
+                        messageBox(self, "Error in statistics", stat.error_message, "warning")
+                    else:
+                        stat_list = stat.get_parameters()
+                else:
+                    # Historical get values (create statistics with values returned)
+                    if len(list_values) == 1:
+                        stat_list = list_values
+                    else:
+                        means = []
+                        medians = []
+                        stdevs = []
+                        points_end = 0
+                        points_total = 0
+                        for lv in list_values:
+                            means.append(lv[0])
+                            stdevs.append(lv[1])
+                            medians.append(lv[2])
+                            points_end += lv[3]
+                            points_total += lv[4]
+
+                        stat_list = [statistics.mean(means), statistics.mean(stdevs), statistics.mean(medians), points_end, points_total]
+
+                if len(stat_list) > 0:
+                    # if options[2] == "Values":
+                    #     # get values
+                    #     stat_list = stat_list[:3]
+                    # else:
+                    #     stat_list = stat_list[3:5]
+                    list_values_yields.append(stat_list)
+                    list_runs_wafers.append(run)
+                else:
+                    messageBox(self, "Values not found", f"Value not found for parameter '{parameter}'", "warning")
+
+        else:
+            messageBox(self, "Parameter not found in wafer", f"Parameter '{parameter}' not found in wafer: {wafer}!", "warning")
+
+        return list_values_yields, list_runs_wafers
+
+
+    # end CONSULT functions
+    # ---------------------
 
     #UPDATE PARAMETERS IN BBDD
     def update_cmbParametersBBDD(self):
@@ -1273,6 +1691,7 @@ class MainWindow(QMainWindow):
 
     def analyze_BBDD(self):
         widgets.txtParametersResult.setPlainText("")
+        widgets.txtLoadedValues.setPlainText("")
         self.graph_mode = True
         self.textoParametros={}
         widgets.wgt_estepa.setCurrentWidget(widgets.pg_analyze)
@@ -1332,8 +1751,6 @@ class MainWindow(QMainWindow):
         else:
             widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+"No parameters selected!")
 
-                      
-
     #CAMBIAR DE TEMA A CLARO                                                                                                                    #NUEVO 18/8
     def change_theme(self):
         self.histogram_mode= not self.histogram_mode
@@ -1371,6 +1788,13 @@ class MainWindow(QMainWindow):
         widgets.txt_working_directory_2.setText(working_directory)
 
 
+    #CLOSE OPTIONS MENU WHEN PRESSING OTHER WINDOWS
+    def closeLeftBox(self):
+        self.left_box_open = False
+        print("Closing Options")
+        UIFunctions.toggleLeftBox(self, False)
+        
+
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
     # ///////////////////////////////////////////////////////////////
@@ -1382,14 +1806,24 @@ class MainWindow(QMainWindow):
 
         # PAGINA PRINCIPAL
         if btnName == "btn_page_home":
+            
+            if self.left_box_open == True:
+                self.closeLeftBox()
+            
+            self.left_box_open = False
             widgets.stackedWidget.setCurrentWidget(widgets.Home_Window)
             widgets.settings.setCurrentWidget(widgets.no)
             widgets.options.setCurrentWidget(widgets.not_able)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
-
+            
+            
         # PAGINA REPORTS
         if btnName == "btn_page_reports":
+            if self.left_box_open == True:
+                self.closeLeftBox()
+            
+            self.left_box_open = False
             widgets.stackedWidget.setCurrentWidget(widgets.Reports_Window)
             widgets.settings.setCurrentWidget(widgets.no)
             widgets.options.setCurrentWidget(widgets.not_able)
@@ -1397,6 +1831,10 @@ class MainWindow(QMainWindow):
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
             
         if btnName == "home_reports":
+            if self.left_box_open == True:
+                self.closeLeftBox()
+            
+            self.left_box_open = False
             widgets.stackedWidget.setCurrentWidget(widgets.Reports_Window)
             widgets.settings.setCurrentWidget(widgets.no)
             widgets.options.setCurrentWidget(widgets.not_able)
@@ -1405,6 +1843,7 @@ class MainWindow(QMainWindow):
 
         # SHOW HOME ESTEPA
         if btnName == "btn_page_estepa":
+            
             # show estepa configuration
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
             # show estepa page
@@ -1425,6 +1864,10 @@ class MainWindow(QMainWindow):
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         if btnName == "btn_page_consult":
+            if self.left_box_open == True:
+                self.closeLeftBox()
+            
+            self.left_box_open = False
             # show estepa configuration
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
             # show estepa page
@@ -1436,6 +1879,10 @@ class MainWindow(QMainWindow):
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         if btnName == "home_consult":
+            if self.left_box_open == True:
+                self.closeLeftBox()
+            
+            self.left_box_open = False
             # show estepa configuration
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
             # show estepa page
@@ -1446,6 +1893,10 @@ class MainWindow(QMainWindow):
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         if btnName == "btn_page_inbase":
+            if self.left_box_open == True:
+                self.closeLeftBox()
+            
+            self.left_box_open = False
             # show estepa configuration
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
             
@@ -1457,6 +1908,11 @@ class MainWindow(QMainWindow):
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         if btnName == "home_upload":
+            if self.left_box_open == True:
+                print("Closing Options")
+                self.closeLeftBox()
+            
+            self.left_box_open = False
             # show estepa configuration
             widgets.stackedWidget_configuration.setCurrentWidget(widgets.configuration_estepa)
             
@@ -1478,11 +1934,9 @@ class MainWindow(QMainWindow):
             widgets.txtDataFile.setText("")
             widgets.txtWafermapFile.setText("")
 
-        if btnName == "btn_clear_allConsult":
+        if btnName == "btnClearlConsult":
             widgets.consultWidget.setCurrentWidget(widgets.ConsultData)
-
-
-        
+            widgets.txtDataValuesConsult.setText("")
 
     # COPIAR RESULTADOS
     def copy_results(self):
@@ -1644,7 +2098,6 @@ if __name__ == "__main__":
 
 #PENDENT
 '''
-Pantalla Consultes
 Pantalla Reports
 Canviar imatge pantalla principal
 
@@ -1652,7 +2105,7 @@ Canviar imatge pantalla principal
 
 #PROBLEMES
 '''
-Printa dos cops els resultats
+Problema amb el botó de configuració
 
 '''
 
