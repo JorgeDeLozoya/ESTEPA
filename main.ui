@@ -2985,7 +2985,7 @@ font: 700 12pt &quot;Segoe UI&quot;;</string>
                           </size>
                          </property>
                          <property name="currentIndex">
-                          <number>0</number>
+                          <number>1</number>
                          </property>
                          <widget class="QWidget" name="pg_load">
                           <layout class="QVBoxLayout" name="verticalLayout_26">
@@ -6080,7 +6080,7 @@ QTabBar::tab:top:selected {
                                  <property name="currentIndex">
                                   <number>0</number>
                                  </property>
-                                 <widget class="QWidget" name="tab_results_2">
+                                 <widget class="QWidget" name="tab_results_consult">
                                   <property name="maximumSize">
                                    <size>
                                     <width>400</width>
@@ -6226,7 +6226,7 @@ QTabBar::tab:top:selected {
                                  </property>
                                  <widget class="QWidget" name="tab_8">
                                   <attribute name="title">
-                                   <string>HISTORICAL DIAGRAM</string>
+                                   <string>DIAGRAM</string>
                                   </attribute>
                                   <layout class="QVBoxLayout" name="verticalLayout_48">
                                    <item>

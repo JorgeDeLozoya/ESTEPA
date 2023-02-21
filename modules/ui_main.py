@@ -2989,12 +2989,12 @@ class Ui_MainWindow(object):
 "    border-bottom-color: none;\n"
 "}\n"
 "")
-        self.tab_results_2 = QWidget()
-        self.tab_results_2.setObjectName(u"tab_results_2")
-        self.tab_results_2.setMaximumSize(QSize(400, 16777215))
-        self.verticalLayout_32 = QVBoxLayout(self.tab_results_2)
+        self.tab_results_consult = QWidget()
+        self.tab_results_consult.setObjectName(u"tab_results_consult")
+        self.tab_results_consult.setMaximumSize(QSize(400, 16777215))
+        self.verticalLayout_32 = QVBoxLayout(self.tab_results_consult)
         self.verticalLayout_32.setObjectName(u"verticalLayout_32")
-        self.txtDataValuesConsult = QPlainTextEdit(self.tab_results_2)
+        self.txtDataValuesConsult = QPlainTextEdit(self.tab_results_consult)
         self.txtDataValuesConsult.setObjectName(u"txtDataValuesConsult")
         self.txtDataValuesConsult.setMinimumSize(QSize(0, 150))
         self.txtDataValuesConsult.setMaximumSize(QSize(400, 16777215))
@@ -3002,7 +3002,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_32.addWidget(self.txtDataValuesConsult)
 
-        self.ResultsWidgetConsult.addTab(self.tab_results_2, "")
+        self.ResultsWidgetConsult.addTab(self.tab_results_consult, "")
 
         self.verticalLayout_33.addWidget(self.ResultsWidgetConsult)
 
@@ -3644,7 +3644,7 @@ class Ui_MainWindow(object):
         self.optionsNonAutomatic.setCurrentIndex(1)
         self.settings.setCurrentIndex(1)
         self.stackedWidget.setCurrentIndex(2)
-        self.wgt_estepa.setCurrentIndex(0)
+        self.wgt_estepa.setCurrentIndex(1)
         self.optionsESTEPA.setCurrentIndex(1)
         self.stk_loadfiles.setCurrentIndex(0)
         self.load_clear.setCurrentIndex(0)
@@ -4000,8 +4000,8 @@ class Ui_MainWindow(object):
 " - Method:   	f-spread\n"
 "\n"
 "", None))
-        self.ResultsWidgetConsult.setTabText(self.ResultsWidgetConsult.indexOf(self.tab_results_2), QCoreApplication.translate("MainWindow", u"PARAMETER RESULTS", None))
-        self.HistoricalDiagramWidget.setTabText(self.HistoricalDiagramWidget.indexOf(self.tab_8), QCoreApplication.translate("MainWindow", u"HISTORICAL DIAGRAM", None))
+        self.ResultsWidgetConsult.setTabText(self.ResultsWidgetConsult.indexOf(self.tab_results_consult), QCoreApplication.translate("MainWindow", u"PARAMETER RESULTS", None))
+        self.HistoricalDiagramWidget.setTabText(self.HistoricalDiagramWidget.indexOf(self.tab_8), QCoreApplication.translate("MainWindow", u"DIAGRAM", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"UPLOAD RESULTS to ESTEPA", None))
         self.labelVersion_51.setText(QCoreApplication.translate("MainWindow", u"Select technology", None))
         self.labelVersion_45.setText(QCoreApplication.translate("MainWindow", u"Load WAFERMAP file", None))

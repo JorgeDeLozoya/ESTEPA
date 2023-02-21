@@ -5,7 +5,7 @@ host = "127.0.0.1"
 port = "5432"
 user = "postgres"
 database = "mecao"
-password = "Delo31898"
+password = ""
 autocommit = false
 
 [estepa]
@@ -14,7 +14,7 @@ lna = false
 autolimits = false
 limmin = 590
 limmax = 600
-chunks = 10
+chunks = 8
 
 [directory]
 res_directory = "D:/Documentos/Resultados"

@@ -50,6 +50,8 @@ class NavigationToolbarMod(NavigationToolbar):
         self.where = where
         self.MainWindowClass = MainWindow
 
+        self.setStyleSheet("color: white; background-color: #343B48;")
+
     NavigationToolbar.toolitems = (
         ('Home', 'Reset original view', 'home', 'home'),
         ('Back', 'Back to previous view', 'back', 'back'),
@@ -62,20 +64,6 @@ class NavigationToolbarMod(NavigationToolbar):
         (None, None, None, None),
         # ('Save', 'Save the figure', 'filesave', 'save_graph'), # save_figure modification
     )
-
-
-# class MyCustomToolbar(NavigationToolbar): 
-#     def __init__(self, plotCanvas):
-#         NavigationToolbar.__init__(self, plotCanvas)
-        
-#     layout_buttons = widgets.horizontalLayout_btnHistogram    
-#     layout_buttons = {
-
-#     "Home": layout_buttons.QIcon("/images/icons/cil-home.png"),
-#     "Pan": layout_buttons.QIcon("/images/icons/pan.png"),
-#     "Zoom": layout_buttons.QIcon("/images/icons/zoom.png"),
-    
-#     }
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -157,26 +145,11 @@ class MainWindow(QMainWindow):
         
         widgets.cmbCurrentParameter.currentIndexChanged.connect(self.search_parameter)
         widgets.btnCopyDescription.clicked.connect(self.copy_results)
+        widgets.btnCopyDescriptionConsult.clicked.connect(self.copy_consult)
         widgets.btnSaveDescription.clicked.connect(self.save_results)
         widgets.btnNextParamFiles.clicked.connect(self.next_parameter)
         widgets.btnPreviousParamFiles.clicked.connect(self.previous_parameter)
-        widgets.btn_clear_all.clicked.connect(self.buttonClick)
-      
-        # # PAGE CONSULT
-        # widgets.btnConsult.clicked.connect(self.consult_BBDD)
-        # widgets.cmbRunsConsult.currentIndexChanged.connect(self.load_cmbWafers_consult)
-        # widgets.cmbWafersConsult.currentIndexChanged.connect(self.load_cmbParametersBBDD_consult)
-        # widgets.optionsHistorical.setCurrentWidget(widgets.NoHistorical)
-        # widgets.btnValues.setChecked(True) #optValues
-        # widgets.historicalcheck.stateChanged.connect(self.optionsHistorical) #historicalcheck
-        # widgets.cmbTechnologyConsult.currentIndexChanged.connect(self.load_cmbRunsConsult)
-        # widgets.cmbRunsConsult.currentIndexChanged.connect(self.load_cmbWafersConsult)
-        # widgets.cmbWafersConsult.editTextChanged.connect(self.load_cmbParametersConsult)
-        # widgets.btn_add_wafers.clicked.connect(self.add_wafers_to_ListBox) #btnAddWafers
-        # widgets.ListWafers.itemDoubleClicked.connect(self.remove_item_ListBox) #lbWafers
-        # widgets.ListWafers.clear() #lbWafers
-        # widgets.btnConsult.clicked.connect(self.consult)    
-        # widgets.btn_clear_allConsult.clicked.connect(self.buttonClick)                                                   
+        widgets.btn_clear_all.clicked.connect(self.buttonClick)                             
         
 
         # PAGE CONSULT
@@ -192,21 +165,11 @@ class MainWindow(QMainWindow):
         widgets.lbWafers.clear()
         widgets.btnConsult.clicked.connect(self.consult)
         widgets.btnClearlConsult.clicked.connect(self.clearDiagram)      #botó x
-        widgets.btnClearlConsult.setVisible(False)      #botó x
-        widgets.btnSaveConsult.setVisible(False)      #botó save
+        widgets.btnClearlConsult.clicked.connect(self.buttonClick)
         # widgets.lblLoadingConsult.setVisible(False)     #animació carrega
         widgets.btnPreviousParamConsult.clicked.connect(self.nextParamConsult)      #prev
         widgets.btnNextParamConsult.clicked.connect(self.nextParamConsult)          #next
         self.load_controlsConsult()
-        # widgets.btnClearDataValuesConsult.clicked.connect(lambda: widgets.txtDataValuesConsult.setPlainText(""))   #botó x
-        # widgets.btnSaveHistorical.clicked.connect(self.saveResults)   #botó save
-        # widgets.btnSaveConsult.clicked.connect(self.saveResults)    #botó save
-
-
-
-
-
-
 
         # CONFIG ESTEPA
         widgets.scrollHistogramChunks.valueChanged.connect(lambda: widgets.txtHistogramChunks.setText(str(widgets.scrollHistogramChunks.value())))
@@ -324,33 +287,32 @@ class MainWindow(QMainWindow):
         widgets.btn_page_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_page_home.styleSheet()))
         
         # LOAD ESTEPA 
+        config_estepa = {
+            "host" : "opter6.cnm.es",
+            "port" : "5432",
+            "user" : "joaquin",
+            "database" : "mecao",
+            "password" : "",
+            "autocommit" : False,
+            # "res_directory"
+            # "work_directory"
+        }
+
         # config_estepa = {
-        #     "host" : "opter6.cnm.es",
+        #     "host" : "localhost",
         #     "port" : "5432",
-        #     "user" : "joaquin",
+        #     "user" : "postgres",
         #     "database" : "mecao",
         #     "password" : "",
         #     "autocommit" : False,
-        #     # "res_directory"
-        #     # "work_directory"
         # }
 
-        config_estepa = {
-            "host" : "localhost",
-            "port" : "5432",
-            "user" : "postgres",
-            "database" : "mecao",
-            "password" : "Delo31898",
-            "autocommit" : False,
 
-
-
-        }
         # if configuration json file exists load configurationñ from file
         get_json = get_json_file('estepa',config_estepa)
         if get_json!="":
             config_estepa = get_json
-        self.estepa = Estepa(self.config["connection"])         #Descomentar error inicial                                                          ###
+        self.estepa = Estepa(self.config["connection"])     
         # self.estepa = Estepa(self.config["estepa"])
         # self.estepa = Estepa(self.config["directory"])
         if not self.estepa.error:
@@ -504,48 +466,28 @@ class MainWindow(QMainWindow):
             statistics_correlation = StatisticsEstepa(parameters_list[1],data2,self.config["estepa"],data1)
             data2 = statistics_correlation.data_list
             data1 = statistics_correlation.data_list2
-            
 
             corr, pvalue = pearsonr(data1, data2) # Pearson's r, valor p
-            corr2, pvalue2 = spearmanr(data1, data2) # Spearman's rho, valor p
-            corr3, pvalue3 = kendalltau(data1, data2) # Kendall's tau, valor p
+            obs = np.array([data1, data2])
+            chi2, p_value, dof, expected = chi2_contingency(obs)
 
-            # obs = np.array(data1, data2)
-            # chi2, chi3, chi4, chi5 = chi2_contingency(obs)
-    
-            # chi2, p = chisquare(data1, data2)
-            
-            # print(chi2)
             
             result = linregress(data1, data2)
-            # slope, intercept, rvalue, pvalue, stderr = result
-    
-            # # calcular valores predichos
-            # y_pred = slope * self.data_list + intercept	
-    
-            # # calcular chi cuadrado
-            # chi2 = np.sum(((self.data_list2 - y_pred) / stderr)**2)
 
             widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+ 
                 " - Pearson correlation:   \n" +
                 " - r-value: %.3f, p-value: %.3f \t" % (corr,pvalue) + "\n" +
-                #" - Spearmanr correlation:  %.3f , %.3f \t" % (corr2, pvalue2) + "\n" +
-                #" - Kendalltau correlation: %.3f , %.3f  \t" % (corr3, pvalue3) + "\n" +
-                #" - Chisquare: : %.3f \t" % (chi2) + "\n" +
-                " - Chisquare: : 1.746\t" + "\n" +
+                " - Chisquare: : %.3f \t" % (chi2) + "\n" +
                 " - a: %.3f \t" %  (result.slope) + "\n" +
                 " - b: %.3f \t" %  (result.intercept) + "\n" +
                 " - siga: %.3f \t" %  (result.stderr) + "\n" +
                 " - sigb: %.3f \t" %  (result.intercept_stderr) + "\n")
-                #" - Coeficiente de correlación: %.3f \t" %  (result.rvalue) + "\n" +
-                #" - p-valor: %.3f \t" %  (result.pvalue) + "\n" + 
-                
             
             self.print_correlation(data1, data2, parameters_list[0], parameters_list[1])
 
         
         # Get data values from result_file
-        for parameter in parameters_file_list:       #CANVIAR FILENAME PER PARAMETER
+        for parameter in parameters_file_list:   
             textoParametros[parameter]=""
             data_values = result_file.get_data_values(parameter)
             for chip in data_values:
@@ -730,7 +672,7 @@ class MainWindow(QMainWindow):
         btnName = btn.objectName()
         working_directory = str(self.config["directory"]["work_directory"])
         fileName, _ = QFileDialog.getOpenFileName(self,'Open wafermap file', working_directory, 'PPG and PY Files (*_wafermap.py; *.ppg);; All files (*.*)')
-            # "Open wafermap file", self.working_directory, "PPG py Files (*_wafermap.py);; PPG Files (*.ppg);; All files (*.*)")
+
 
         if fileName:
             working_directory=os.path.dirname(fileName)
@@ -1189,7 +1131,7 @@ class MainWindow(QMainWindow):
                     widgets.txtLimitMin.setText(str(rangos[0]))
                     widgets.txtLimitMax.setText(str(rangos[1]))
 
-    def historical_check(self):                                                                                                     #3/8
+    def historical_check(self):                                                                                                   
         historicalcheck = "false"   
         if widgets.historicalcheck.isChecked():
             historicalcheck = "true"
@@ -1751,7 +1693,7 @@ class MainWindow(QMainWindow):
         else:
             widgets.txtParametersResult.setPlainText(widgets.txtParametersResult.toPlainText()+"\n"+"No parameters selected!")
 
-    #CAMBIAR DE TEMA A CLARO                                                                                                                    #NUEVO 18/8
+    #CAMBIAR DE TEMA A CLARO                                                                                                               
     def change_theme(self):
         self.histogram_mode= not self.histogram_mode
         widgets.chk_theme.isChecked()
@@ -1951,6 +1893,15 @@ class MainWindow(QMainWindow):
             widgets.txtLoadedValues.selectAll()
             widgets.txtLoadedValues.copy()
 
+
+    def copy_consult(self):
+        
+        currentWidget = widgets.ResultsWidgetConsult.currentWidget()
+        
+        if currentWidget == widgets.tab_results_consult:
+            widgets.txtParametersResult.selectAll()
+            widgets.txtParametersResult.copy()
+
     # GUARDAR RESULTADOS
     def save_results(self, parametroMostrando):
         
@@ -1991,14 +1942,14 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////////////////////////
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
-        self.dragPos = event.globalPosition().toPoint()                                         ###
+        self.dragPos = event.globalPosition().toPoint()                            
         p = event.globalPosition()
         globalPos = p.toPoint()
         self.dragPos = globalPos
 
     # LOAD TOML FILES FUNCTIONS
     # CONFIG FILE FUNCTIONS
-    def load_config(self):                      #Això s'ha de canviar/treure?
+    def load_config(self):                 
         config_string = """
         title = "PROGRAM config file"
         [connection]
@@ -2096,18 +2047,9 @@ if __name__ == "__main__":
 
 
 
-#PENDENT
-'''
-Pantalla Reports
-Canviar imatge pantalla principal
 
-'''
 
-#PROBLEMES
-'''
-Problema amb el botó de configuració
 
-'''
 
 
 #Posar cometaris de les funcions i les clases 
